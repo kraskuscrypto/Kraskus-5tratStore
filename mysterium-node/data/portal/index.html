@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mysterium Node</title>
+<style>
+:root{--bg:#05070c;--panel:#0b1119;--line:#223142;--text:#f3f7fb;--muted:#8ca0b5;--pink:#e83598;--purple:#7744c6;--green:#38df98}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 50% -10%,#2a1047,#070b12 42%,#04060a 78%);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
+.wrap{max-width:1000px;margin:auto;padding:28px} .hero{display:flex;gap:16px;align-items:center;margin-bottom:20px}
+.logo{width:72px;height:72px;border-radius:18px;background:white;padding:8px;object-fit:contain} h1{margin:0;font-size:28px} .sub{color:var(--muted);margin-top:5px}
+.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px} .card{background:linear-gradient(180deg,#0d151f,#080d14);border:1px solid var(--line);border-radius:14px;padding:20px}
+.eyebrow{font-size:10px;color:#ca8eff;font-weight:900;letter-spacing:.12em} h2{font-size:18px;margin:7px 0} p{color:var(--muted);line-height:1.6}
+.actions{display:grid;gap:10px;margin-top:18px} a.btn{display:flex;align-items:center;justify-content:center;min-height:48px;border:1px solid #384c61;border-radius:9px;padding:10px;text-decoration:none;color:white;font-weight:900;text-align:center}
+.primary{background:linear-gradient(135deg,#7936bb,#dd2f8d);border-color:#ce4b9b!important} .secondary{background:#0c2630;border-color:#1d7184!important}
+.step{padding:12px 0;border-bottom:1px solid #172430} .step:last-child{border-bottom:0} .num{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#1a2735;margin-right:8px;font-weight:900;font-size:11px}
+.note{margin-top:15px;padding:12px;border:1px solid #5a4628;background:#171207;border-radius:9px;color:#d9c596;font-size:12px;line-height:1.5}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <img class="logo" src="https://static.wixstatic.com/media/5b19bf_70f93de8752d429f9acaad9ab250a5f8~mv2.png/v1/fill/w_239%2Ch_239%2Cal_c%2Cq_85%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/logo.png" alt="Mysterium emblem">
+    <div><h1>Mysterium Node</h1><div class="sub">Official Mysterium node · 5tratumOS integration by Kraskus</div></div>
+  </div>
+  <div class="grid">
+    <section class="card">
+      <div class="eyebrow">FIRST-TIME SETUP</div>
+      <h2>Connect to MystNodes</h2>
+      <p>Choose the path that matches your account. Your Mysterium identity stays in persistent 5tratumOS app storage.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://mystnodes.co/?referral_code=CJSoelVnKkllilXIgv7JqeroUv1jhnZ4KWE4G6E4" target="_blank" rel="noopener">NEW USER · CREATE MYSTNODES ACCOUNT</a>
+        <a class="btn secondary" id="nodeui" href="#" target="_blank" rel="noopener">EXISTING USER · OPEN NODE UI</a>
+      </div>
+      <div class="note"><b>Referral disclosure:</b> the New User button uses a Kraskus MystNodes referral link. Existing users do not need to create a new account. Your MystNodes API key is separate from the referral code.</div>
+    </section>
+    <aside class="card">
+      <div class="eyebrow">SETUP</div>
+      <div class="step"><span class="num">1</span><b>Create or use an account</b></div>
+      <div class="step"><span class="num">2</span><b>Open the official Node UI</b></div>
+      <div class="step"><span class="num">3</span><b>Enter your own MystNodes API key</b></div>
+      <div class="step"><span class="num">4</span><b>Select services and monitor earnings</b></div>
+    </aside>
+  </div>
+</div>
+<script>
+document.getElementById("nodeui").href=`${location.protocol}//${location.hostname}:4449/`;
+</script>
+</body>
+</html>

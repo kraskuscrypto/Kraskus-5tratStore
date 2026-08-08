@@ -1,0 +1,25 @@
+services:
+  app_proxy:
+    environment:
+      APP_HOST: portal
+      APP_PORT: 8080
+
+  portal:
+    image: nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+    restart: unless-stopped
+    volumes:
+      - ${APP_DATA_DIR}/data/portal:/usr/share/nginx/html:ro
+    security_opt:
+      - no-new-privileges:true
+
+  mysterium:
+    image: mysteriumnetwork/myst:1.38.5-alpine@sha256:49c6381a3efaa11c2ad9728df3c88bd2df6e061882f83e4983677eb90ee717c2
+    restart: unless-stopped
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    command:
+      - service
+      - --agreed-terms-and-conditions
+    volumes:
+      - ${APP_DATA_DIR}/data/mysterium:/var/lib/mysterium-node
