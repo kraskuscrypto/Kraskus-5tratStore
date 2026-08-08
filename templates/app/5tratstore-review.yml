@@ -1,0 +1,38 @@
+schemaVersion: 1
+status: proposed
+appId: replace-me
+appVersion: 0.0.0
+reviewedAt: ""
+reviewedBy: ""
+upstream:
+  sourceUrl: https://github.com/original-owner/original-project
+  license: SPDX-ID-or-exact-licence-name
+  licenseEvidence: https://github.com/original-owner/original-project/blob/v0.0.0/LICENSE
+rights:
+  packageOriginal: true
+  softwareDistributionCleared: false
+  containerUseCleared: false
+  listingTextCleared: true
+  artworkCleared: false
+  noticesIncluded: false
+delivery:
+  mode: direct-upstream-artifact
+  storePayload: recipe-only
+  mirrorsThirdPartyPayload: false
+compatibility:
+  osVersions:
+    - pending-maintainer-test
+  architectures:
+    - amd64
+  installTested: false
+  startTested: false
+  updateTested: false
+  uninstallTested: false
+security:
+  privileged: false
+  hostNetwork: false
+  dockerSocket: false
+  hostMountsReviewed: false
+  devicesReviewed: false
+  networkEndpointsReviewed: false
+notes: Describe dependencies, risks, unresolved evidence, and special test steps.

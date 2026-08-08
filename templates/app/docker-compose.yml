@@ -1,0 +1,13 @@
+services:
+  app_proxy:
+    environment:
+      APP_HOST: app
+      APP_PORT: 8080
+
+  app:
+    image: original/image:0.0.0@sha256:replace-me
+    restart: unless-stopped
+    volumes:
+      - ${APP_DATA_DIR}/data:/app/data
+    security_opt:
+      - no-new-privileges:true

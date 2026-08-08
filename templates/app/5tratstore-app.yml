@@ -1,0 +1,22 @@
+id: replace-me
+name: Replace Me
+tagline: One factual sentence describing the app's purpose
+description: >-
+  Write original listing text from the upstream project's own documentation.
+  State important dependencies, limitations, privacy implications, and
+  security-relevant defaults.
+version: 0.0.0
+category: Utilities
+developer: Original upstream developer
+website: https://example.org/
+repo: https://github.com/original-owner/original-project
+support: https://github.com/original-owner/original-project/issues
+icon: https://example.org/official-icon.png
+port: 33000
+path: /
+uiMode: proxy
+services:
+  app_proxy:
+    environment:
+      APP_HOST: app
+      APP_PORT: 8080
