@@ -1,9 +1,9 @@
 schemaVersion: 1
 status: proposed
 appId: mysterium-node
-appVersion: 1.0.0
-reviewedAt: ""
-reviewedBy: ""
+appVersion: 2.0.0
+reviewedAt: ''
+reviewedBy: ''
 upstream:
   sourceUrl: https://github.com/mysteriumnetwork/node
   license: GPL-3.0
@@ -21,9 +21,9 @@ delivery:
   mirrorsThirdPartyPayload: false
 compatibility:
   osVersions:
-    - 0.7.7-custom-store-test
+  - 0.7.7-custom-store-test
   architectures:
-    - amd64
+  - amd64
   installTested: false
   startTested: false
   updateTested: false
@@ -35,8 +35,10 @@ security:
   hostMountsReviewed: true
   devicesReviewed: true
   networkEndpointsReviewed: true
-notes: >-
-  Mysterium upstream requires NET_ADMIN and documents host networking for the
-  Docker node so the VPN service IP can be detected and published correctly.
-  The portal is served by an official nginx image behind 5tratumOS app_proxy.
-  The New User action opens a disclosed Kraskus MystNodes referral URL.
+notes: Mysterium upstream requires NET_ADMIN and documents host networking for the
+  Docker node so the VPN service IP can be detected and published correctly. The portal
+  is served by an official nginx image behind 5tratumOS app_proxy. The New User action
+  opens a disclosed Kraskus MystNodes referral URL. Kraskus maintains the 5tratumOS
+  packaging and onboarding experience. The node runtime itself is the official upstream
+  Mysterium Network container. New-user onboarding includes a disclosed Kraskus MystNodes
+  referral URL; existing users can bypass referral signup.

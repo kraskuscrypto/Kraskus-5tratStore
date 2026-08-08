@@ -41,3 +41,24 @@ claiming.
 
 The user's MystNodes API key is separate from the referral code and is never
 embedded in this repository.
+
+## Kraskus packaging identity
+
+The 5tratumOS integration is distributed as **MystNodes by Kraskus**.
+
+- Packager / app experience: Kraskus
+- Underlying node runtime: Mysterium Network
+- Upstream source: https://github.com/mysteriumnetwork/node
+- MystNodes service: https://mystnodes.com/
+
+The app name does not imply that Kraskus owns or authors the upstream Mysterium
+node software. The underlying runtime remains the official Mysterium Network
+container.
+
+## Referral onboarding
+
+New-user onboarding uses the disclosed Kraskus referral URL:
+
+https://mystnodes.co/?referral_code=CJSoelVnKkllilXIgv7JqeroUv1jhnZ4KWE4G6E4
+
+Existing users may bypass referral signup and use their own MystNodes account.
