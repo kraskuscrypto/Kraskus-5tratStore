@@ -9,7 +9,7 @@ description: MystNodes by Kraskus installs and runs the official upstream Myster
   software is provided by Mysterium Network. Participation may expose the host's residential
   IP to third-party traffic; review Mysterium's terms and enable only service types
   appropriate for your location and risk tolerance.
-version: 2.2.0
+version: 2.3.7
 category: Networking
 developer: Kraskus
 website: https://www.mysterium.network/
