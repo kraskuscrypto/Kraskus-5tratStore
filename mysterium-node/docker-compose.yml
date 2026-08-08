@@ -23,3 +23,13 @@ services:
     - --agreed-terms-and-conditions
     volumes:
     - ${APP_DATA_DIR}/data/mysterium:/var/lib/mysterium-node
+  nodeui-proxy:
+    image: nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+    - ${APP_DATA_DIR}/data/nodeui-proxy/default.conf:/etc/nginx/conf.d/default.conf:ro
+    security_opt:
+    - no-new-privileges:true
+    depends_on:
+    - mysterium

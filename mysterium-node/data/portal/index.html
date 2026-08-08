@@ -56,7 +56,7 @@ body{background:linear-gradient(120deg,var(--bg1),var(--bg2) 55%,var(--bg3))}
       <a href="#settings" data-page="settings"><span class="glyph">⚙</span>Settings</a>
       <a href="https://help.mystnodes.com/" target="_blank" rel="noopener"><span class="glyph">?</span>Help</a>
       <div class="sep"></div>
-      <a href="https://my.mystnodes.com/" target="_blank" rel="noopener"><span class="glyph">↪</span>Dashboard</a>
+      <a id="inapp-dashboard" href="#" target="_blank" rel="noopener">OPEN MYSTNODES DASHBOARD</a>
     </nav>
   </aside>
 
@@ -156,5 +156,15 @@ document.querySelectorAll("[data-page]").forEach(a=>{
 });
 show((location.hash||"#node").slice(1));
 </script>
+
+<script>
+const inAppMyst = `${location.protocol}//${location.hostname}:33061/`;
+const dash = document.getElementById("inapp-dashboard");
+if (dash) {
+  dash.href = inAppMyst;
+  dash.target = "_self";
+}
+</script>
+
 </body>
 </html>
