@@ -9,9 +9,9 @@ control and enter the GitHub repository URL.
 
 ## Current apps
 
-### Mysterium Node
+### MystNodes by Kraskus
 
-Runs the official Mysterium node container and provides a 5tratumOS onboarding page.
+Runs the official Mysterium node container with a MystNodes-style 5tratumOS launcher.
 
 New MystNodes users are directed through this disclosed Kraskus referral URL:
 

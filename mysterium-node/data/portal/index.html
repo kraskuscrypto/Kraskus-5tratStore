@@ -6,139 +6,155 @@
 <title>MystNodes by Kraskus</title>
 <style>
 :root{
-  --ink:#073650;
-  --muted:#6e8392;
-  --pink:#df3d94;
-  --pink-dark:#ca2581;
-  --blue:#eaf5ff;
-  --lav:#f3eef9;
-  --card:#ffffff;
-  --line:#e6edf2;
-  --green:#58b957;
+  --ink:#073650;--muted:#758a98;--pink:#d83b92;--pink2:#ec4aa1;
+  --bg1:#eef8ff;--bg2:#f4eff9;--bg3:#fdeff7;--card:#fff;--line:#e3ebf0;
+  --green:#58b957;--blue:#83a8bc;
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink)}
-body{background:linear-gradient(125deg,#eef8ff 0%,#f5f0fa 54%,#fdeff6 100%)}
-.shell{min-height:100vh;display:grid;grid-template-columns:205px 1fr}
-.sidebar{background:rgba(255,255,255,.72);border-right:1px solid rgba(210,222,232,.8);padding:25px 18px;backdrop-filter:blur(12px)}
-.brand{display:flex;align-items:center;gap:10px;margin-bottom:38px}
-.brand img{width:46px;height:46px;object-fit:contain}
-.brand strong{font-size:20px;letter-spacing:-.02em}
-.nav{display:grid;gap:10px}
-.nav a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;color:var(--ink);text-decoration:none;font-weight:700;font-size:14px}
-.nav a.active{background:#e7f5ff}
-.icon{width:25px;height:25px;border:2px solid #6c91a5;border-radius:8px;display:grid;place-items:center;font-size:12px}
-.help{margin-top:28px;padding-top:20px;border-top:1px solid #cfdce5}
-.main{padding:34px 42px}
-.header{display:flex;justify-content:space-between;align-items:center;max-width:900px;margin:0 auto 24px}
-.header h1{margin:0;font-size:30px}
-.header .small{color:var(--pink);font-size:14px;font-weight:800;margin-top:4px}
-.status{display:flex;align-items:center;gap:8px;background:white;border-radius:999px;padding:9px 13px;box-shadow:0 8px 25px rgba(43,77,102,.08);font-weight:800;font-size:13px}
-.dot{width:10px;height:10px;border-radius:50%;background:var(--green)}
-.content{max-width:900px;margin:auto;display:grid;grid-template-columns:1.05fr .95fr;gap:22px}
-.card{background:rgba(255,255,255,.92);border:1px solid rgba(225,234,240,.95);border-radius:22px;padding:24px;box-shadow:0 15px 45px rgba(63,91,111,.09)}
-.card h2{margin:0 0 18px;font-size:16px;color:var(--pink)}
-.row{display:flex;justify-content:space-between;gap:18px;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px}
-.row:last-child{border-bottom:0}
-.label{font-weight:800}.value{color:var(--muted);text-align:right}
-.value.good{color:var(--green);font-weight:900}
-.actions{display:grid;gap:12px}
-button,a.button{appearance:none;border:0;border-radius:14px;min-height:48px;padding:12px 16px;font-weight:900;font-size:14px;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center}
-.primary{background:var(--pink);color:white}
-.primary:hover{background:var(--pink-dark)}
-.secondary{background:#e9f6ff;color:var(--ink)}
-.ghost{background:#f4f6f8;color:var(--ink)}
-.note{font-size:12px;color:var(--muted);line-height:1.55;margin-top:16px}
-.hero{grid-column:1/-1;display:flex;align-items:center;gap:20px}
-.hero img{width:82px;height:82px;object-fit:contain}
-.hero h2{color:var(--ink);font-size:24px;margin:0 0 6px}
-.hero p{margin:0;color:var(--muted);line-height:1.5}
-.services{display:grid;gap:12px}
-.service{display:flex;justify-content:space-between;align-items:center;padding:14px;border:1px solid var(--line);border-radius:15px;background:#fbfdff}
-.toggle{width:44px;height:24px;background:var(--pink);border-radius:999px;position:relative}
-.toggle:after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;right:3px;top:3px}
-.footer{max-width:900px;margin:18px auto 0;text-align:center;color:#7890a0;font-size:11px}
-@media(max-width:780px){.shell{grid-template-columns:1fr}.sidebar{display:none}.main{padding:22px}.content{grid-template-columns:1fr}.hero{grid-column:auto}}
+body{background:linear-gradient(120deg,var(--bg1),var(--bg2) 55%,var(--bg3))}
+.shell{min-height:100vh;display:grid;grid-template-columns:230px 1fr}
+.side{background:rgba(255,255,255,.74);border-right:1px solid #dfe8ee;display:flex;flex-direction:column}
+.brand{height:86px;padding:20px 26px;display:flex;align-items:center;gap:10px;background:#fff}
+.brand img{width:48px;height:48px;object-fit:contain}.brand strong{font-size:24px;color:#071c2c}
+.nav{padding:54px 0 0}.nav a{display:flex;align-items:center;gap:16px;padding:14px 28px;color:var(--ink);text-decoration:none;font-size:16px;font-weight:800;border-radius:0 26px 26px 0;width:94%}
+.nav a.active{background:#fff}.nav a:hover{background:rgba(255,255,255,.7)}
+.glyph{width:25px;height:25px;display:grid;place-items:center;color:#6d93a7;font-weight:900}
+.sep{height:1px;background:#bcd0dc;margin:12px 18px}
+.main{min-width:0}
+.top{height:86px;background:#fff;display:flex;align-items:center;justify-content:flex-end;padding:0 28px;border-bottom:1px solid #eef2f5}
+.bell{width:36px;height:36px;border-radius:50%;background:#f1f7fb;display:grid;place-items:center}
+.content{padding:34px 48px 60px;max-width:980px;margin:auto}
+.page-title{text-align:center;font-size:30px;font-weight:900;margin:0 0 42px}
+.section-title{color:var(--pink);font-weight:900;margin:0 0 14px}
+.card{background:var(--card);border-radius:22px;padding:18px 22px;box-shadow:0 12px 34px rgba(80,104,121,.08);border:1px solid #eef2f5}
+.row{display:grid;grid-template-columns:1.2fr .7fr;align-items:center;gap:20px;padding:15px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}.label{font-weight:800}.value{color:var(--muted)}
+.value.good{color:var(--green);font-weight:900}.dot{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--green);margin-right:12px}
+.services{margin-top:38px}
+.service{display:grid;grid-template-columns:1fr 54px;gap:12px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.service:last-child{border-bottom:0}.service b{display:block;margin-bottom:5px}.service small{color:var(--muted);line-height:1.4}
+.toggle{width:46px;height:25px;background:var(--pink);border-radius:999px;position:relative;justify-self:end}
+.toggle:after{content:"";position:absolute;right:3px;top:3px;width:19px;height:19px;border-radius:50%;background:#fff}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.btn{min-height:46px;border-radius:11px;text-decoration:none;display:flex;align-items:center;justify-content:center;padding:10px 14px;font-weight:900}
+.primary{background:var(--pink);color:white}.secondary{background:#eef7fc;color:var(--ink);border:1px solid #cfe0ea}
+.ref{margin-top:16px;color:var(--muted);font-size:12px;line-height:1.5}
+.hidden{display:none}
+@media(max-width:760px){.shell{grid-template-columns:1fr}.side{display:none}.content{padding:26px 18px}.actions{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="shell">
-  <aside class="sidebar">
-    <div class="brand">
-      <img src="/icon.png" alt="MystNodes">
-      <strong>MYSTNODES</strong>
-    </div>
+  <aside class="side">
+    <div class="brand"><img src="/icon.png" alt="MystNodes"><strong>NODES</strong></div>
     <nav class="nav">
-      <a class="active" href="#"><span class="icon">⌂</span>Node</a>
-      <a href="#"><span class="icon">ID</span>Identity</a>
-      <a href="#"><span class="icon">$</span>Earnings</a>
-      <a href="#"><span class="icon">↔</span>Sessions</a>
-      <a href="#"><span class="icon">⚙</span>Settings</a>
+      <a href="#node" data-page="node" class="active"><span class="glyph">✣</span>Node</a>
+      <a href="#identity" data-page="identity"><span class="glyph">▣</span>Identity</a>
+      <a href="#earnings" data-page="earnings"><span class="glyph">♙</span>Earnings</a>
+      <a href="#sessions" data-page="sessions"><span class="glyph">◔</span>Sessions</a>
+      <a href="#settings" data-page="settings"><span class="glyph">⚙</span>Settings</a>
+      <a href="https://help.mystnodes.com/" target="_blank" rel="noopener"><span class="glyph">?</span>Help</a>
+      <div class="sep"></div>
+      <a href="https://my.mystnodes.com/" target="_blank" rel="noopener"><span class="glyph">↪</span>Dashboard</a>
     </nav>
-    <div class="help nav">
-      <a href="https://help.mystnodes.com/" target="_blank" rel="noopener"><span class="icon">?</span>Help</a>
-    </div>
   </aside>
 
   <main class="main">
-    <div class="header">
-      <div>
-        <h1>Node</h1>
-        <div class="small">MystNodes by Kraskus</div>
-      </div>
-      <div class="status"><span class="dot"></span>Node Running</div>
-    </div>
-
+    <div class="top"><div class="bell">♧</div></div>
     <div class="content">
-      <section class="card hero">
-        <img src="/icon.png" alt="MystNodes logo">
-        <div>
-          <h2>MystNodes</h2>
-          <p>The official Mysterium node is running on this 5tratumOS system. Use the official Node UI for registration, earnings, sessions, identity, and service controls.</p>
+
+      <section id="page-node" class="page">
+        <h1 class="page-title">Node</h1>
+        <div class="section-title">Overview</div>
+        <div class="card">
+          <div class="row"><div class="label">Node Status</div><div class="value good"><span class="dot"></span>Online</div></div>
+          <div class="row"><div class="label">Node Quality</div><div class="value">Managed in Node UI</div></div>
+          <div class="row"><div class="label">NAT</div><div class="value">Managed by Mysterium</div></div>
+          <div class="row"><div class="label">Node version</div><div class="value">1.38.5</div></div>
+          <div class="row"><div class="label">Node UI</div><div class="value">Port 4449</div></div>
         </div>
-      </section>
 
-      <section class="card">
-        <h2>Overview</h2>
-        <div class="row"><span class="label">Node Status</span><span class="value good">● Online</span></div>
-        <div class="row"><span class="label">Node Version</span><span class="value">1.38.5</span></div>
-        <div class="row"><span class="label">Identity Storage</span><span class="value">Persistent</span></div>
-        <div class="row"><span class="label">Node UI</span><span class="value">Port 4449</span></div>
-      </section>
-
-      <section class="card">
-        <h2>Node Access</h2>
-        <div class="actions">
-          <a class="button primary" id="nodeui" href="#" target="_blank" rel="noopener">Open Official Node UI</a>
-          <a class="button secondary" href="https://my.mystnodes.com/" target="_blank" rel="noopener">Open MystNodes Dashboard</a>
-          <a class="button ghost" href="https://mystnodes.co/?referral_code=CJSoelVnKkllilXIgv7JqeroUv1jhnZ4KWE4G6E4" target="_blank" rel="noopener">New User · Create Account</a>
-        </div>
-        <p class="note">The New User button uses the disclosed Kraskus MystNodes referral link. Existing users can go directly to the official Node UI.</p>
-      </section>
-
-      <section class="card">
-        <h2>Services</h2>
         <div class="services">
-          <div class="service"><div><b>B2B Data Scraping</b><div class="note">Managed in official Node UI</div></div><span class="toggle"></span></div>
-          <div class="service"><div><b>B2B VPN and data transfer</b><div class="note">Managed in official Node UI</div></div><span class="toggle"></span></div>
-          <div class="service"><div><b>VPN</b><div class="note">Managed in official Node UI</div></div><span class="toggle"></span></div>
-          <div class="service"><div><b>Public</b><div class="note">Managed in official Node UI</div></div><span class="toggle"></span></div>
+          <div class="section-title">Services</div>
+          <div class="card">
+            <div class="service"><div><b>B2B Data Scraping</b><small>Data scraping traffic from B2B clients</small></div><div class="toggle"></div></div>
+            <div class="service"><div><b>B2B VPN and data transfer</b><small>Streaming and data transfer traffic from B2B clients</small></div><div class="toggle"></div></div>
+            <div class="service"><div><b>VPN</b><small>Mysterium VPN app user traffic</small></div><div class="toggle"></div></div>
+            <div class="service"><div><b>Public</b><small>Open to the whole network, including 3rd party app user traffic</small></div><div class="toggle"></div></div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a class="btn primary" id="nodeui" href="#" target="_blank" rel="noopener">Open Official Node UI</a>
+          <a class="btn secondary" href="https://mystnodes.co/?referral_code=CJSoelVnKkllilXIgv7JqeroUv1jhnZ4KWE4G6E4" target="_blank" rel="noopener">New User · Create Account</a>
+        </div>
+        <div class="ref">New-user signup uses the disclosed Kraskus MystNodes referral URL. Existing users can open the official Node UI directly.</div>
+      </section>
+
+      <section id="page-identity" class="page hidden">
+        <h1 class="page-title">Identity</h1>
+        <div class="section-title">Identity</div>
+        <div class="card">
+          <div class="row"><div class="label">Identity storage</div><div class="value">Persistent 5tratumOS app data</div></div>
+          <div class="row"><div class="label">Registration</div><div class="value">Complete in official Node UI</div></div>
+          <div class="row"><div class="label">Account link</div><div class="value">MystNodes account required for MMN registration</div></div>
+        </div>
+        <div class="actions"><a class="btn primary nodeui-link" href="#" target="_blank" rel="noopener">Open Identity in Node UI</a></div>
+      </section>
+
+      <section id="page-earnings" class="page hidden">
+        <h1 class="page-title">Earnings</h1>
+        <div class="section-title">Earnings</div>
+        <div class="card">
+          <div class="row"><div class="label">Total settled</div><div class="value">View live amount in Node UI</div></div>
+          <div class="row"><div class="label">Unsettled</div><div class="value">View live amount in Node UI</div></div>
+          <div class="row"><div class="label">Settlement</div><div class="value">Managed by Mysterium</div></div>
+        </div>
+        <div class="actions"><a class="btn primary nodeui-link" href="#" target="_blank" rel="noopener">Open Earnings in Node UI</a></div>
+      </section>
+
+      <section id="page-sessions" class="page hidden">
+        <h1 class="page-title">Sessions</h1>
+        <div class="section-title">Sessions</div>
+        <div class="card">
+          <div class="row"><div class="label">Live sessions</div><div class="value">Open the official Node UI for live session data</div></div>
+          <div class="row"><div class="label">Bandwidth</div><div class="value">Tracked by Mysterium</div></div>
+        </div>
+        <div class="actions"><a class="btn primary nodeui-link" href="#" target="_blank" rel="noopener">Open Sessions in Node UI</a></div>
+      </section>
+
+      <section id="page-settings" class="page hidden">
+        <h1 class="page-title">Settings</h1>
+        <div class="section-title">Node settings</div>
+        <div class="card">
+          <div class="row"><div class="label">App version</div><div class="value">2.1.0</div></div>
+          <div class="row"><div class="label">Node runtime</div><div class="value">Official Mysterium Network container</div></div>
+          <div class="row"><div class="label">Persistent identity</div><div class="value good">Enabled</div></div>
+        </div>
+        <div class="actions">
+          <a class="btn primary nodeui-link" href="#" target="_blank" rel="noopener">Open Official Settings</a>
+          <a class="btn secondary" href="https://help.mystnodes.com/" target="_blank" rel="noopener">MystNodes Help</a>
         </div>
       </section>
 
-      <section class="card">
-        <h2>About</h2>
-        <div class="row"><span class="label">Integration</span><span class="value">Kraskus</span></div>
-        <div class="row"><span class="label">Node Runtime</span><span class="value">Mysterium Network</span></div>
-        <div class="row"><span class="label">App Version</span><span class="value">2.0.2</span></div>
-        <p class="note">This page intentionally uses a MystNodes-style visual treatment while leaving the official Node UI untouched. The official interface opens separately so browser iframe protections do not break the app.</p>
-      </section>
     </div>
-    <div class="footer">MystNodes by Kraskus · official Mysterium node runtime · 5tratumOS integration</div>
   </main>
 </div>
 <script>
-document.getElementById("nodeui").href=`${location.protocol}//${location.hostname}:4449/`;
+const nodeUI = `${location.protocol}//${location.hostname}:4449/`;
+document.getElementById("nodeui").href=nodeUI;
+document.querySelectorAll(".nodeui-link").forEach(a=>a.href=nodeUI);
+
+function show(page){
+  document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));
+  document.getElementById("page-"+page).classList.remove("hidden");
+  document.querySelectorAll("[data-page]").forEach(a=>a.classList.toggle("active",a.dataset.page===page));
+}
+document.querySelectorAll("[data-page]").forEach(a=>{
+  a.addEventListener("click",e=>{e.preventDefault();show(a.dataset.page);history.replaceState(null,"","#"+a.dataset.page);});
+});
+show((location.hash||"#node").slice(1));
 </script>
 </body>
 </html>
