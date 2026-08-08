@@ -1,0 +1,28 @@
+id: mysterium-node
+name: MystNodes by Kraskus
+tagline: Official MystNodes residential bandwidth node for 5tratumOS
+description: >-
+  MystNodes by Kraskus installs and runs the official upstream Mysterium node
+  container while preserving the node identity in persistent 5tratumOS app
+  storage. The Kraskus onboarding experience guides new users through a
+  disclosed MystNodes referral signup path, while existing MystNodes users can
+  bypass signup and go directly to the official Node UI with their own account
+  and API key. The underlying node software is provided by Mysterium Network.
+  Participation may expose the host's residential IP to third-party traffic;
+  review Mysterium's terms and enable only service types appropriate for your
+  location and risk tolerance.
+version: 2.0.0
+category: Networking
+developer: Kraskus
+website: https://www.mysterium.network/
+repo: https://github.com/mysteriumnetwork/node
+support: https://help.mystnodes.com/
+icon: https://mystnodes.com/favicon.ico
+port: 33060
+path: /
+uiMode: proxy
+services:
+  app_proxy:
+    environment:
+      APP_HOST: portal
+      APP_PORT: 8080
