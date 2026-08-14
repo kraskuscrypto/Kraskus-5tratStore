@@ -1,0 +1,46 @@
+appId: kaspa-solo
+appVersion: 0.1.0
+status: proposed
+reviewedBy: Kraskus
+upstream:
+  project: kaspanet/rusty-kaspa
+  version: v2.0.1
+  releaseAsset: rusty-kaspa-v2.0.1-linux-amd64.zip
+  releaseSha256: 9d0ad0aedbe29670e3e2dde664462c526d30a2d2ff7274d18b1a310a127d1c13
+components:
+  - kaspad
+  - stratum-bridge
+  - kraskus-controller
+security:
+  privileged: false
+  dockerSocket: false
+  hostNetwork: false
+  addedCapabilities: []
+  publicRpc: false
+  publicPorts:
+    - 16111/tcp Kaspa P2P
+    - 5555/tcp Kaspa Stratum LAN listener
+  notes:
+    - Node RPC stays on the private Compose network.
+    - Bridge dashboard/API stays on the private Compose network.
+    - Controller is exposed only through 5tratumOS app_proxy.
+    - No wallet private key, seed phrase, or signing material is required.
+limitations:
+  - The upstream Rusty Kaspa Stratum Bridge is marked BETA.
+  - Remote Internet mining requires operator-managed firewall/NAT configuration.
+  - Initial release tracks block discoveries locally from bridge telemetry and does not implement custodial payouts.
+testPlan:
+  - validate store metadata
+  - validate Docker Compose rendering
+  - clean install
+  - node sync and restart persistence
+  - bridge startup against local node
+  - ASIC subscribe/authorize/share test
+  - VarDiff observation
+  - block telemetry persistence
+  - application restart
+  - host reboot
+  - update path
+  - uninstall without deleting app data
+  - uninstall with data removal per 5tratumOS lifecycle behavior
+approval: pending-live-soak
