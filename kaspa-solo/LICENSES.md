@@ -14,9 +14,13 @@ Rusty Kaspa is distributed under the license terms contained in the upstream rep
 
 The Kraskus-specific controller, local persistence layer, setup flow, and web interface in this app recipe are maintained by Kraskus as part of the Kraskus 5tratStore integration.
 
-## Third-party runtime base images
+## Third-party runtime base image
 
-The Dockerfiles use Debian and Python official container images as build/runtime bases. Before production promotion, release engineering should resolve and pin the exact base-image digests used for the release candidate and record them in the release evidence.
+Both custom Dockerfiles use the official Alpine 3.22.1 image pinned to immutable digest:
+
+`sha256:4bcff63911fcb4448bd4fdacec207030997caf25e9bea4045fa6c8c44de311d1`
+
+The controller installs Python 3 from that pinned Alpine distribution at image-build time.
 
 ## User secrets
 
