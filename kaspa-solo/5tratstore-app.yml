@@ -16,7 +16,7 @@ developer: Kraskus
 website: https://kaspa.org/
 repo: https://github.com/kaspanet/rusty-kaspa
 support: https://github.com/kraskuscrypto/Kraskus-5tratStore/issues
-icon: https://raw.githubusercontent.com/kraskuscrypto/Kraskus-5tratStore/main/kaspa-solo/assets/icon.png
+icon: https://raw.githubusercontent.com/kraskuscrypto/Kraskus-5tratStore/main/kaspa-solo/assets/icon.svg
 port: 33070
 path: /
 uiMode: proxy
