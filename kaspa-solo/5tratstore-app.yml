@@ -1,0 +1,27 @@
+id: kaspa-solo
+name: Kaspa Solo by Kraskus
+tagline: One-click self-hosted Kaspa node and solo Stratum mining stack for 5tratumOS
+description: >-
+  Kaspa Solo by Kraskus runs the official Rusty Kaspa v2.0.1 node and official
+  Rusty Kaspa Stratum Bridge in external-node mode, with a Kraskus management
+  dashboard for node and Stratum health, workers, shares, block history, miner
+  connection setup, and local configuration. Mining rewards are directed by the
+  public Kaspa address supplied as the miner username; the app never requests or
+  stores a seed phrase or private key. The upstream Stratum Bridge is currently
+  marked BETA by Kaspa. Internet-facing Stratum access is not enabled by this app;
+  remote miners require the operator to configure their own firewall/NAT securely.
+version: 0.1.0
+category: Mining
+developer: Kraskus
+website: https://kaspa.org/
+repo: https://github.com/kaspanet/rusty-kaspa
+support: https://github.com/kraskuscrypto/Kraskus-5tratStore/issues
+icon: https://raw.githubusercontent.com/kraskuscrypto/Kraskus-5tratStore/main/kaspa-solo/assets/icon.png
+port: 33070
+path: /
+uiMode: proxy
+services:
+  app_proxy:
+    environment:
+      APP_HOST: controller
+      APP_PORT: 8080
