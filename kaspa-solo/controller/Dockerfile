@@ -1,9 +1,8 @@
-FROM python:3.13-alpine
+FROM alpine:3.22.1@sha256:4bcff63911fcb4448bd4fdacec207030997caf25e9bea4045fa6c8c44de311d1
+RUN apk add --no-cache python3 ca-certificates
 WORKDIR /app
 COPY server.py /app/server.py
 COPY static /app/static
-RUN addgroup -S kraskus && adduser -S -G kraskus -u 10001 kraskus \
- && mkdir -p /data && chown -R kraskus:kraskus /data /app
-USER kraskus
+RUN mkdir -p /data
 EXPOSE 8080
-CMD ["python", "/app/server.py"]
+CMD ["python3", "/app/server.py"]
