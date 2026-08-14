@@ -1,0 +1,32 @@
+name: Kaspa Solo Validation
+
+on:
+  pull_request:
+    paths:
+      - 'kaspa-solo/**'
+      - 'scripts/validate_store.py'
+      - 'scripts/validate-compose.sh'
+      - '.github/workflows/kaspa-solo-validate.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install validator dependency
+        run: python3 -m pip install --disable-pip-version-check pyyaml==6.0.2
+      - name: Validate store
+        run: python3 scripts/validate_store.py
+      - name: Validate Compose
+        run: scripts/validate-compose.sh kaspa-solo
+      - name: Syntax-check controller
+        run: python3 -m py_compile kaspa-solo/controller/server.py
+      - name: Build controller image
+        run: docker build -t kaspa-solo-controller:test kaspa-solo/controller
+      - name: Build official Kaspa runtime image
+        run: docker build -t kaspa-solo-runtime:test kaspa-solo/runtime
+      - name: Verify packaged binaries
+        run: |
+          docker run --rm kaspa-solo-runtime:test kaspad --version
+          docker run --rm kaspa-solo-runtime:test stratum-bridge --help >/dev/null
