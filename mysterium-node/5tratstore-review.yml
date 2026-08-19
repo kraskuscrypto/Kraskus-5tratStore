@@ -1,7 +1,7 @@
 schemaVersion: 1
 status: proposed
 appId: mysterium-node
-appVersion: 2.4.0
+appVersion: 2.5.0
 reviewedAt: ''
 reviewedBy: ''
 upstream:
@@ -31,7 +31,7 @@ compatibility:
 security:
   privileged: false
   hostNetwork: true
-  dockerSocket: false
+  dockerSocket: true
   hostMountsReviewed: true
   devicesReviewed: true
   networkEndpointsReviewed: true
@@ -41,7 +41,13 @@ notes: Mysterium upstream requires NET_ADMIN and documents host networking for t
   opens a disclosed Kraskus MystNodes referral URL. Kraskus maintains the 5tratumOS
   packaging and onboarding experience. The node runtime itself is the official upstream
   Mysterium Network container. New-user onboarding includes a disclosed Kraskus MystNodes
-  referral URL; existing users can bypass referral signup. v2.4.0 packages Overview
-  metrics in a pinned Alpine sidecar rather than a manually installed host service.
-  The helper uses host networking and read-only host metric mounts; it does not use
-  the Docker socket.
+  referral URL; existing users can bypass referral signup. v2.5.0 adds a private
+  update-agent sidecar using the pinned Docker CLI image. The update-agent is not exposed
+  through a host port; nginx reaches it only on the private Compose network. It has Docker
+  socket access specifically to pull, stop, recreate, verify, and if necessary roll back
+  the Mysterium service. Before changing the node image it stops the node and creates a
+  persistent backup. The requested upstream image is checked for an exact semantic version
+  and immutable sha256 digest before installation. Post-update health, version, persistent
+  data, and available identity checks are performed. Failed validation triggers restoration
+  of the prior image and backup. The portal itself never receives direct Docker socket
+  access.

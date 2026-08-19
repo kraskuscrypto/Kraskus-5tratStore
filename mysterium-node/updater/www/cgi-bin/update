@@ -1,0 +1,39 @@
+#!/bin/sh
+
+. /opt/updater/lib.sh
+
+if [ "${REQUEST_METHOD:-GET}" != "POST" ]; then
+    printf 'Status: 405 Method Not Allowed\r\nContent-Type: application/json\r\nAllow: POST\r\n\r\n'
+    printf '{"ok":false,"error":"POST required"}\n'
+    exit 0
+fi
+
+LEN="${CONTENT_LENGTH:-0}"
+case "$LEN" in
+    ''|*[!0-9]*) LEN=0 ;;
+esac
+
+BODY="$(dd bs=1 count="$LEN" 2>/dev/null || true)"
+VERSION="$(printf '%s' "$BODY" | sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([0-9][0-9.]*\)".*/\1/p')"
+
+if ! printf '%s' "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+    printf 'Status: 400 Bad Request\r\nContent-Type: application/json\r\n\r\n'
+    printf '{"ok":false,"error":"Invalid version"}\n'
+    exit 0
+fi
+
+mkdir -p "$UPDATE_DIR"
+if ! mkdir "$UPDATE_DIR/update.lock" 2>/dev/null; then
+    printf 'Status: 409 Conflict\r\nContent-Type: application/json\r\n\r\n'
+    printf '{"ok":false,"error":"An update is already running"}\n'
+    exit 0
+fi
+
+write_state "queued" "Update queued for Mysterium Node ${VERSION}." "$VERSION" "" false
+
+(
+    /bin/sh /opt/updater/update.sh "$VERSION" >>"$UPDATE_DIR/update.log" 2>&1
+) >/dev/null 2>&1 &
+
+printf 'Status: 202 Accepted\r\nContent-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
+printf '{"ok":true,"version":"%s"}\n' "$(json_escape "$VERSION")"
