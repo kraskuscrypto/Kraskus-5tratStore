@@ -21,7 +21,7 @@ services:
     - update-agent
 
   mysterium:
-    image: mysteriumnetwork/myst:1.39.5-alpine@sha256:d0c270c6bcb50c1004ba355c264f85aa16b3a5a414f8b9f8f5b0f449ea85a142
+    image: mysteriumnetwork/myst:1.38.5-alpine@sha256:49c6381a3efaa11c2ad9728df3c88bd2df6e061882f83e4983677eb90ee717c2
     restart: unless-stopped
     network_mode: host
     cap_add:
