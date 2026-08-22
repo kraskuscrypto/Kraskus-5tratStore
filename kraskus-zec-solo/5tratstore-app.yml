@@ -8,7 +8,7 @@ description: >-
   mining jobs, and block submissions from a single interface.
   Normal users do not need to manage Zebra, RPC, Docker,
   Linux, JSON, or Stratum configuration.
-version: 0.2.9-beta
+version: 0.2.10-beta
 category: Mining
 developer: Kraskus Crypto
 website: https://kraskuscrypto.com/
