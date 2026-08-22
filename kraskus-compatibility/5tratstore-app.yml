@@ -1,0 +1,23 @@
+id: kraskus-compatibility
+name: Kraskus Compatibility
+tagline: Prepare 5tratumOS for Kraskus apps
+description: >-
+  Kraskus Compatibility checks whether this 5tratumOS installation supports
+  dynamically named custom-store app updates. On the known affected older CLI,
+  it creates a backup and applies the narrowly scoped compatibility repair.
+  Newer compatible systems and systems already repaired are left unchanged.
+version: 0.1.0-beta
+category: Utilities
+developer: Kraskus Crypto
+website: https://kraskuscrypto.com/
+repo: https://github.com/kraskuscrypto/Kraskus-5tratStore
+support: https://kraskuscrypto.com/
+port: 33063
+path: /
+uiMode: proxy
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: compatibility
+      APP_PORT: 18403
