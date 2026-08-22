@@ -6,13 +6,23 @@ A custom 5tratStore repository maintained by Kraskus.
 
 Some current 5tratumOS installations expose dynamically named custom stores in the WebUI but still use an older CLI for app lifecycle commands. On affected hosts, native custom-store app updates can fail before Docker is touched.
 
-Before adding the Kraskus store, open the 5tratumOS terminal and run this one command:
+The easiest customer path is now entirely inside 5tratumOS:
+
+1. Add the Kraskus 5tratStore.
+2. Install **Kraskus Compatibility**.
+3. Open it once and wait for the completion screen.
+4. When it says **Thank you for updating. You may now uninstall this app.**, remove the Compatibility app if desired.
+5. Install and update Kraskus apps normally.
+
+The Compatibility app only patches the known affected CLI layout. Newer compatible systems and systems already repaired are left untouched; unknown CLI layouts are refused safely. It does not use the Docker socket and is not privileged.
+
+### Terminal fallback
+
+If the Compatibility app cannot be installed, the qualified one-command repair remains available:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/kraskuscrypto/Kraskus-5tratStore/9fd9dbac10ddd0d6fd2de22ff8adaaadd01e2658/scripts/install-kraskus-compat.sh | sudo bash
 ```
-
-The setup only patches the known affected CLI layout. Newer compatible systems and systems already repaired are left untouched; unknown CLI layouts are refused safely. The customer command is pinned to a tested installer revision, and that installer is pinned to the clean-host-qualified compatibility patcher revision.
 
 See `COMPATIBILITY-SETUP.md` for details and recovery behavior.
 
@@ -27,6 +37,10 @@ https://github.com/kraskuscrypto/Kraskus-5tratStore
 Then install and update Kraskus apps normally from the native 5tratumOS App Store.
 
 ## Current apps
+
+### Kraskus Compatibility
+
+One-time compatibility utility for affected 5tratumOS hosts. It backs up the known older CLI, applies only the qualified custom-channel repair, validates the result, and displays a simple completion screen. After successful setup the app may be uninstalled.
 
 ### Kraskus ZEC Solo
 
@@ -49,6 +63,7 @@ Kraskus-5tratStore/
 ├── COMPATIBILITY-SETUP.md
 ├── umbrel-app-store.yml
 ├── README.md
+├── kraskus-compatibility/
 ├── kraskus-zec-solo/
 ├── mysterium-node/
 └── scripts/
