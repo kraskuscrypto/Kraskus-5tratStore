@@ -1,7 +1,7 @@
 appId: kraskus-compatibility
 status: beta
 developer: Kraskus Crypto
-appVersion: 0.1.3-beta
+appVersion: 0.1.4-beta
 notes:
   - One-time compatibility helper for Kraskus custom-store app lifecycle support.
   - Mounts only /usr/local/bin/5tratumos as writable host state required for the repair.
@@ -12,8 +12,8 @@ notes:
   - Unknown CLI layouts are refused without modifying the host.
   - If shell syntax validation fails after a repair, the original CLI is restored automatically.
 releaseNotes:
-  - Makes the compatibility web runtime self-contained inside docker-compose so it no longer depends on a relative ./compat bind mount being copied into the installed app directory.
-  - Starts the dedicated compatibility UI directly on port 18403.
-  - Keeps the Kraskus Compatibility launcher icon and branded completion screen.
-  - Successful systems show: Thank you for updating. You may now uninstall this app.
+  - Fixes Docker Compose interpolation of literal shell variables embedded in the self-contained compatibility runtime.
+  - Escapes only the embedded compatibility-script variables while preserving normal APP_DATA_DIR interpolation.
+  - Keeps the dedicated compatibility UI on port 18403.
+  - Keeps the Kraskus Compatibility launcher icon and completion message: Thank you for updating. You may now uninstall this app.
   - Compatibility repair behavior and safety controls are unchanged.
