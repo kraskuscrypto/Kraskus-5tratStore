@@ -9,4 +9,11 @@ notes:
   - Payout configuration is applied through the Kraskus UI and shared safely with Zebra.
   - Testnet is the default network for beta qualification.
   - Mainnet activation remains subject to storage safety requirements.
-appVersion: 0.2.2-beta
+appVersion: 0.2.3-beta
+
+releaseNotes:
+  - Redesigned Kraskus ZEC Solo dashboard and first-run experience.
+  - Added Divinity hero, Kraskus violet/gold visual system, and animated infrastructure backdrop.
+  - Added focused Overview, Workers, Blocks, and Settings views.
+  - Added guided payout configuration, storage safety, and mining readiness views.
+  - Preserves Docker-free runtime control plane and supervised Zebra payout architecture.
