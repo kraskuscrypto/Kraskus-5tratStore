@@ -23,9 +23,9 @@ fi
 command -v curl >/dev/null 2>&1 || fail "curl is required but was not found."
 command -v bash >/dev/null 2>&1 || fail "bash is required but was not found."
 
-printf 'Kraskus 5tratumOS Compatibility Setup\n'
-printf '------------------------------------\n'
-printf 'Checking this 5tratumOS installation...\n\n'
+printf '%s\n' 'Kraskus 5tratumOS Compatibility Setup'
+printf '%s\n' '------------------------------------'
+printf '%s\n\n' 'Checking this 5tratumOS installation...'
 
 curl -fsSL "$PATCH_URL" -o "$TMP" || fail "Unable to download the compatibility patcher."
 chmod 700 "$TMP"
