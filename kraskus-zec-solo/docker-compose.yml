@@ -20,7 +20,7 @@ services:
       KRASKUS_ZEBRA_COOKIE_FILE: /zebra/.cookie
 
       KRASKUS_STRATUM_HOST: 0.0.0.0
-      KRASKUS_STRATUM_PORT: 3333
+      KRASKUS_STRATUM_PORT: 3335
 
       KRASKUS_STRATUM_HEALTH_HOST: 127.0.0.1
       KRASKUS_STRATUM_HEALTH_PORT: 18402
@@ -33,7 +33,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
     ports:
-      - "3333:3333"
+      - "3335:3335"
 
     security_opt:
       - no-new-privileges:true

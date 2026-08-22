@@ -7,4 +7,4 @@ notes:
   - No pre-existing host development runtime is required.
   - Testnet is the default network for beta qualification.
   - Mainnet activation remains subject to storage safety requirements.
-appVersion: 0.2.0-beta
+appVersion: 0.2.1-beta
