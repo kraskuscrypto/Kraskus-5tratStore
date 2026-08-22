@@ -9,10 +9,10 @@ Some current 5tratumOS installations expose dynamically named custom stores in t
 Before adding the Kraskus store, open the 5tratumOS terminal and run this one command:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kraskuscrypto/Kraskus-5tratStore/main/scripts/install-kraskus-compat.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/kraskuscrypto/Kraskus-5tratStore/9fd9dbac10ddd0d6fd2de22ff8adaaadd01e2658/scripts/install-kraskus-compat.sh | sudo bash
 ```
 
-The setup only patches the known affected CLI layout. Newer compatible systems and systems already repaired are left untouched; unknown CLI layouts are refused safely.
+The setup only patches the known affected CLI layout. Newer compatible systems and systems already repaired are left untouched; unknown CLI layouts are refused safely. The customer command is pinned to a tested installer revision, and that installer is pinned to the clean-host-qualified compatibility patcher revision.
 
 See `COMPATIBILITY-SETUP.md` for details and recovery behavior.
 
