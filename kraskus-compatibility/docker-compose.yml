@@ -102,14 +102,23 @@ services:
                     set_status('FAIL', 'The 5tratumOS host CLI was not available. No changes were made.')
                     return
                 text = CLI.read_text(encoding='utf-8')
-                if 'configured_custom_store()' in text:
-                    set_status('READY', 'Compatibility is already installed.')
-                    return
-                if '^custom[-_a-z0-9]{0,48}$' in text and 'custom*)' in text:
-                    set_status('READY', 'This 5tratumOS version is already compatible. No changes were needed.')
+                full_compatibility = (
+                    'configured_custom_store()' in text
+                    and 'configured_custom_store "$${ch}"' in text
+                    and 'configured_custom_store "$${meta_channel}"' in text
+                    and OLD not in text
+                )
+                if full_compatibility:
+                    set_status(
+                        'READY',
+                        'Compatibility is already installed and the app lifecycle path supports dynamic custom-store channels.'
+                    )
                     return
                 if OLD not in text:
-                    set_status('FAIL', 'Unsupported 5tratumOS CLI layout. The host was left unchanged.')
+                    set_status(
+                        'FAIL',
+                        'Unsupported or partially compatible 5tratumOS CLI layout. The app lifecycle path was not proven compatible, so the host was left unchanged.'
+                    )
                     return
                 if not STORE.is_file():
                     set_status('FAIL', 'Custom store configuration was not available. The host was left unchanged.')
@@ -131,6 +140,21 @@ services:
                 if check.returncode != 0:
                     shutil.copy2(backup, CLI)
                     set_status('FAIL', 'Validation failed, so the original 5tratumOS CLI was restored automatically.', str(backup))
+                    return
+                repaired = CLI.read_text(encoding='utf-8')
+                complete = (
+                    'configured_custom_store()' in repaired
+                    and 'configured_custom_store "$${ch}"' in repaired
+                    and 'configured_custom_store "$${meta_channel}"' in repaired
+                    and OLD not in repaired
+                )
+                if not complete:
+                    shutil.copy2(backup, CLI)
+                    set_status(
+                        'FAIL',
+                        'Post-repair app lifecycle validation failed, so the original 5tratumOS CLI was restored automatically.',
+                        str(backup)
+                    )
                     return
                 set_status('READY', 'Compatibility update completed successfully.', str(backup))
             except Exception as exc:
