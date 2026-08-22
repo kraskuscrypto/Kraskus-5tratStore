@@ -9,8 +9,10 @@ Kraskus provides a conservative compatibility check and repair for that specific
 Open the 5tratumOS terminal and run:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kraskuscrypto/Kraskus-5tratStore/main/scripts/install-kraskus-compat.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/kraskuscrypto/Kraskus-5tratStore/9fd9dbac10ddd0d6fd2de22ff8adaaadd01e2658/scripts/install-kraskus-compat.sh | sudo bash
 ```
+
+The customer command is pinned to a tested installer revision. That installer is also pinned to the clean-host-qualified compatibility patcher revision, so future changes to `main` cannot silently alter the repair being executed.
 
 The setup is designed to be safe across known 5tratumOS variants:
 
