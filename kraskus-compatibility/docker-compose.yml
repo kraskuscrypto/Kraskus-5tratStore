@@ -7,7 +7,7 @@ services:
   compatibility:
     image: ghcr.io/kraskuscrypto/kraskus-zec-solo@sha256:9ac6eabf4ebed6b0474b9d37d3cc241a6a0259a26b3b3c88df37d00607976db4
     restart: unless-stopped
-    command:
+    entrypoint:
       - python3
       - /opt/compat/server.py
     environment:
