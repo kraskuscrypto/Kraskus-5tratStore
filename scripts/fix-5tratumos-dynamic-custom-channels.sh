@@ -25,8 +25,17 @@ if grep -q 'configured_custom_store()' "$CLI"; then
   exit 0
 fi
 
+# Newer 5tratumOS builds already accept dynamically named custom channels.
+# Detect that native support and leave the host untouched.
+if grep -Eq '\[\[ "\$\{ch\}" =~ \^custom\[-_a-z0-9\]\{0,48\}\$ \]\]' "$CLI"; then
+  printf 'KRASKUS_5TRATUMOS_COMPAT=ALREADY_COMPATIBLE\n'
+  printf 'dynamic custom-store channels are already supported by this 5tratumOS CLI\n'
+  exit 0
+fi
+
+# Only patch the known older validation layout. Unknown layouts are refused.
 if ! grep -q 'main|dev|global|custom1|custom2) ;;' "$CLI"; then
-  fail "affected 5tratumOS validation block not found; refusing to modify unknown CLI version"
+  fail "affected validation block not found and native dynamic-channel support was not detected; refusing to modify unknown CLI version"
 fi
 
 cp -a "$CLI" "$BACKUP" || fail "unable to create backup: $BACKUP"
