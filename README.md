@@ -2,12 +2,35 @@
 
 A custom 5tratStore repository maintained by Kraskus.
 
+## Quick compatibility setup
+
+Some current 5tratumOS installations expose dynamically named custom stores in the WebUI but still use an older CLI for app lifecycle commands. On affected hosts, native custom-store app updates can fail before Docker is touched.
+
+Before adding the Kraskus store, open the 5tratumOS terminal and run this one command:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kraskuscrypto/Kraskus-5tratStore/main/scripts/install-kraskus-compat.sh | sudo bash
+```
+
+The setup only patches the known affected CLI layout. Newer compatible systems and systems already repaired are left untouched; unknown CLI layouts are refused safely.
+
+See `COMPATIBILITY-SETUP.md` for details and recovery behavior.
+
 ## Add to 5tratumOS
 
-After publishing this repository to GitHub, use the **App Store → Add custom store**
-control and enter the GitHub repository URL.
+Use **App Store → Add custom store** and enter:
+
+```text
+https://github.com/kraskuscrypto/Kraskus-5tratStore
+```
+
+Then install and update Kraskus apps normally from the native 5tratumOS App Store.
 
 ## Current apps
+
+### Kraskus ZEC Solo
+
+Runs a Zebra-backed Zcash full node and local solo-mining service with a Kraskus-branded interface. Normal users configure their payout address and miner connection without managing Zebra, RPC, Docker, Linux, JSON, or Stratum internals.
 
 ### MystNodes by Kraskus
 
@@ -23,18 +46,18 @@ Existing MystNodes users can skip new-account signup and connect their own API k
 
 ```text
 Kraskus-5tratStore/
+├── COMPATIBILITY-SETUP.md
 ├── umbrel-app-store.yml
 ├── README.md
+├── kraskus-zec-solo/
 ├── mysterium-node/
-│   ├── 5tratstore-app.yml
-│   ├── 5tratstore-review.yml
-│   ├── LICENSES.md
-│   ├── docker-compose.yml
-│   └── data/
-│       └── portal/
-│           └── index.html
 └── scripts/
-    └── pin-images.sh
+    ├── install-kraskus-compat.sh
+    ├── fix-5tratumos-dynamic-custom-channels.sh
+    ├── new-app.sh
+    ├── pin-images.sh
+    ├── validate-compose.sh
+    └── validate_store.py
 ```
 
 ## Before publishing
