@@ -22,72 +22,9 @@ services:
         STORE = Path('/host/store.json')
         DATA = Path('/data')
         PORT = int(os.environ.get('PORT', '18403'))
-
-        OLD = '''        case "$${ch}" in
-          main|dev|global|custom1|custom2) ;;
-          *) die "invalid channel: $${ch}" ;;
-        esac
-
-        meta_ch=""
-        case "$${meta_channel}" in
-          main|dev|global|custom1|custom2) meta_ch="$${meta_channel}" ;;
-        esac
-        '''
-
-        NEW = '''        configured_custom_store() {
-          local slot="$${1:-}"
-
-          python3 - "$${slot}" "$${STORE_CONFIG_FILE}" <<'PYCFG'
-        import json
-        import sys
-
-        slot = (sys.argv[1] if len(sys.argv) > 1 else "").strip().lower()
-        path = sys.argv[2] if len(sys.argv) > 2 else ""
-
-        if not slot or not path:
-            sys.exit(1)
-
-        try:
-            with open(path, "r", encoding="utf-8") as fh:
-                data = json.load(fh)
-        except Exception:
-            sys.exit(1)
-
-        custom = data.get("custom") if isinstance(data, dict) else {}
-        entry = custom.get(slot) if isinstance(custom, dict) else None
-
-        if not isinstance(entry, dict):
-            sys.exit(1)
-
-        url = str(entry.get("url") or "").strip()
-        sys.exit(0 if url else 1)
-        PYCFG
-        }
-
-        case "$${ch}" in
-          main|dev|global)
-            ;;
-          custom*)
-            configured_custom_store "$${ch}" ||
-              die "invalid channel: $${ch}"
-            ;;
-          *)
-            die "invalid channel: $${ch}"
-            ;;
-        esac
-
-        meta_ch=""
-        case "$${meta_channel}" in
-          main|dev|global)
-            meta_ch="$${meta_channel}"
-            ;;
-          custom*)
-            if configured_custom_store "$${meta_channel}"; then
-              meta_ch="$${meta_channel}"
-            fi
-            ;;
-        esac
-        '''
+        D = chr(36)
+        MARK_UPDATE = '# KRASKUS_DYNAMIC_CUSTOM_UPDATE_V2'
+        MARK_META = '# KRASKUS_DYNAMIC_CUSTOM_META_V2'
 
         status = {'state':'CHECKING','detail':'Checking this 5tratumOS installation.'}
 
@@ -96,66 +33,134 @@ services:
             DATA.mkdir(parents=True, exist_ok=True)
             (DATA/'status.json').write_text(json.dumps(status, indent=2), encoding='utf-8')
 
+        def configured_store_present():
+            if not STORE.is_file():
+                return False
+            try:
+                cfg = json.loads(STORE.read_text(encoding='utf-8'))
+                custom = cfg.get('custom', {}) if isinstance(cfg, dict) else {}
+                return isinstance(custom, dict) and any(
+                    isinstance(v, dict) and str(v.get('url') or '').strip()
+                    for v in custom.values()
+                )
+            except Exception:
+                return False
+
+        def build_update_replacement(indent):
+            return [
+                indent + MARK_UPDATE + '\n',
+                indent + 'main|dev|global|custom1|custom2)\n',
+                indent + '  ;;\n',
+                indent + 'custom*)\n',
+                indent + '  [[ "' + D + '{ch}" =~ ^custom[-_a-z0-9]{0,48}$ ]] ||\n',
+                indent + '    die "invalid channel: ' + D + '{ch}"\n',
+                indent + '  [ -d "' + D + '{ROOT_DIR}/store/' + D + '{ch}" ] ||\n',
+                indent + '    die "custom channel is not synced: ' + D + '{ch}"\n',
+                indent + '  ;;\n',
+            ]
+
+        def build_meta_replacement(indent):
+            return [
+                indent + MARK_META + '\n',
+                indent + 'main|dev|global|custom1|custom2)\n',
+                indent + '  meta_ch="' + D + '{meta_channel}"\n',
+                indent + '  ;;\n',
+                indent + 'custom*)\n',
+                indent + '  if [[ "' + D + '{meta_channel}" =~ ^custom[-_a-z0-9]{0,48}$ ]] &&\n',
+                indent + '     [ -d "' + D + '{ROOT_DIR}/store/' + D + '{meta_channel}" ]; then\n',
+                indent + '    meta_ch="' + D + '{meta_channel}"\n',
+                indent + '  fi\n',
+                indent + '  ;;\n',
+            ]
+
+        def repair_text(text):
+            if MARK_UPDATE in text and MARK_META in text:
+                return text, 'already'
+
+            lines = text.splitlines(keepends=True)
+            stale_update = 'main|dev|global|custom1|custom2) ;;'
+            stale_meta = 'main|dev|global|custom1|custom2) meta_ch="' + D + '{meta_channel}" ;;'
+
+            update_hits = [i for i, line in enumerate(lines) if line.strip() == stale_update]
+            meta_hits = [i for i, line in enumerate(lines) if line.strip() == stale_meta]
+
+            if len(update_hits) != 1 or len(meta_hits) != 1:
+                raise ValueError(
+                    'expected exactly one stale app-update channel line and one stale metadata-channel line; '
+                    'found update=%d meta=%d' % (len(update_hits), len(meta_hits))
+                )
+
+            ui = update_hits[0]
+            mi = meta_hits[0]
+            if ui >= mi:
+                raise ValueError('unexpected lifecycle validation ordering')
+
+            uindent = lines[ui][:len(lines[ui]) - len(lines[ui].lstrip())]
+            mindent = lines[mi][:len(lines[mi]) - len(lines[mi].lstrip())]
+
+            lines[ui:ui+1] = build_update_replacement(uindent)
+            shift = len(build_update_replacement(uindent)) - 1
+            mi += shift
+            lines[mi:mi+1] = build_meta_replacement(mindent)
+
+            repaired = ''.join(lines)
+            return repaired, 'patched'
+
+        def verified(text):
+            stale_update = 'main|dev|global|custom1|custom2) ;;'
+            stale_meta = 'main|dev|global|custom1|custom2) meta_ch="' + D + '{meta_channel}" ;;'
+            return (
+                MARK_UPDATE in text
+                and MARK_META in text
+                and stale_update not in text
+                and stale_meta not in text
+                and '^custom[-_a-z0-9]{0,48}$' in text
+                and 'custom channel is not synced:' in text
+            )
+
         def run_fix():
             try:
                 if not CLI.is_file():
                     set_status('FAIL', 'The 5tratumOS host CLI was not available. No changes were made.')
                     return
+
                 text = CLI.read_text(encoding='utf-8')
-                full_compatibility = (
-                    'configured_custom_store()' in text
-                    and 'configured_custom_store "$${ch}"' in text
-                    and 'configured_custom_store "$${meta_channel}"' in text
-                    and OLD not in text
-                )
-                if full_compatibility:
-                    set_status(
-                        'READY',
-                        'Compatibility is already installed and the app lifecycle path supports dynamic custom-store channels.'
-                    )
+                if verified(text):
+                    set_status('READY', 'Compatibility is already installed and the app update path supports dynamic custom-store channels.')
                     return
-                if OLD not in text:
-                    set_status(
-                        'FAIL',
-                        'Unsupported or partially compatible 5tratumOS CLI layout. The app lifecycle path was not proven compatible, so the host was left unchanged.'
-                    )
-                    return
-                if not STORE.is_file():
-                    set_status('FAIL', 'Custom store configuration was not available. The host was left unchanged.')
-                    return
-                try:
-                    cfg = json.loads(STORE.read_text(encoding='utf-8'))
-                    custom = cfg.get('custom', {}) if isinstance(cfg, dict) else {}
-                    if not isinstance(custom, dict) or not any(isinstance(v, dict) and v.get('url') for v in custom.values()):
-                        raise ValueError('no configured custom store')
-                except Exception:
+
+                if not configured_store_present():
                     set_status('FAIL', 'Custom store configuration could not be verified. The host was left unchanged.')
                     return
+
+                try:
+                    repaired, mode = repair_text(text)
+                except Exception as exc:
+                    set_status('FAIL', 'Unsupported or partially compatible 5tratumOS CLI layout. The host was left unchanged: ' + str(exc))
+                    return
+
+                if mode == 'already' and verified(repaired):
+                    set_status('READY', 'Compatibility is already installed.')
+                    return
+
                 DATA.mkdir(parents=True, exist_ok=True)
                 stamp = time.strftime('%Y%m%d-%H%M%S', time.gmtime())
                 backup = DATA / ('5tratumos.pre-kraskus-compat-' + stamp)
                 shutil.copy2(CLI, backup)
-                CLI.write_text(text.replace(OLD, NEW, 1), encoding='utf-8')
+                CLI.write_text(repaired, encoding='utf-8')
+
                 check = subprocess.run(['/bin/bash','-n',str(CLI)], capture_output=True, text=True)
                 if check.returncode != 0:
                     shutil.copy2(backup, CLI)
                     set_status('FAIL', 'Validation failed, so the original 5tratumOS CLI was restored automatically.', str(backup))
                     return
-                repaired = CLI.read_text(encoding='utf-8')
-                complete = (
-                    'configured_custom_store()' in repaired
-                    and 'configured_custom_store "$${ch}"' in repaired
-                    and 'configured_custom_store "$${meta_channel}"' in repaired
-                    and OLD not in repaired
-                )
-                if not complete:
+
+                final = CLI.read_text(encoding='utf-8')
+                if not verified(final):
                     shutil.copy2(backup, CLI)
-                    set_status(
-                        'FAIL',
-                        'Post-repair app lifecycle validation failed, so the original 5tratumOS CLI was restored automatically.',
-                        str(backup)
-                    )
+                    set_status('FAIL', 'Post-repair app lifecycle validation failed, so the original 5tratumOS CLI was restored automatically.', str(backup))
                     return
+
                 set_status('READY', 'Compatibility update completed successfully.', str(backup))
             except Exception as exc:
                 set_status('FAIL', 'Compatibility setup failed safely: ' + str(exc))
