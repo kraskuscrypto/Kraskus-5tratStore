@@ -5,7 +5,7 @@ services:
       APP_PORT: 18401
 
   kraskus:
-    image: ghcr.io/kraskuscrypto/kraskus-zec-solo@sha256:033e65e7490861e99699affe524e8e94702463f6686b3d888359beff507041c0
+    image: ghcr.io/kraskuscrypto/kraskus-zec-solo@sha256:2d192f81b3d9b13a6c5bd3e4439589eb50a348341a1b97209c1afe91a8bd37ea
     restart: unless-stopped
 
     depends_on:
