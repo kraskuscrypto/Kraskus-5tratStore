@@ -22,5 +22,5 @@ uiMode: proxy
 services:
   app_proxy:
     environment:
-      APP_HOST: portal
-      APP_PORT: 80
+      APP_HOST: kraskus
+      APP_PORT: 18401
