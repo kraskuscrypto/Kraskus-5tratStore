@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1448 1086" role="img" aria-labelledby="title desc">
+  <title id="title">Kraskus Compatibility Complete</title>
+  <desc id="desc">Thank you for updating. You may now uninstall this app.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#05101d"/><stop offset=".5" stop-color="#02070d"/><stop offset="1" stop-color="#030811"/></linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#006cff"/><stop offset=".55" stop-color="#00cfff"/><stop offset="1" stop-color="#0063ff"/></linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff"/><stop offset=".35" stop-color="#bbc2cc"/><stop offset=".72" stop-color="#4d535e"/><stop offset="1" stop-color="#1d222a"/></linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="12" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <pattern id="hex" width="52" height="45" patternUnits="userSpaceOnUse"><path d="M13 2h26l13 20.5L39 43H13L0 22.5z" fill="none" stroke="#0c2c45" stroke-width="1" opacity=".35"/></pattern>
+  </defs>
+  <rect width="1448" height="1086" rx="28" fill="url(#bg)"/>
+  <rect x="24" y="24" width="1400" height="1038" rx="34" fill="url(#hex)" stroke="#0077d9" stroke-width="3"/>
+  <path d="M724 92 928 136v181c0 146-84 254-204 321-120-67-204-175-204-321V136z" fill="#02070d" stroke="url(#blue)" stroke-width="18" filter="url(#glow)"/>
+  <path d="M612 214h70v126l125-126h93L746 362l160 169h-95L699 410l-17 15v106h-70z" fill="url(#metal)" stroke="#eef2f7" stroke-width="4"/>
+  <path d="M614 473 677 536 844 360" fill="none" stroke="url(#blue)" stroke-width="36" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+  <text x="724" y="650" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="78" font-weight="800" letter-spacing="11" fill="url(#metal)">KRASKUS</text>
+  <text x="724" y="716" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="34" font-weight="700" letter-spacing="14" fill="#008cff">COMPATIBILITY</text>
+  <text x="724" y="762" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="20" font-weight="600" letter-spacing="7" fill="#b9c4d2">5TRATUMOS COMPATIBILITY UTILITY</text>
+  <rect x="128" y="810" width="1192" height="175" rx="34" fill="#06111d" stroke="#008eff" stroke-width="2"/>
+  <circle cx="235" cy="897" r="54" fill="#09251a" stroke="#5cff9d" stroke-width="5" filter="url(#glow)"/>
+  <path d="M207 897 228 918 266 876" fill="none" stroke="#5cff9d" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="330" y="880" font-family="Arial,Helvetica,sans-serif" font-size="36" font-weight="700" fill="#fff">Thank you for updating. You may now uninstall this app.</text>
+  <text x="330" y="932" font-family="Arial,Helvetica,sans-serif" font-size="27" fill="#8fc7ff">Compatibility setup is complete.</text>
+</svg>
