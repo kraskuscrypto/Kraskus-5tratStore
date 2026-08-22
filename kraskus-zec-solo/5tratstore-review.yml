@@ -9,7 +9,7 @@ notes:
   - Payout configuration is applied through the Kraskus UI and shared safely with Zebra.
   - Testnet is the default network for beta qualification.
   - Mainnet activation remains subject to storage safety requirements.
-appVersion: 0.2.7-beta
+appVersion: 0.2.8-beta
 
 releaseNotes:
   - Redesigned Kraskus ZEC Solo dashboard and first-run experience.
