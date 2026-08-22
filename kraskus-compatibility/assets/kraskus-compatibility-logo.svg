@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Kraskus Compatibility</title>
+  <desc id="desc">Metallic Kraskus K shield with a blue compatibility checkmark.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#05080d"/><stop offset="1" stop-color="#020307"/></linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#006cff"/><stop offset=".55" stop-color="#00c8ff"/><stop offset="1" stop-color="#0063ff"/></linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f4f7fb"/><stop offset=".35" stop-color="#aeb5c0"/><stop offset=".7" stop-color="#4b515c"/><stop offset="1" stop-color="#1e222a"/></linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1024" height="1024" rx="150" fill="url(#bg)"/>
+  <path d="M512 118 795 178v252c0 201-116 350-283 443C345 780 229 631 229 430V178z" fill="none" stroke="url(#blue)" stroke-width="24" filter="url(#glow)"/>
+  <path d="M351 286h92v176l174-176h128L531 493l222 235H621L465 559l-22 21v148h-92z" fill="url(#metal)" stroke="#eef2f7" stroke-width="5"/>
+  <path d="M358 647 446 735 676 492" fill="none" stroke="url(#blue)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+  <text x="512" y="915" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="58" font-weight="800" letter-spacing="10" fill="#f4f7fb">KRASKUS</text>
+  <text x="512" y="970" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="700" letter-spacing="13" fill="#009dff">COMPATIBILITY</text>
+</svg>
