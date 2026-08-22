@@ -9,9 +9,11 @@ notes:
   - Payout configuration is applied through the Kraskus UI and shared safely with Zebra.
   - Testnet is the default network for beta qualification.
   - Mainnet activation remains subject to storage safety requirements.
-appVersion: 0.2.8-beta
+appVersion: 0.2.9-beta
 
 releaseNotes:
+  - Fixes the Save Settings button in the native 5tratumOS Workbench so the latest payout-save handler is invoked correctly.
+  - Preserves the 5tratumOS-compatible absolute /api paths used by the native app proxy.
   - Redesigned Kraskus ZEC Solo dashboard and first-run experience.
   - Added Divinity hero, Kraskus violet/gold visual system, and animated infrastructure backdrop.
   - Added focused Overview, Workers, Blocks, and Settings views.
