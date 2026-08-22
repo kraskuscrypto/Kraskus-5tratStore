@@ -23,22 +23,25 @@ fi
 # That is valid: the compatibility patch can be installed before
 # the first custom store is added.
 
-if grep -q 'configured_custom_store()' "$CLI"; then
+# Do not treat the store-sync dynamic-channel regex as proof that the app
+# lifecycle path is compatible. 5tratumOS 0.7.9 can contain that regex while
+# app update still rejects dynamically named custom channels.
+#
+# A previously applied Kraskus repair is considered complete only when the
+# helper and both app-lifecycle call sites are present.
+if grep -q 'configured_custom_store()' "$CLI" &&
+   grep -q 'configured_custom_store "${ch}"' "$CLI" &&
+   grep -q 'configured_custom_store "${meta_channel}"' "$CLI"; then
   printf 'KRASKUS_5TRATUMOS_COMPAT=ALREADY_APPLIED\n'
+  printf 'app lifecycle dynamic custom-store support is present\n'
   exit 0
 fi
 
-# Newer 5tratumOS builds already accept dynamically named custom channels.
-# Detect that native support and leave the host untouched.
-if grep -Eq '\[\[ "\$\{ch\}" =~ \^custom\[-_a-z0-9\]\{0,48\}\$ \]\]' "$CLI"; then
-  printf 'KRASKUS_5TRATUMOS_COMPAT=ALREADY_COMPATIBLE\n'
-  printf 'dynamic custom-store channels are already supported by this 5tratumOS CLI\n'
-  exit 0
-fi
-
-# Only patch the known older validation layout. Unknown layouts are refused.
+# Only patch the exact known older app-lifecycle validation layout.
+# A generic dynamic-channel regex elsewhere in the CLI is deliberately not
+# sufficient to declare compatibility.
 if ! grep -q 'main|dev|global|custom1|custom2) ;;' "$CLI"; then
-  fail "affected validation block not found and native dynamic-channel support was not detected; refusing to modify unknown CLI version"
+  fail "known stale app-lifecycle channel-validation block was not found and complete Kraskus compatibility markers were not detected; refusing to modify unknown CLI version"
 fi
 
 cp -a "$CLI" "$BACKUP" || fail "unable to create backup: $BACKUP"
@@ -125,6 +128,15 @@ PY
 if ! bash -n "$CLI"; then
   cp -a "$BACKUP" "$CLI"
   fail "patched CLI failed bash syntax validation; original restored from $BACKUP"
+fi
+
+# Do not report success until the complete app lifecycle repair is visible.
+if ! grep -q 'configured_custom_store()' "$CLI" ||
+   ! grep -q 'configured_custom_store "${ch}"' "$CLI" ||
+   ! grep -q 'configured_custom_store "${meta_channel}"' "$CLI" ||
+   grep -q 'main|dev|global|custom1|custom2) ;;' "$CLI"; then
+  cp -a "$BACKUP" "$CLI"
+  fail "post-repair app lifecycle verification failed; original restored from $BACKUP"
 fi
 
 chmod 755 "$CLI"
