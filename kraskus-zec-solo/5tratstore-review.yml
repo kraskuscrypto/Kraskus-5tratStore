@@ -1,8 +1,10 @@
 appId: kraskus-zec-solo
-status: preview
+status: beta
 developer: Kraskus Crypto
 notes:
-  - Local development preview.
-  - Uses the existing Kraskus ZEC Solo runtime on the 5tratumOS host.
-  - Final release will package the application services and Zebra lifecycle.
-appVersion: 0.1.1-preview
+  - Self-contained Kraskus ZEC Solo beta runtime.
+  - Includes the Kraskus UI, API/controller, Stratum server, and Zebra service.
+  - No pre-existing host development runtime is required.
+  - Testnet is the default network for beta qualification.
+  - Mainnet activation remains subject to storage safety requirements.
+appVersion: 0.2.0-beta
