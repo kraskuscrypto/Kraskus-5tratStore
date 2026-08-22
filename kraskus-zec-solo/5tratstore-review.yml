@@ -3,8 +3,10 @@ status: beta
 developer: Kraskus Crypto
 notes:
   - Self-contained Kraskus ZEC Solo beta runtime.
-  - Includes the Kraskus UI, API/controller, Stratum server, and Zebra service.
+  - Includes the Kraskus UI, API/controller, Stratum server, and supervised Zebra service.
   - No pre-existing host development runtime is required.
+  - No Docker socket access is required by the application runtime.
+  - Payout configuration is applied through the Kraskus UI and shared safely with Zebra.
   - Testnet is the default network for beta qualification.
   - Mainnet activation remains subject to storage safety requirements.
-appVersion: 0.2.1-beta
+appVersion: 0.2.2-beta

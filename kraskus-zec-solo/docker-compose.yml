@@ -1,12 +1,11 @@
 services:
-
   app_proxy:
     environment:
       APP_HOST: kraskus
       APP_PORT: 18401
 
   kraskus:
-    image: ghcr.io/kraskuscrypto/kraskus-zec-solo@sha256:ea132222a7a3ca687a3abdf56b5b352c2d3b17e911d1ad5ec59de5308a9a2f77
+    image: ghcr.io/kraskuscrypto/kraskus-zec-solo@sha256:6c14a070e0c24bbddf1a415d79800ad61592fbc84f6023ae6b00a8dbcba9848f
     restart: unless-stopped
 
     depends_on:
@@ -14,23 +13,24 @@ services:
 
     environment:
       KRASKUS_BASE: /data
+      KRASKUS_PACKAGED_MODE: "1"
 
-      KRASKUS_ZEBRA_CONTAINER: kraskus-zec-solo-zebra
       KRASKUS_ZEBRA_RPC_URL: http://zebra:18232
       KRASKUS_ZEBRA_COOKIE_FILE: /zebra/.cookie
+
+      KRASKUS_MINER_ADDRESS_FILE: /kraskus-config/miner-address
 
       KRASKUS_STRATUM_HOST: 0.0.0.0
       KRASKUS_STRATUM_PORT: 3335
 
       KRASKUS_STRATUM_HEALTH_HOST: 127.0.0.1
       KRASKUS_STRATUM_HEALTH_PORT: 18402
-
       KRASKUS_STRATUM_STATUS_URL: http://127.0.0.1:18402/status
 
     volumes:
       - ${APP_DATA_DIR}/kraskus:/data
       - ${APP_DATA_DIR}/zebra:/zebra:ro
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ${APP_DATA_DIR}/config:/kraskus-config
 
     ports:
       - "3335:3335"
@@ -39,16 +39,23 @@ services:
       - no-new-privileges:true
 
   zebra:
-    container_name: kraskus-zec-solo-zebra
-    image: zfnd/zebra@sha256:bb2a6029db277ee3a10e951dcc0ddd36b4cbcbe0fad684746d695ee21d53fde2
+    image: ghcr.io/kraskuscrypto/kraskus-zebra@sha256:397b529cdd2c3058765ec4961c2245432493bdd30562063384f08002766a6b5d
     restart: unless-stopped
 
     environment:
       ZEBRA_NETWORK__NETWORK: Testnet
+      ZEBRA_NETWORK__LISTEN_ADDR: 0.0.0.0:18233
+
       ZEBRA_RPC__LISTEN_ADDR: 0.0.0.0:18232
+      ZEBRA_RPC__COOKIE_DIR: /home/zebra/.cache/zebra
+
+      ZEBRA_STATE__CACHE_DIR: /home/zebra/.cache/zebra
+
+      KRASKUS_MINER_ADDRESS_FILE: /kraskus-config/miner-address
 
     volumes:
       - ${APP_DATA_DIR}/zebra:/home/zebra/.cache/zebra
+      - ${APP_DATA_DIR}/config:/kraskus-config:ro
 
     security_opt:
       - no-new-privileges:true
