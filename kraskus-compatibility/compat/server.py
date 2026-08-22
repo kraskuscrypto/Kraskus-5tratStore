@@ -14,6 +14,7 @@ CLI = Path("/host/5tratumos")
 STORE = Path("/host/store.json")
 DATA = Path("/data")
 PORT = int(os.environ.get("PORT", "18403"))
+SPLASH = Path("/opt/compat/splash.svg")
 
 OLD = '''        case "${ch}" in
           main|dev|global|custom1|custom2) ;;
@@ -146,7 +147,7 @@ def run_fix() -> None:
             set_status("FAIL", "Compatibility repair rolled back", "Validation failed, so the original 5tratumOS CLI was restored automatically.", str(backup))
             return
 
-        set_status("READY", "Compatibility ready", "5tratumOS is now prepared for Kraskus custom-store app updates. You can install Kraskus ZEC Solo normally.", str(backup))
+        set_status("READY", "Compatibility ready", "5tratumOS is now prepared for Kraskus custom-store app updates.", str(backup))
     except Exception as exc:
         set_status("FAIL", "Compatibility setup failed safely", f"Kraskus left the system in a safe state. Detail: {exc}")
 
@@ -163,13 +164,31 @@ class Handler(BaseHTTPRequestHandler):
             self.wfile.write(body)
             return
 
+        if self.path == "/splash.svg":
+            try:
+                body = SPLASH.read_bytes()
+            except Exception:
+                self.send_error(404)
+                return
+            self.send_response(200)
+            self.send_header("Content-Type", "image/svg+xml")
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
         state = STATUS["state"]
-        good = state == "READY"
-        badge = "READY" if good else state
-        detail = html.escape(STATUS["detail"])
-        title = html.escape(STATUS["title"])
-        body = f'''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kraskus Compatibility</title><style>
-body{{margin:0;background:#0d0b14;color:#f6f2ff;font-family:Inter,system-ui,-apple-system,sans-serif;display:grid;min-height:100vh;place-items:center}}main{{width:min(680px,calc(100% - 40px));background:#171220;border:1px solid #342744;border-radius:22px;padding:34px;box-shadow:0 20px 70px #0008}}.brand{{font-weight:800;letter-spacing:.08em;color:#c9a7ff}}h1{{font-size:34px;margin:12px 0}}p{{color:#cfc7d9;font-size:17px;line-height:1.55}}.badge{{display:inline-block;padding:8px 12px;border-radius:999px;background:{'#17351f' if good else '#493718'};color:{'#8ff0a4' if good else '#ffd479'};font-weight:800}}.next{{margin-top:26px;padding:18px;border-radius:14px;background:#21192d}}small{{color:#9389a0}}</style></head><body><main><div class="brand">KRASKUS CRYPTO</div><h1>{title}</h1><div class="badge">{badge}</div><p>{detail}</p><div class="next"><strong>Next</strong><p style="margin-bottom:0">Open the Kraskus 5tratStore and install Kraskus ZEC Solo.</p></div><p><small>This app only checks and, when required, repairs the known custom-store update compatibility issue.</small></p></main></body></html>'''.encode()
+        if state == "READY":
+            body = b'''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kraskus Compatibility</title><style>html,body{margin:0;background:#02070d;min-height:100%;width:100%}body{display:grid;place-items:center;min-height:100vh}.splash{width:min(100vw,1448px);height:auto;display:block}</style></head><body><img class="splash" src="/splash.svg" alt="Kraskus Compatibility complete. Thank you for updating. You may now uninstall this app."></body></html>'''
+        else:
+            good = False
+            badge = state
+            detail = html.escape(STATUS["detail"])
+            title = html.escape(STATUS["title"])
+            body = f'''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kraskus Compatibility</title><style>
+body{{margin:0;background:#0d0b14;color:#f6f2ff;font-family:Inter,system-ui,-apple-system,sans-serif;display:grid;min-height:100vh;place-items:center}}main{{width:min(680px,calc(100% - 40px));background:#171220;border:1px solid #342744;border-radius:22px;padding:34px;box-shadow:0 20px 70px #0008}}.brand{{font-weight:800;letter-spacing:.08em;color:#c9a7ff}}h1{{font-size:34px;margin:12px 0}}p{{color:#cfc7d9;font-size:17px;line-height:1.55}}.badge{{display:inline-block;padding:8px 12px;border-radius:999px;background:#493718;color:#ffd479;font-weight:800}}small{{color:#9389a0}}</style></head><body><main><div class="brand">KRASKUS CRYPTO</div><h1>{title}</h1><div class="badge">{badge}</div><p>{detail}</p><p><small>No host changes are made for unsupported layouts.</small></p></main></body></html>'''.encode()
+
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Cache-Control", "no-store")
