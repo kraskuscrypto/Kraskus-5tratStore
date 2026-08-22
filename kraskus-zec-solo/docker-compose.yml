@@ -5,7 +5,7 @@ services:
       APP_PORT: 18401
 
   kraskus:
-    image: ghcr.io/kraskuscrypto/kraskus-zec-solo@sha256:528060b82724bf2a3f3bfb70af554d99198fa2336bb7b13b2d6bc2052f11ca52
+    image: ghcr.io/kraskuscrypto/kraskus-zec-solo@sha256:8a842e690bc6854008dd328ce19a3b6601d53068ea0e1ca75cd55ff4c2b35258
     restart: unless-stopped
 
     depends_on:
@@ -19,6 +19,7 @@ services:
       KRASKUS_ZEBRA_COOKIE_FILE: /zebra/.cookie
 
       KRASKUS_MINER_ADDRESS_FILE: /kraskus-config/miner-address
+      KRASKUS_NETWORK_FILE: /kraskus-config/network
 
       KRASKUS_STRATUM_HOST: 0.0.0.0
       KRASKUS_STRATUM_PORT: 3335
@@ -39,11 +40,10 @@ services:
       - no-new-privileges:true
 
   zebra:
-    image: ghcr.io/kraskuscrypto/kraskus-zebra@sha256:397b529cdd2c3058765ec4961c2245432493bdd30562063384f08002766a6b5d
+    image: ghcr.io/kraskuscrypto/kraskus-zebra@sha256:abbbddd84563023df621f1eecceeb816da5c2951d9b60718133f131e1341c6d0
     restart: unless-stopped
 
     environment:
-      ZEBRA_NETWORK__NETWORK: Testnet
       ZEBRA_NETWORK__LISTEN_ADDR: 0.0.0.0:18233
 
       ZEBRA_RPC__LISTEN_ADDR: 0.0.0.0:18232
@@ -52,6 +52,7 @@ services:
       ZEBRA_STATE__CACHE_DIR: /home/zebra/.cache/zebra
 
       KRASKUS_MINER_ADDRESS_FILE: /kraskus-config/miner-address
+      KRASKUS_NETWORK_FILE: /kraskus-config/network
 
     volumes:
       - ${APP_DATA_DIR}/zebra:/home/zebra/.cache/zebra
