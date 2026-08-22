@@ -23,21 +23,21 @@ services:
         DATA = Path('/data')
         PORT = int(os.environ.get('PORT', '18403'))
 
-        OLD = '''        case "${ch}" in
+        OLD = '''        case "$${ch}" in
           main|dev|global|custom1|custom2) ;;
-          *) die "invalid channel: ${ch}" ;;
+          *) die "invalid channel: $${ch}" ;;
         esac
 
         meta_ch=""
-        case "${meta_channel}" in
-          main|dev|global|custom1|custom2) meta_ch="${meta_channel}" ;;
+        case "$${meta_channel}" in
+          main|dev|global|custom1|custom2) meta_ch="$${meta_channel}" ;;
         esac
         '''
 
         NEW = '''        configured_custom_store() {
-          local slot="${1:-}"
+          local slot="$${1:-}"
 
-          python3 - "${slot}" "${STORE_CONFIG_FILE}" <<'PYCFG'
+          python3 - "$${slot}" "$${STORE_CONFIG_FILE}" <<'PYCFG'
         import json
         import sys
 
@@ -64,26 +64,26 @@ services:
         PYCFG
         }
 
-        case "${ch}" in
+        case "$${ch}" in
           main|dev|global)
             ;;
           custom*)
-            configured_custom_store "${ch}" ||
-              die "invalid channel: ${ch}"
+            configured_custom_store "$${ch}" ||
+              die "invalid channel: $${ch}"
             ;;
           *)
-            die "invalid channel: ${ch}"
+            die "invalid channel: $${ch}"
             ;;
         esac
 
         meta_ch=""
-        case "${meta_channel}" in
+        case "$${meta_channel}" in
           main|dev|global)
-            meta_ch="${meta_channel}"
+            meta_ch="$${meta_channel}"
             ;;
           custom*)
-            if configured_custom_store "${meta_channel}"; then
-              meta_ch="${meta_channel}"
+            if configured_custom_store "$${meta_channel}"; then
+              meta_ch="$${meta_channel}"
             fi
             ;;
         esac
