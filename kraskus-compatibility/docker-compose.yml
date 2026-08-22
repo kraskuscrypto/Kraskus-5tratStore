@@ -1,0 +1,21 @@
+services:
+  app_proxy:
+    environment:
+      APP_HOST: compatibility
+      APP_PORT: 18403
+
+  compatibility:
+    image: ghcr.io/kraskuscrypto/kraskus-zec-solo@sha256:9ac6eabf4ebed6b0474b9d37d3cc241a6a0259a26b3b3c88df37d00607976db4
+    restart: unless-stopped
+    command:
+      - python3
+      - /opt/compat/server.py
+    environment:
+      PORT: "18403"
+    volumes:
+      - ./compat:/opt/compat:ro
+      - /usr/local/bin/5tratumos:/host/5tratumos
+      - /etc/5tratumos/store.json:/host/store.json:ro
+      - ${APP_DATA_DIR}/data:/data
+    security_opt:
+      - no-new-privileges:true
