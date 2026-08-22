@@ -1,7 +1,7 @@
 appId: kraskus-compatibility
 status: beta
 developer: Kraskus Crypto
-appVersion: 0.1.0-beta
+appVersion: 0.1.1-beta
 notes:
   - One-time compatibility helper for Kraskus custom-store app lifecycle support.
   - Mounts only /usr/local/bin/5tratumos as writable host state required for the repair.
@@ -12,6 +12,7 @@ notes:
   - Unknown CLI layouts are refused without modifying the host.
   - If shell syntax validation fails after a repair, the original CLI is restored automatically.
 releaseNotes:
-  - Initial beta release.
-  - Adds automatic detection and repair for the known older 5tratumOS custom-store channel validation mismatch.
-  - Provides a simple READY/FAIL status screen for customers.
+  - Adds the Kraskus Compatibility app icon for the store and OS launcher.
+  - Adds a branded completion splash screen when compatibility setup succeeds.
+  - Successful systems clearly tell the customer: Thank you for updating. You may now uninstall this app.
+  - Compatibility repair behavior and safety controls are unchanged.
