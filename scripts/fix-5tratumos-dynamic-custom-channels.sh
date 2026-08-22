@@ -18,7 +18,10 @@ if [ "${EUID:-$(id -u)}" -ne 0 ]; then
 fi
 
 [ -f "$CLI" ] || fail "5tratumOS CLI not found: $CLI"
-[ -f "$STORE_CONFIG_FILE" ] || fail "store config not found: $STORE_CONFIG_FILE"
+
+# A clean 5tratumOS host may not have store.json yet.
+# That is valid: the compatibility patch can be installed before
+# the first custom store is added.
 
 if grep -q 'configured_custom_store()' "$CLI"; then
   printf 'KRASKUS_5TRATUMOS_COMPAT=ALREADY_APPLIED\n'
