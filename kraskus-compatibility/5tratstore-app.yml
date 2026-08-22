@@ -8,7 +8,7 @@ description: >-
   Newer compatible systems and systems already repaired are left unchanged.
   After a successful compatibility update, the app confirms completion and may
   be uninstalled.
-version: 0.1.3-beta
+version: 0.1.4-beta
 category: Utilities
 developer: Kraskus Crypto
 website: https://kraskuscrypto.com/
