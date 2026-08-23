@@ -1,0 +1,37 @@
+#!/bin/sh
+
+. /opt/updater/lib.sh
+
+printf 'Content-Type: application/json\r\n'
+printf 'Cache-Control: no-store\r\n'
+printf '\r\n'
+
+CURRENT="$(running_version)"
+LATEST_VERSION=""
+LATEST_DIGEST=""
+LAST_CHECKED=""
+
+if [ -f "$UPDATE_DIR/latest.env" ]; then
+    # File is generated only by watch.sh and contains validated version/digest values.
+    . "$UPDATE_DIR/latest.env"
+fi
+
+STATE='{"state":"idle","message":"Updater ready.","target_version":"","backup":"","rollback":false,"updated_at":""}'
+if [ -f "$UPDATE_DIR/state.json" ]; then
+    STATE="$(cat "$UPDATE_DIR/state.json")"
+fi
+
+AVAILABLE=false
+if printf '%s' "$CURRENT" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$' && \
+   printf '%s' "$LATEST_VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$' && \
+   [ "$CURRENT" != "$LATEST_VERSION" ]; then
+    AVAILABLE=true
+fi
+
+printf '{"current_version":"%s","latest_version":"%s","latest_digest":"%s","last_checked":"%s","update_available":%s,"operation":%s}\n' \
+  "$(json_escape "$CURRENT")" \
+  "$(json_escape "$LATEST_VERSION")" \
+  "$(json_escape "$LATEST_DIGEST")" \
+  "$(json_escape "$LAST_CHECKED")" \
+  "$AVAILABLE" \
+  "$STATE"

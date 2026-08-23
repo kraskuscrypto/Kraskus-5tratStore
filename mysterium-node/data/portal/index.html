@@ -1,166 +1,1869 @@
 <!doctype html>
+
 <html lang="en">
+
 <head>
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1">
+
 <title>MystNodes by Kraskus</title>
+
 <style>
-:root{
-  --navy:#0f4157;
-  --ink:#06364f;
-  --muted:#718896;
-  --pink:#d83b92;
-  --pink2:#ee58aa;
-  --blue:#eaf6ff;
-  --line:#dfe9ef;
-  --white:#fff;
+
+:root {
+
+    --ink:#073650;
+    --muted:#738998;
+
+    --pink:#d83b92;
+    --pink-dark:#bd2778;
+
+    --green:#55b95a;
+    --red:#e76571;
+
+    --blue-soft:#edf8ff;
+
+    --line:#dce8ef;
+
+    --card:#ffffff;
+
 }
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);overflow:hidden}
-body{background:linear-gradient(120deg,#edf8ff 0%,#f4eff9 55%,#fdeff7 100%)}
-.app{height:100vh;display:flex;flex-direction:column}
-.topbar{height:68px;flex:0 0 68px;background:#fff;border-bottom:1px solid #edf1f4;display:flex;align-items:center;justify-content:space-between;padding:0 26px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:21px;color:#081f2c}
-.brand img{width:42px;height:42px;object-fit:contain}
-.by{font-size:12px;color:var(--muted);font-weight:700;margin-left:4px}
-.status{display:flex;gap:8px;align-items:center;font-size:12px;font-weight:800;color:#557482}
-.dot{width:10px;height:10px;border-radius:50%;background:#55b85a}
-.body{min-height:0;flex:1;display:grid;grid-template-columns:190px 1fr}
-.sidebar{background:rgba(255,255,255,.78);border-right:1px solid #dde8ee;padding:24px 0}
-.nav{display:grid;gap:8px}
-.nav button{appearance:none;border:0;background:transparent;color:var(--ink);text-align:left;padding:13px 26px;font-size:14px;font-weight:800;cursor:pointer;border-radius:0 28px 28px 0;width:92%}
-.nav button:hover,.nav button.active{background:#fff}
-.nav .pink{color:var(--pink)}
-.sep{height:1px;background:#c7d7e0;margin:15px 18px}
-.viewport{min-width:0;min-height:0;position:relative}
-.panel{position:absolute;inset:0;display:none}
-.panel.active{display:block}
-.welcome{height:100%;overflow:auto;padding:34px}
-.welcome-inner{max-width:900px;margin:auto}
-.hero{background:#fff;border-radius:22px;padding:26px;display:grid;grid-template-columns:95px 1fr;gap:22px;align-items:center;box-shadow:0 15px 40px rgba(66,94,112,.08)}
-.hero img{width:92px;height:92px;object-fit:contain}
-.hero h1{margin:0 0 5px;font-size:28px}
-.hero .sub{color:var(--pink);font-weight:900}
-.hero p{color:var(--muted);line-height:1.55;margin-bottom:0}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
-.card{background:#fff;border-radius:20px;padding:22px;box-shadow:0 15px 35px rgba(66,94,112,.07)}
-.card h2{margin:0 0 12px;font-size:16px;color:var(--pink)}
-.card p{color:var(--muted);line-height:1.5}
-.buttons{display:grid;gap:11px}
-.btn{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:12px;text-decoration:none;font-size:13px;font-weight:900;border:1px solid #cfdde5;cursor:pointer}
-.primary{background:var(--pink);color:#fff;border-color:var(--pink)}
-.secondary{background:#eaf8ff;color:var(--ink)}
-.dark{background:#0d4055;color:#fff;border-color:#0d4055}
-.notice{font-size:11px;line-height:1.5;color:#7d6a3f;background:#fff9e9;border:1px solid #ead99b;border-radius:11px;padding:11px 12px;margin-top:14px}
-.nodeframe{width:100%;height:100%;border:0;background:white}
-.loading{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(120deg,#edf8ff,#fdeff7);z-index:2;font-weight:900;color:var(--pink)}
-.loading.hidden{display:none}
-@media(max-width:760px){.body{grid-template-columns:1fr}.sidebar{display:none}.welcome{padding:18px}.grid{grid-template-columns:1fr}.hero{grid-template-columns:1fr;text-align:center}.hero img{margin:auto}}
+
+* {
+    box-sizing:border-box;
+}
+
+html,
+body {
+
+    width:100%;
+    height:100%;
+
+    margin:0;
+
+    overflow:hidden;
+
+    font-family:
+        Inter,
+        Segoe UI,
+        Arial,
+        sans-serif;
+
+    color:var(--ink);
+
+}
+
+.app {
+
+    height:100%;
+
+    display:grid;
+
+    grid-template-rows:
+        54px
+        1fr;
+
+}
+
+
+.header {
+
+    background:#fff;
+
+    border-bottom:
+        1px solid var(--line);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:
+        0
+        18px;
+
+}
+
+
+.brand {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+}
+
+
+.brand img {
+
+    width:37px;
+    height:37px;
+
+    object-fit:contain;
+
+}
+
+
+.brand strong {
+
+    font-size:17px;
+
+}
+
+
+.brand small {
+
+    color:var(--muted);
+
+    font-weight:700;
+
+}
+
+
+.status {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    font-size:11px;
+
+    font-weight:800;
+
+}
+
+
+.status-dot {
+
+    width:9px;
+    height:9px;
+
+    border-radius:50%;
+
+    background:var(--green);
+
+}
+
+
+.body {
+
+    min-height:0;
+
+    display:grid;
+
+    grid-template-columns:
+        155px
+        1fr;
+
+}
+
+
+.body.native-mode {
+
+    grid-template-columns:1fr;
+
+}
+
+
+.body.native-mode
+.sidebar {
+
+    display:none;
+
+}
+
+
+.sidebar {
+
+    background:#f8fcff;
+
+    border-right:
+        1px solid var(--line);
+
+    padding-top:19px;
+
+}
+
+
+.nav {
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:5px;
+
+}
+
+
+.nav-button {
+
+    position:relative;
+
+    border:0;
+
+    background:transparent;
+
+    width:94%;
+
+    min-height:42px;
+
+    padding:
+        0
+        14px
+        0
+        20px;
+
+    border-radius:
+        0
+        22px
+        22px
+        0;
+
+    text-align:left;
+
+    color:var(--ink);
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.15s ease;
+
+}
+
+
+.nav-button:hover,
+.nav-button.active {
+
+    background:#fff;
+
+    color:var(--pink);
+
+    padding-left:25px;
+
+    box-shadow:
+        0
+        5px
+        16px
+        rgba(25,70,95,.08);
+
+}
+
+
+.nav-button:hover::before,
+.nav-button.active::before {
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:8px;
+    bottom:8px;
+
+    width:4px;
+
+    background:var(--pink);
+
+    border-radius:
+        0
+        4px
+        4px
+        0;
+
+}
+
+
+.divider {
+
+    border-top:
+        1px solid #bed1dc;
+
+    margin:
+        14px
+        10px;
+
+}
+
+
+.external-button {
+
+    color:var(--pink);
+
+    white-space:normal;
+
+    overflow-wrap:anywhere;
+
+    line-height:1.25;
+
+    font-size:11px;
+
+}
+
+
+.viewport {
+
+    position:relative;
+
+    min-width:0;
+    min-height:0;
+
+    overflow:hidden;
+
+    background:#fff;
+
+}
+
+
+.home {
+
+    position:absolute;
+
+    inset:0;
+
+    overflow:auto;
+
+    padding:25px;
+
+    background:
+        linear-gradient(
+            120deg,
+            #edf8ff,
+            #f4eff9 58%,
+            #fdeff7
+        );
+
+}
+
+
+.home.hidden {
+
+    display:none;
+
+}
+
+
+.home-inner {
+
+    max-width:940px;
+
+    margin:auto;
+
+}
+
+
+.overview-heading {
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:18px;
+
+}
+
+
+.overview-heading h1 {
+
+    margin:0;
+
+    font-size:27px;
+
+}
+
+
+.updated {
+
+    color:var(--muted);
+
+    font-size:10px;
+
+}
+
+
+.summary {
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:12px;
+
+}
+
+
+.metric {
+
+    background:#fff;
+
+    border-radius:17px;
+
+    padding:17px;
+
+    box-shadow:
+        0
+        12px
+        30px
+        rgba(60,90,108,.07);
+
+}
+
+
+.metric .label {
+
+    color:var(--muted);
+
+    font-size:10px;
+
+    font-weight:800;
+
+    text-transform:uppercase;
+
+    letter-spacing:.05em;
+
+}
+
+
+.metric .value {
+
+    margin-top:8px;
+
+    font-size:19px;
+
+    font-weight:900;
+
+}
+
+
+.sections {
+
+    display:grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap:14px;
+
+    margin-top:14px;
+
+}
+
+
+.card {
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:20px;
+
+    box-shadow:
+        0
+        12px
+        30px
+        rgba(60,90,108,.07);
+
+}
+
+
+.card h2 {
+
+    color:var(--pink);
+
+    margin:
+        0
+        0
+        12px;
+
+    font-size:15px;
+
+}
+
+
+.row {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:18px;
+
+    padding:
+        11px
+        0;
+
+    border-bottom:
+        1px solid #edf1f4;
+
+}
+
+
+.row:last-child {
+
+    border-bottom:0;
+
+}
+
+
+.row-name {
+
+    font-size:12px;
+
+    font-weight:800;
+
+}
+
+
+.row-value {
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    text-align:right;
+
+}
+
+
+.good {
+
+    color:var(--green);
+
+    font-weight:900;
+
+}
+
+
+.bad {
+
+    color:var(--red);
+
+    font-weight:900;
+
+}
+
+
+.actions {
+
+    display:grid;
+
+    grid-template-columns:
+        1fr
+        1fr
+        1fr;
+
+    gap:10px;
+
+    margin-top:14px;
+
+}
+
+
+.action {
+
+    min-height:44px;
+
+    border:0;
+
+    border-radius:11px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-decoration:none;
+
+    font-size:11px;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+}
+
+
+.action.dark {
+
+    background:#0d475c;
+
+    color:#fff;
+
+}
+
+
+.action.pink {
+
+    background:var(--pink);
+
+    color:#fff;
+
+}
+
+
+.action.light {
+
+    background:#eaf7ff;
+
+    color:var(--ink);
+
+    border:
+        1px solid #cde0e9;
+
+}
+
+
+.node-container {
+
+    position:absolute;
+
+    inset:0;
+
+    display:none;
+
+    background:#fff;
+
+}
+
+
+.node-container.active {
+
+    display:block;
+
+}
+
+
+#nodeFrame {
+
+    width:100%;
+    height:100%;
+
+    border:0;
+
+    display:block;
+
+    background:#fff;
+
+}
+
+
+.back-button {
+
+    position:absolute;
+
+    /*
+      Overlay the blank white strip above
+      the native MystNodes content.
+    */
+
+    top:10px;
+    left:148px;
+
+    z-index:50;
+
+    min-width:190px;
+
+    min-height:40px;
+
+    padding:
+        0
+        18px;
+
+    border:0;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e3489c,
+            #cf2c87
+        );
+
+    color:#fff;
+
+    font-size:12px;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    box-shadow:
+        0
+        6px
+        18px
+        rgba(198,44,129,.30);
+
+    transition:.15s ease;
+
+}
+
+
+.back-button:hover {
+
+    background:
+        linear-gradient(
+            135deg,
+            #ef58aa,
+            #bd2778
+        );
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0
+        8px
+        22px
+        rgba(198,44,129,.38);
+
+}
+
+
+.loader {
+
+    position:absolute;
+
+    inset:0;
+
+    display:grid;
+
+    place-items:center;
+
+    z-index:10;
+
+    background:#fff;
+
+    color:var(--pink);
+
+    font-weight:900;
+
+}
+
+
+.loader.hidden {
+
+    display:none;
+
+}
+
+
+@media(max-width:850px) {
+
+    .summary {
+
+        grid-template-columns:
+            1fr
+            1fr;
+
+    }
+
+    .sections {
+
+        grid-template-columns:1fr;
+
+    }
+
+    .actions {
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+.kraskus-shield-image{
+    display:block;
+    width:108px;
+    max-width:100%;
+    height:auto;
+    margin:12px auto;
+    object-fit:contain;
+}
+.external-button:has(.kraskus-shield-image){
+    min-height:150px;
+    padding:8px 10px;
+    background:transparent;
+    overflow:visible;
+}
+
+
+.node-usage{
+    margin-top:8px;
+    display:grid;
+    gap:6px;
+}
+.node-usage-line{
+    display:grid;
+    grid-template-columns:18px 1fr auto;
+    align-items:center;
+    gap:5px;
+    font-size:11px;
+    line-height:1.2;
+}
+.node-usage-arrow{
+    color:#d83b92;
+    font-size:15px;
+    font-weight:900;
+}
+.node-usage-name{
+    color:#738998;
+    font-weight:800;
+}
+.node-usage-line strong{
+    color:#073650;
+    font-size:12px;
+    white-space:nowrap;
+}
+
+
+html,body,button,input,select,textarea,a{
+    font-family:
+        "Nunito Sans",
+        "Nunito",
+        "Avenir Next",
+        "Trebuchet MS",
+        "Segoe UI",
+        Arial,
+        sans-serif !important;
+}
+
+
+.network-guide{
+    margin-top:16px;
+    background:#ffffff;
+    border-radius:18px;
+    padding:18px 20px;
+    box-shadow:0 12px 30px rgba(60,90,108,.07);
+}
+.network-guide-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:12px;
+}
+.network-guide-title{
+    color:#d83b92;
+    font-size:15px;
+    font-weight:900;
+}
+.network-guide-sub{
+    color:#738998;
+    font-size:11px;
+    text-align:right;
+}
+.network-guide-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+.network-guide-box{
+    background:#f8fcff;
+    border:1px solid #dce8ef;
+    border-radius:13px;
+    padding:14px;
+}
+.network-guide-box h3{
+    margin:0 0 9px;
+    color:#073650;
+    font-size:12px;
+    font-weight:900;
+}
+.network-guide-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:7px 0;
+    border-bottom:1px solid #e8f0f4;
+    font-size:11px;
+}
+.network-guide-row:last-child{
+    border-bottom:0;
+}
+.network-guide-label{
+    color:#738998;
+    font-weight:800;
+}
+.network-guide-value{
+    color:#073650;
+    font-weight:900;
+    text-align:right;
+}
+.nat-good{
+    color:#55b95a;
+}
+.nat-warn{
+    color:#e2a13b;
+}
+.nat-bad{
+    color:#e76571;
+}
+.network-guide-note{
+    margin-top:12px;
+    color:#738998;
+    font-size:10px;
+    line-height:1.45;
+}
+.network-guide-note strong{
+    color:#073650;
+}
+@media(max-width:850px){
+    .network-guide-grid{
+        grid-template-columns:1fr;
+    }
+}
+
 </style>
+
 </head>
+
+
 <body>
+
 <div class="app">
-  <header class="topbar">
-    <div class="brand">
-      <img src="/icon.png" alt="MystNodes">
-      <span>MYSTNODES</span>
-      <span class="by">by Kraskus</span>
-    </div>
-    <div class="status"><span class="dot"></span>Local node</div>
-  </header>
 
-  <div class="body">
-    <aside class="sidebar">
-      <div class="nav">
-        <button class="active" data-panel="home">Overview</button>
-        <button data-panel="node">Node</button>
-        <button data-panel="node">Identity</button>
-        <button data-panel="node">Earnings</button>
-        <button data-panel="node">Sessions</button>
-        <button data-panel="node">Settings</button>
-        <div class="sep"></div>
-        <button class="pink" id="dashboardBtn">my.mystnodes.com</button>
-      </div>
-    </aside>
 
-    <main class="viewport">
-      <section id="panel-home" class="panel active">
-        <div class="welcome">
-          <div class="welcome-inner">
-            <div class="hero">
-              <img src="/icon.png" alt="MystNodes">
-              <div>
-                <h1>MystNodes by Kraskus</h1>
-                <div class="sub">Official Mysterium node inside 5tratumOS</div>
-                <p>The local MystNodes Node UI stays inside this Workbench app. New users can register through the Kraskus referral path; existing users can go directly to the local node.</p>
-              </div>
-            </div>
+<header class="header">
 
-            <div class="grid">
-              <div class="card">
-                <h2>Local Node</h2>
-                <p>Open the real Mysterium Node UI without leaving 5tratumOS.</p>
-                <div class="buttons">
-                  <button class="btn dark" id="openNodeBtn">Open Local Node UI</button>
-                  <a class="btn secondary" href="https://my.mystnodes.com/" target="_blank" rel="noopener">Open my.mystnodes.com</a>
-                </div>
-              </div>
+<div class="brand">
 
-              <div class="card">
-                <h2>First-Time Setup</h2>
-                <p>New users can create a MystNodes account using the disclosed Kraskus referral link.</p>
-                <div class="buttons">
-                  <a class="btn primary" href="https://mystnodes.co/?referral_code=CJSoelVnKkllilXIgv7JqeroUv1jhnZ4KWE4G6E4" target="_blank" rel="noopener">Create MystNodes Account</a>
-                  <button class="btn secondary" id="existingBtn">I Already Have an Account</button>
-                </div>
-                <div class="notice">Referral disclosure: the new-user signup button uses the Kraskus MystNodes referral link. Existing users can bypass signup.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+<img src="icon.png"
+     alt="MystNodes">
 
-      <section id="panel-node" class="panel">
-        <div id="nodeLoading" class="loading">Loading local MystNodes UI…</div>
-        <iframe id="nodeFrame" class="nodeframe" src="about:blank" referrerpolicy="same-origin"></iframe>
-      </section>
-    </main>
-  </div>
+<strong>MYSTNODES</strong>
+
+<small>by Kraskus</small>
+
 </div>
 
-<script>
-const homePanel = document.getElementById("panel-home");
-const nodePanel = document.getElementById("panel-node");
-const frame = document.getElementById("nodeFrame");
-const loading = document.getElementById("nodeLoading");
 
-function showPanel(name){
-  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
-  document.querySelectorAll("[data-panel]").forEach(b=>b.classList.remove("active"));
-  if(name==="home"){
-    homePanel.classList.add("active");
-    document.querySelector('[data-panel="home"]').classList.add("active");
-    return;
-  }
-  nodePanel.classList.add("active");
-  document.querySelectorAll('[data-panel="node"]').forEach(b=>b.classList.add("active"));
-  if(frame.src==="about:blank" || !frame.src.includes("/node/")){
-    loading.classList.remove("hidden");
-    frame.src="/node/";
-  }
+<div class="status">
+
+<span class="status-dot"></span>
+
+Local node
+
+</div>
+
+</header>
+
+
+<div class="body"
+     id="appBody">
+
+
+<aside class="sidebar">
+
+<nav class="nav">
+
+<button class="nav-button active"
+        data-home>
+Overview
+</button>
+
+
+<button class="nav-button"
+        data-route="#/dashboard">
+Node
+</button>
+
+
+<button class="nav-button"
+        data-route="#/identity">
+Identity
+</button>
+
+
+<button class="nav-button"
+        data-route="#/earnings">
+Earnings
+</button>
+
+
+<button class="nav-button"
+        data-route="#/sessions">
+Sessions
+</button>
+
+
+<button class="nav-button"
+        data-route="#/settings">
+Settings
+</button>
+
+
+<div class="divider"></div>
+
+
+<button class="nav-button external-button"
+        id="mystWeb"><img class="kraskus-shield-image" src="kraskus-shield.png" alt="Kraskus"></button>
+
+</nav>
+
+</aside>
+
+
+<main class="viewport">
+
+
+<section class="home"
+         id="home">
+
+<div class="home-inner">
+
+
+<div class="overview-heading">
+
+<div>
+
+<h1>Overview</h1>
+
+
+
+</div>
+
+
+<div class="updated"
+     id="updated">
+Updating...
+</div>
+
+</div>
+
+
+<div class="summary">
+
+
+<div class="metric">
+
+<div class="label">
+Mysterium
+</div>
+
+<div class="value"
+     id="mystState">
+Checking...
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="label">
+Node UI
+</div>
+
+<div class="value"
+     id="nodeState">
+Checking...
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="label">
+Persistent Identity
+</div>
+
+<div class="value"
+     id="identityState">
+Checking...
+</div>
+
+</div>
+
+
+<div class="metric node-usage-card">
+<div class="label">Node Usage</div>
+<div class="node-usage">
+  <div class="node-usage-line">
+    <span class="node-usage-arrow">↓</span>
+    <span class="node-usage-name">Download</span>
+    <strong id="nodeDownload">...</strong>
+  </div>
+  <div class="node-usage-line">
+    <span class="node-usage-arrow">↑</span>
+    <span class="node-usage-name">Upload</span>
+    <strong id="nodeUpload">...</strong>
+  </div>
+</div>
+</div>
+
+
+</div>
+
+
+<div class="sections">
+
+
+<div class="card">
+
+<h2>5tratumOS Host</h2>
+
+
+<div class="row">
+
+<span class="row-name">
+CPU Load
+</span>
+
+<span class="row-value"
+      id="cpuLoad">
+...
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="row-name">
+Memory
+</span>
+
+<span class="row-value"
+      id="memoryPct">
+...
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="row-name">
+Disk Used
+</span>
+
+<span class="row-value"
+      id="diskPct">
+...
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="row-name">
+Disk Available
+</span>
+
+<span class="row-value"
+      id="diskFree">
+...
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="row-name">
+Host Uptime
+</span>
+
+<span class="row-value"
+      id="hostUptime">
+...
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="row-name">
+Host IP
+</span>
+
+<span class="row-value"
+      id="hostIP">
+...
+</span>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>Application Health</h2>
+
+
+<div class="row">
+
+<span class="row-name">
+Mysterium Container
+</span>
+
+<span class="row-value"
+      id="mystContainer">
+...
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="row-name">
+Node UI Proxy
+</span>
+
+<span class="row-value"
+      id="proxyContainer">
+...
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="row-name">
+Kraskus Portal
+</span>
+
+<span class="row-value"
+      id="portalContainer">
+...
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="row-name">
+Node Runtime
+</span>
+
+<span class="row-value"
+      id="nodeRuntime">
+...
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="row-name">
+App Version
+</span>
+
+<span class="row-value"
+      id="appVersion">
+...
+</span>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="actions">
+
+
+<button class="action dark"
+        id="openNode">
+
+Open Local Node
+
+</button>
+
+
+<a class="action pink"
+
+href="https://mystnodes.co/?referral_code=CJSoelVnKkllilXIgv7JqeroUv1jhnZ4KWE4G6E4"
+
+target="_blank"
+
+rel="noopener">
+
+Create MystNodes Account
+
+</a>
+
+
+<a class="action light"
+
+href="https://my.mystnodes.com/"
+
+target="_blank"
+
+rel="noopener">
+
+my.mystnodes.com
+
+</a>
+
+
+</div>
+
+<div class="network-guide" id="networkGuide">
+
+  <div class="network-guide-head">
+    <div class="network-guide-title">Network Setup &amp; NAT</div>
+    <div class="network-guide-sub">Open NAT provides the best peer connectivity.</div>
+  </div>
+
+  <div class="network-guide-grid">
+
+    <div class="network-guide-box">
+      <h3>Recommended Router / Firewall Settings</h3>
+
+      <div class="network-guide-row">
+        <span class="network-guide-label">Node UI</span>
+        <span class="network-guide-value">TCP 4449</span>
+      </div>
+
+      <div class="network-guide-row">
+        <span class="network-guide-label">Peer traffic</span>
+        <span class="network-guide-value">UDP 56000–56100</span>
+      </div>
+
+      <div class="network-guide-row">
+        <span class="network-guide-label">Local Node UI</span>
+        <span class="network-guide-value">http://NODE-IP:4449</span>
+      </div>
+    </div>
+
+    <div class="network-guide-box">
+      <h3>NAT Status</h3>
+
+      <div class="network-guide-row">
+        <span class="network-guide-label">Open</span>
+        <span class="network-guide-value nat-good">Best connectivity</span>
+      </div>
+
+      <div class="network-guide-row">
+        <span class="network-guide-label">Moderate</span>
+        <span class="network-guide-value nat-warn">Usually works</span>
+      </div>
+
+      <div class="network-guide-row">
+        <span class="network-guide-label">Strict / Symmetric</span>
+        <span class="network-guide-value nat-bad">Limited connections</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="network-guide-note">
+    <strong>Recommended:</strong> assign the 5tratumOS host a stable LAN IP before creating port-forwarding rules.
+    Enable UPnP or forward the required UDP range; avoid using UPnP, manual forwarding, and DMZ at the same time.
+    TCP 4449 is the Node UI port and only needs internet exposure if you intentionally want remote Node UI access.
+    Restart the MystNodes service after router or firewall changes, then allow several minutes for NAT status to update.
+  </div>
+
+</div>
+
+
+
+</div>
+
+</section>
+
+
+<section class="node-container"
+         id="nodeContainer">
+
+
+<button class="back-button"
+        id="backToOverview">
+
+← Back to Overview
+
+</button>
+
+
+<div class="loader"
+     id="loader">
+
+Loading MystNodes...
+
+</div>
+
+
+<iframe id="nodeFrame"
+        src="about:blank">
+
+</iframe>
+
+
+</section>
+
+
+</main>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+
+const home =
+    document.getElementById("home");
+
+
+const container =
+    document.getElementById("nodeContainer");
+
+
+const appBody =
+    document.getElementById("appBody");
+
+
+const frame =
+    document.getElementById("nodeFrame");
+
+
+const loader =
+    document.getElementById("loader");
+
+
+let nodeLoaded = false;
+
+let wantedRoute =
+    "#/dashboard";
+
+
+function statusClass(
+    element,
+    value
+) {
+
+    element.classList.remove(
+        "good",
+        "bad"
+    );
+
+
+    if (
+        value === "Healthy" ||
+        value === "Reachable" ||
+        value === "Protected"
+    ) {
+
+        element.classList.add(
+            "good"
+        );
+
+    }
+
+
+    if (
+        value === "Stopped" ||
+        value === "Missing" ||
+        value === "Down"
+    ) {
+
+        element.classList.add(
+            "bad"
+        );
+
+    }
+
 }
 
-document.querySelectorAll("[data-panel]").forEach(btn=>{
-  btn.addEventListener("click",()=>showPanel(btn.dataset.panel));
-});
 
-document.getElementById("openNodeBtn").addEventListener("click",()=>showPanel("node"));
-document.getElementById("existingBtn").addEventListener("click",()=>showPanel("node"));
-document.getElementById("dashboardBtn").addEventListener("click",()=>{
-  window.open("https://my.mystnodes.com/","_blank","noopener");
-});
+async function refreshStatus() {
 
-frame.addEventListener("load",()=>loading.classList.add("hidden"));
+    try {
+
+        const r =
+            await fetch(
+                "status.json?t=" +
+                Date.now(),
+                {
+                    cache:"no-store"
+                }
+            );
+
+
+        const d =
+            await r.json();
+
+
+        const networkRaw = d.network_io || "Unknown";
+
+        let downloadValue = "Unknown";
+        let uploadValue = "Unknown";
+
+        if (networkRaw !== "Unknown") {
+            const parts = networkRaw.split("/");
+            if (parts.length >= 2) {
+                downloadValue = parts[0].replace("↓","").trim();
+                uploadValue = parts[1].replace("↑","").trim();
+            }
+        }
+
+        const downloadEl = document.getElementById("nodeDownload");
+        const uploadEl = document.getElementById("nodeUpload");
+
+        if (downloadEl) downloadEl.textContent = downloadValue;
+        if (uploadEl) uploadEl.textContent = uploadValue;
+
+
+
+        const map = {
+
+            mystState:
+                d.mysterium,
+
+            nodeState:
+                d.node_ui,
+
+            identityState:
+                d.identity,
+cpuLoad:
+                d.cpu_load,
+
+            memoryPct:
+                d.memory_pct + "%",
+
+            diskPct:
+                d.disk_pct + "%",
+
+            diskFree:
+                d.disk_free,
+
+            hostUptime:
+                d.host_uptime,
+
+            hostIP:
+                d.host_ip,
+
+            mystContainer:
+                d.mysterium,
+
+            proxyContainer:
+                d.nodeui_proxy,
+
+            portalContainer:
+                d.portal,
+
+            nodeRuntime:
+                d.node_runtime,
+
+            appVersion:
+                d.app_version
+
+        };
+
+
+        for (
+            const [id,value]
+            of Object.entries(map)
+        ) {
+
+            const el =
+                document.getElementById(id);
+
+            el.textContent =
+                value ?? "Unknown";
+
+            statusClass(
+                el,
+                value
+            );
+
+        }
+
+
+        document
+            .getElementById(
+                "updated"
+            )
+            .textContent =
+            "Updated " +
+            new Date(
+                d.updated_at
+            )
+            .toLocaleTimeString();
+
+
+    } catch (e) {
+
+        document
+            .getElementById(
+                "updated"
+            )
+            .textContent =
+            "Status unavailable";
+
+    }
+
+}
+
+
+function setActive(button) {
+
+    document
+        .querySelectorAll(
+            ".nav-button"
+        )
+        .forEach(
+            x =>
+                x.classList.remove(
+                    "active"
+                )
+        );
+
+
+    if (button) {
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+}
+
+
+function showHome() {
+
+    home.classList.remove(
+        "hidden"
+    );
+
+    container.classList.remove(
+        "active"
+    );
+
+    appBody.classList.remove(
+        "native-mode"
+    );
+
+
+    setActive(
+        document.querySelector(
+            "[data-home]"
+        )
+    );
+
+
+    refreshStatus();
+
+}
+
+
+function loadNode(route) {
+
+    wantedRoute =
+        route ||
+        "#/dashboard";
+
+
+    home.classList.add(
+        "hidden"
+    );
+
+
+    container.classList.add(
+        "active"
+    );
+
+
+    appBody.classList.add(
+        "native-mode"
+    );
+
+
+    if (!nodeLoaded) {
+
+        loader.classList.remove(
+            "hidden"
+        );
+
+
+        /*
+          Use local NodeUI proxy.
+          The working v2.2.4 logic already
+          determines the browser host.
+        */
+
+        frame.src =
+            location.protocol +
+            "//" +
+            location.hostname +
+            ":4449/";
+
+
+        return;
+
+    }
+
+
+    try {
+
+        frame
+            .contentWindow
+            .location
+            .hash =
+            wantedRoute;
+
+    } catch (e) {
+
+        frame.src =
+            location.protocol +
+            "//" +
+            location.hostname +
+            ":4449/" +
+            wantedRoute;
+
+    }
+
+}
+
+
+document
+    .querySelector(
+        "[data-home]"
+    )
+    .addEventListener(
+        "click",
+        showHome
+    );
+
+
+document
+    .querySelectorAll(
+        "[data-route]"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    setActive(
+                        button
+                    );
+
+                    loadNode(
+                        button.dataset.route
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "openNode"
+    )
+    .addEventListener(
+        "click",
+        () =>
+            loadNode(
+                "#/dashboard"
+            )
+    );
+
+
+document
+    .getElementById(
+        "backToOverview"
+    )
+    .addEventListener(
+        "click",
+        showHome
+    );
+
+
+document
+    .getElementById(
+        "mystWeb"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            window.open(
+                "https://my.mystnodes.com/",
+                "_blank",
+                "noopener"
+            );
+
+        }
+    );
+
+
+frame.addEventListener(
+    "load",
+    () => {
+
+        nodeLoaded =
+            true;
+
+
+        loader.classList.add(
+            "hidden"
+        );
+
+
+        try {
+
+            frame
+                .contentWindow
+                .location
+                .hash =
+                wantedRoute;
+
+        } catch (e) {}
+
+    }
+);
+
+
+refreshStatus();
+
+
+setInterval(
+    refreshStatus,
+    30000
+);
+
+
 </script>
+
+
 </body>
+
 </html>
