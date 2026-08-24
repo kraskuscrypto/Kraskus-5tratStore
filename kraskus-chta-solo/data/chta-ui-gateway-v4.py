@@ -11,6 +11,10 @@ import urllib.parse
 
 STATIC = Path("/app/ui/static")
 
+COMPAT_JS = Path(
+    "/qualification/chta-ui-compat-v1.js"
+)
+
 BACKEND_HOST = os.environ.get(
     "CHTA_BACKEND_HOST",
     "kraskus",
@@ -64,18 +68,24 @@ class Handler(SimpleHTTPRequestHandler):
         )
 
     def do_GET(self):
-        if self.path.startswith("/api/"):
-            parsed = urllib.parse.urlsplit(self.path)
+        parsed = urllib.parse.urlsplit(
+            self.path
+        )
 
+        if parsed.path.startswith("/api/"):
             if parsed.path == "/api/overview":
                 return self._proxy_overview()
 
             return self._proxy()
 
-        parsed = urllib.parse.urlsplit(self.path)
-
         if parsed.path in ("", "/"):
             return self._serve_index()
+
+        if (
+            parsed.path
+            == "/chta-ui-compat-v1.js"
+        ):
+            return self._serve_compat_js()
 
         return super().do_GET()
 
@@ -88,9 +98,33 @@ class Handler(SimpleHTTPRequestHandler):
             "",
         ).rstrip("/")
 
-        if prefix:
-            text = data.decode("utf-8")
+        text = data.decode("utf-8")
 
+        compat_src = (
+            f"{prefix}/chta-ui-compat-v1.js"
+            if prefix
+            else "/chta-ui-compat-v1.js"
+        )
+
+        compat_tag = (
+            '<script src="'
+            + compat_src
+            + '"></script>'
+        )
+
+        if (
+            "chta-ui-compat-v1.js"
+            not in text
+        ):
+            assert "</body>" in text
+
+            text = text.replace(
+                "</body>",
+                compat_tag + "\n</body>",
+                1,
+            )
+
+        if prefix:
             replacements = {
                 'href="/kraskus-chta.css"':
                     f'href="{prefix}/kraskus-chta.css"',
@@ -108,7 +142,7 @@ class Handler(SimpleHTTPRequestHandler):
                     target,
                 )
 
-            data = text.encode("utf-8")
+        data = text.encode("utf-8")
 
         self.send_response(200)
         self.send_header(
@@ -121,6 +155,34 @@ class Handler(SimpleHTTPRequestHandler):
         )
         self.end_headers()
         self.wfile.write(data)
+
+    def _serve_compat_js(self):
+        if not COMPAT_JS.is_file():
+            return self.send_error(404)
+
+        data = COMPAT_JS.read_bytes()
+
+        self.send_response(200)
+
+        self.send_header(
+            "Content-Type",
+            "application/javascript; charset=utf-8",
+        )
+
+        self.send_header(
+            "Cache-Control",
+            "no-store",
+        )
+
+        self.send_header(
+            "Content-Length",
+            str(len(data)),
+        )
+
+        self.end_headers()
+
+        if self.command != "HEAD":
+            self.wfile.write(data)
 
     def do_HEAD(self):
         if self.path.startswith("/api/"):
@@ -328,6 +390,31 @@ class Handler(SimpleHTTPRequestHandler):
 
             parts[name] = part_payload
 
+        status_payload = dict(
+            parts["status"]
+        )
+
+        node_payload = (
+            status_payload.get("node")
+        )
+
+        if isinstance(node_payload, dict):
+            for key in (
+                "height",
+                "estimated_height",
+                "headers",
+                "remaining_blocks",
+                "sync_percent",
+                "peers",
+            ):
+                if (
+                    key not in status_payload
+                    and key in node_payload
+                ):
+                    status_payload[key] = (
+                        node_payload[key]
+                    )
+
         readiness = dict(
             parts["readiness"]
         )
@@ -355,7 +442,7 @@ class Handler(SimpleHTTPRequestHandler):
 
         payload = {
             "status":
-                parts["status"],
+                status_payload,
             "readiness":
                 readiness,
             "settings":
