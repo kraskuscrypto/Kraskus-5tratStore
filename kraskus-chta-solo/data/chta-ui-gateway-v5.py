@@ -83,7 +83,7 @@ class Handler(SimpleHTTPRequestHandler):
 
         if (
             parsed.path
-            == "/chta-ui-compat-v1.js"
+            == "/chta-ui-compat-v2.js"
         ):
             return self._serve_compat_js()
 
@@ -101,9 +101,9 @@ class Handler(SimpleHTTPRequestHandler):
         text = data.decode("utf-8")
 
         compat_src = (
-            f"{prefix}/chta-ui-compat-v1.js"
+            f"{prefix}/chta-ui-compat-v2.js"
             if prefix
-            else "/chta-ui-compat-v1.js"
+            else "/chta-ui-compat-v2.js"
         )
 
         compat_tag = (
@@ -113,7 +113,7 @@ class Handler(SimpleHTTPRequestHandler):
         )
 
         if (
-            "chta-ui-compat-v1.js"
+            "chta-ui-compat-v2.js"
             not in text
         ):
             assert "</body>" in text
