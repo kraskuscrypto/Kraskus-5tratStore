@@ -1,7 +1,7 @@
 schemaVersion: 1
 status: proposed
 appId: kraskus-chta-solo
-appVersion: 0.2.9-beta
+appVersion: 0.2.10-beta
 reviewedAt: ""
 reviewedBy: ""
 
@@ -52,5 +52,7 @@ notes: >-
   RPC credentials are generated locally at first installation. TCP
   3336 is exposed for Stratum miners. The application HTTP interface
   is accessed through native 5tratumOS app_proxy. Store-specific
-  install, start, restart, update, and uninstall tests remain pending,
-  so this review remains proposed.
+  lifecycle qualification has been exercised on the 0.2.9-beta
+  baseline. Version 0.2.10-beta adds a Store-side Connect UI
+  compatibility refinement and remains proposed pending targeted
+  update and visual requalification.
