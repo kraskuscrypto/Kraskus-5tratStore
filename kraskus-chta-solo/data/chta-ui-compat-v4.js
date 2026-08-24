@@ -327,7 +327,7 @@
         }
 
         const copyAll = findExactText(document, "Copy All Settings");
-        const copyAllButton = copyAll?.closest("button") || (copyAll?.tagName === "BUTTON" ? copyAll : null);
+        const copyAllButton = copyAll?.closest("button");
         if (copyAllButton) {
             copyAllButton.disabled = !truth.payoutConfigured;
             copyAllButton.setAttribute("aria-disabled", truth.payoutConfigured ? "false" : "true");
@@ -454,19 +454,21 @@
         observer.observe(surface, { childList: true, subtree: true });
     }
 
-    function installConnectObserver() {
-        const root = document.body;
-        if (!root) return;
-        const observer = new MutationObserver(() => queueApply());
-        observer.observe(root, { childList: true, subtree: true });
-    }
-
     function installCompatDomOwnership() {
         suppressLegacyConnectPanel();
         suppressLegacyReadinessPanel();
         suppressRedundantQuickSetup();
         installRoundObserver();
-        installConnectObserver();
+
+        /*
+         * Tab switches are user actions. Re-apply after clicks rather
+         * than observing the whole document, because this overlay owns
+         * Connect DOM and must never self-trigger on its own writes.
+         */
+        document.addEventListener("click", () => {
+            window.setTimeout(queueApply, 0);
+        });
+
         window.setTimeout(queueApply, 0);
     }
 
