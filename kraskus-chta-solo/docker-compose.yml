@@ -14,7 +14,7 @@ services:
       - python3
       - /qualification/init_config_v2.py
     volumes:
-      - ./init_config_v2.py:/qualification/init_config_v2.py:ro
+      - ${APP_DATA_DIR}/data/init_config_v2.py:/qualification/init_config_v2.py:ro
       - ${APP_DATA_DIR}/config:/kraskus-config
       - ${APP_DATA_DIR}/secrets:/run/secrets
       - ${APP_DATA_DIR}/pool:/ckpool-data
@@ -61,7 +61,7 @@ services:
     volumes:
       - ${APP_DATA_DIR}/config:/kraskus-config:ro
       - ${APP_DATA_DIR}/pool:/www
-      - ./ckpool-entrypoint-v2.sh:/kraskus-entrypoint.sh:ro
+      - ${APP_DATA_DIR}/data/ckpool-entrypoint-v2.sh:/kraskus-entrypoint.sh:ro
     entrypoint:
       - /bin/sh
       - /kraskus-entrypoint.sh
