@@ -137,7 +137,7 @@ services:
       CHTA_UI_PORT: "18412"
 
     volumes:
-      - ${APP_DATA_DIR}/data/chta-ui-gateway-v2.py:/qualification/chta-ui-gateway.py:ro
+      - ${APP_DATA_DIR}/data/chta-ui-gateway-v3.py:/qualification/chta-ui-gateway.py:ro
 
     entrypoint:
       - python3
