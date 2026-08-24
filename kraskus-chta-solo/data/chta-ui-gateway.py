@@ -69,9 +69,52 @@ class Handler(SimpleHTTPRequestHandler):
         parsed = urllib.parse.urlsplit(self.path)
 
         if parsed.path in ("", "/"):
-            self.path = "/index-bch.html"
+            return self._serve_index()
 
         return super().do_GET()
+
+    def _serve_index(self):
+        index = STATIC / "index-bch.html"
+        data = index.read_bytes()
+
+        prefix = self.headers.get(
+            "X-Forwarded-Prefix",
+            "",
+        ).rstrip("/")
+
+        if prefix:
+            text = data.decode("utf-8")
+
+            replacements = {
+                'href="/kraskus-chta.css"':
+                    f'href="{prefix}/kraskus-chta.css"',
+                'href="/kraskus-mining-v2.css"':
+                    f'href="{prefix}/kraskus-mining-v2.css"',
+                'src="/kraskus-chta.js"':
+                    f'src="{prefix}/kraskus-chta.js"',
+                'src="/kraskus-mining-v2.js"':
+                    f'src="{prefix}/kraskus-mining-v2.js"',
+            }
+
+            for source, target in replacements.items():
+                text = text.replace(
+                    source,
+                    target,
+                )
+
+            data = text.encode("utf-8")
+
+        self.send_response(200)
+        self.send_header(
+            "Content-Type",
+            "text/html; charset=utf-8",
+        )
+        self.send_header(
+            "Content-Length",
+            str(len(data)),
+        )
+        self.end_headers()
+        self.wfile.write(data)
 
     def do_HEAD(self):
         if self.path.startswith("/api/"):
