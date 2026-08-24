@@ -2,8 +2,8 @@ services:
 
   app_proxy:
     environment:
-      APP_HOST: kraskus
-      APP_PORT: 18411
+      APP_HOST: ui
+      APP_PORT: 18412
 
 
   init:
@@ -108,6 +108,41 @@ services:
       - ${APP_DATA_DIR}/config:/kraskus-config
       - ${APP_DATA_DIR}/secrets:/run/secrets:ro
       - ${APP_DATA_DIR}/pool:/ckpool-data:ro
+
+    networks:
+      - chta
+
+    read_only: true
+
+    tmpfs:
+      - /tmp
+
+    cap_drop:
+      - ALL
+
+    security_opt:
+      - no-new-privileges:true
+
+
+  ui:
+    image: ghcr.io/kraskuscrypto/kraskus-chta-solo@sha256:36affa9593c3fab2d6f29f255eaffc69233f96fcd50cbe21ace1900ed45eb24b
+    restart: unless-stopped
+    depends_on:
+      kraskus:
+        condition: service_started
+
+    environment:
+      CHTA_BACKEND_HOST: kraskus
+      CHTA_BACKEND_PORT: "18411"
+      CHTA_UI_PORT: "18412"
+
+    volumes:
+      - ${APP_DATA_DIR}/data/chta-ui-gateway.py:/qualification/chta-ui-gateway.py:ro
+
+    entrypoint:
+      - python3
+    command:
+      - /qualification/chta-ui-gateway.py
 
     networks:
       - chta
