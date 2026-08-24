@@ -71,7 +71,7 @@ services:
       - no-new-privileges:true
 
   kraskus:
-    image: ghcr.io/kraskuscrypto/kraskus-chta-solo@sha256:36affa9593c3fab2d6f29f255eaffc69233f96fcd50cbe21ace1900ed45eb24b
+    image: ghcr.io/kraskuscrypto/kraskus-chta-solo@sha256:e0cdd6eaddedb9fc620ae07f6e75dea5722a2490779dae33218b050a7ab6a133
     restart: unless-stopped
     depends_on:
       init:
@@ -86,7 +86,7 @@ services:
       KRASKUS_API_PORT: "18411"
 
       KRASKUS_APP_NAME: Kraskus CHTA Solo
-      KRASKUS_APP_VERSION: v2-stage6-candidate2
+      KRASKUS_APP_VERSION: v2-stage6-candidate3
 
       KRASKUS_CHTA_RPC_URL: http://cheetahcoin:8536/
       KRASKUS_CHTA_RPC_USER_FILE: /run/secrets/rpc-user
@@ -125,7 +125,7 @@ services:
 
 
   ui:
-    image: ghcr.io/kraskuscrypto/kraskus-chta-solo@sha256:36affa9593c3fab2d6f29f255eaffc69233f96fcd50cbe21ace1900ed45eb24b
+    image: ghcr.io/kraskuscrypto/kraskus-chta-solo@sha256:e0cdd6eaddedb9fc620ae07f6e75dea5722a2490779dae33218b050a7ab6a133
     restart: unless-stopped
     depends_on:
       kraskus:
