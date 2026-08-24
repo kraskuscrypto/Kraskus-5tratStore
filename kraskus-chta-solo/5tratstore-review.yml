@@ -1,7 +1,7 @@
 schemaVersion: 1
 status: proposed
 appId: kraskus-chta-solo
-appVersion: 0.2.10-beta
+appVersion: 0.2.11-beta
 reviewedAt: ""
 reviewedBy: ""
 
@@ -53,6 +53,7 @@ notes: >-
   3336 is exposed for Stratum miners. The application HTTP interface
   is accessed through native 5tratumOS app_proxy. Store-specific
   lifecycle qualification has been exercised on the 0.2.9-beta
-  baseline. Version 0.2.10-beta adds a Store-side Connect UI
-  compatibility refinement and remains proposed pending targeted
-  update and visual requalification.
+  baseline. Version 0.2.11-beta refines Connect-state presentation
+  and adds explicit, verified-intent copy handling with an insecure-
+  origin fallback for local HTTP deployments. Review remains proposed
+  pending targeted update and browser copy/visual requalification.
