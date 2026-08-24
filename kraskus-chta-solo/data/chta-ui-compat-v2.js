@@ -172,6 +172,61 @@
             || status.network
             || "";
 
+        const workers =
+            data.workers || {};
+
+        const blocks =
+            data.blocks || {};
+
+        const workerList =
+            Array.isArray(workers.workers)
+                ? workers.workers
+                : [];
+
+        const minerCountRaw =
+            workers.count;
+
+        const minerCount =
+            Number.isFinite(
+                Number(minerCountRaw)
+            )
+                ? Number(minerCountRaw)
+                : workerList.length;
+
+        const shareCountRaw =
+            workers.total_shares;
+
+        const shareCount =
+            Number.isFinite(
+                Number(shareCountRaw)
+            )
+                ? Number(shareCountRaw)
+                : workerList.reduce(
+                    (sum, worker) =>
+                        sum
+                        + Number(
+                            worker.accepted_shares
+                            ?? worker.shares
+                            ?? 0
+                        ),
+                    0
+                );
+
+        const blockList =
+            Array.isArray(blocks.blocks)
+                ? blocks.blocks
+                : [];
+
+        const blockCountRaw =
+            blocks.count;
+
+        const blockCount =
+            Number.isFinite(
+                Number(blockCountRaw)
+            )
+                ? Number(blockCountRaw)
+                : blockList.length;
+
         /*
          * Synchronization state has priority over payout setup
          * for the global appliance-state indicators. A syncing
@@ -239,6 +294,21 @@
                 "—"
             );
         }
+
+        setText(
+            "machineMiners",
+            minerCount
+        );
+
+        setText(
+            "machineShares",
+            shareCount
+        );
+
+        setText(
+            "machineBlocks",
+            blockCount
+        );
 
         if (network) {
             setText(
@@ -372,8 +442,32 @@
         }
     }
 
+    function suppressLegacyConnectPanel() {
+        const panels =
+            document.querySelectorAll(
+                ".kr-connect-v2-host"
+            );
+
+        for (const panel of panels) {
+            panel.hidden = true;
+
+            panel.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+            panel.style.setProperty(
+                "display",
+                "none",
+                "important"
+            );
+        }
+    }
+
     function apply() {
         applyQueued = false;
+
+        suppressLegacyConnectPanel();
 
         if (lastOverview) {
             applyLegacyState(
@@ -490,18 +584,34 @@
         );
     }
 
+    function installCompatDomOwnership() {
+        suppressLegacyConnectPanel();
+        installRoundObserver();
+
+        /*
+         * Frozen V2 installs the legacy connection transform
+         * during DOMContentLoaded as well. One deferred pass
+         * ensures our Store compatibility layer runs after
+         * those synchronous startup handlers complete.
+         */
+        window.setTimeout(
+            suppressLegacyConnectPanel,
+            0
+        );
+    }
+
     if (
         document.readyState === "loading"
     ) {
         document.addEventListener(
             "DOMContentLoaded",
-            installRoundObserver,
+            installCompatDomOwnership,
             {
                 once: true,
             }
         );
     } else {
-        installRoundObserver();
+        installCompatDomOwnership();
     }
 
     /*
