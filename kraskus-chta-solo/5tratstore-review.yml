@@ -1,0 +1,56 @@
+schemaVersion: 1
+status: proposed
+appId: kraskus-chta-solo
+appVersion: 0.2.0-beta
+reviewedAt: ""
+reviewedBy: ""
+
+upstream:
+  sourceUrl: https://github.com/kraskuscrypto/Kraskus-5tratStore
+  license: mixed
+  licenseEvidence: LICENSES.md
+
+rights:
+  packageOriginal: true
+  softwareDistributionCleared: true
+  containerUseCleared: true
+  listingTextCleared: true
+  artworkCleared: true
+  noticesIncluded: true
+
+delivery:
+  mode: immutable-container-appliance
+  storePayload: recipe-only
+  mirrorsThirdPartyPayload: false
+
+compatibility:
+  osVersions:
+    - Debian-13-5tratumOS-clean-room
+  architectures:
+    - amd64
+  installTested: false
+  startTested: false
+  updateTested: false
+  uninstallTested: false
+
+security:
+  privileged: false
+  hostNetwork: false
+  dockerSocket: false
+  hostMountsReviewed: true
+  devicesReviewed: true
+  networkEndpointsReviewed: true
+
+notes: >-
+  Backend V2 passed deterministic startup recovery, full-stack
+  container restart, and full guest-VM reboot qualification on
+  2026-08-24. The exact qualified application images were published
+  to GHCR without rebuilding them. The qualified CheetahCoin Core
+  image reuses its existing immutable Kraskus GHCR digest. The
+  qualified CKPool image is exactly the existing immutable WillItMod
+  artifact and is referenced directly rather than mirrored. Runtime
+  RPC credentials are generated locally at first installation. TCP
+  3336 is exposed for Stratum miners. The application HTTP interface
+  is accessed through native 5tratumOS app_proxy. Store-specific
+  install, start, restart, update, and uninstall tests remain pending,
+  so this review remains proposed.
