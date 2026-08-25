@@ -127,7 +127,7 @@ services:
 
     volumes:
       - ${APP_DATA_DIR}/data/chta-ui-gateway-v5.py:/qualification/chta-ui-gateway.py:ro
-      - ${APP_DATA_DIR}/data/chta-ui-prepaint-v3.js:/qualification/chta-ui-compat-v1.js:ro
+      - ${APP_DATA_DIR}/data/chta-ui-prepaint-v4.js:/qualification/chta-ui-compat-v1.js:ro
       - ${APP_DATA_DIR}/data/chta-ui-compat-v6.js:/app/ui/static/chta-ui-compat-v6.js:ro
 
     entrypoint:
