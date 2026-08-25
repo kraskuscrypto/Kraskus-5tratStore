@@ -1,7 +1,7 @@
 schemaVersion: 1
 status: proposed
 appId: kraskus-chta-solo
-appVersion: 0.2.19-beta
+appVersion: 0.2.20-beta
 reviewedAt: ""
 reviewedBy: ""
 
@@ -53,8 +53,10 @@ notes: >-
   3336 is exposed for Stratum miners. The application HTTP interface
   is accessed through native 5tratumOS app_proxy. Store-specific
   lifecycle qualification has been exercised on the 0.2.9-beta
-  baseline. Version 0.2.19-beta preserves all prior stabilization and
-  Settings behavior while replacing the stale Node & Storage sentence
-  using whitespace-normalized text-node matching proven against the
-  live Workbench DOM. Review remains proposed pending targeted Settings
-  visual, local-preference persistence, and notification qualification.
+  baseline. Version 0.2.20-beta preserves all prior stabilization and
+  Settings behavior, including the qualified Node & Storage copy fix,
+  and adds graceful browser-notification degradation: insecure HTTP
+  contexts report HTTPS required, while secure contexts with denied
+  permission report browser settings blocked rather than leaving a
+  misleading enabled button. Review remains proposed pending targeted
+  notification UX verification and remaining final UI qualification.
