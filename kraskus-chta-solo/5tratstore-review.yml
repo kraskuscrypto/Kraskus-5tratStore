@@ -1,7 +1,7 @@
 schemaVersion: 1
 status: proposed
 appId: kraskus-chta-solo
-appVersion: 0.2.15-beta
+appVersion: 0.2.16-beta
 reviewedAt: ""
 reviewedBy: ""
 
@@ -53,9 +53,9 @@ notes: >-
   3336 is exposed for Stratum miners. The application HTTP interface
   is accessed through native 5tratumOS app_proxy. Store-specific
   lifecycle qualification has been exercised on the 0.2.9-beta
-  baseline. Version 0.2.15-beta preserves the prefixed overview
-  bootstrap and closes a DOM timing race: when the Connect builder
-  appears after overview state is already available, the pre-paint
-  observer explicitly re-queues the compatibility apply until the
-  adapted notes are present. Review remains proposed pending targeted
-  browser visual requalification.
+  baseline. Version 0.2.16-beta generalizes the post-navigation
+  compatibility stabilization across Overview, Fleet, Payouts,
+  Connect, and Settings. Each tab transition schedules bounded
+  compatibility re-applies while preserving the Connect pre-paint
+  guard and prefixed overview bootstrap. Review remains proposed
+  pending targeted browser visual requalification of all five tabs.
