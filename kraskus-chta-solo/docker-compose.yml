@@ -61,7 +61,7 @@ services:
     volumes:
       - ${APP_DATA_DIR}/config:/kraskus-config:ro
       - ${APP_DATA_DIR}/pool:/www
-      - ${APP_DATA_DIR}/data/ckpool-entrypoint-v2.sh:/kraskus-entrypoint.sh:ro
+      - ${APP_DATA_DIR}/data/ckpool-entrypoint-v3.sh:/kraskus-entrypoint.sh:ro
     entrypoint:
       - /bin/sh
       - /kraskus-entrypoint.sh
@@ -85,7 +85,7 @@ services:
       KRASKUS_API_HOST: 0.0.0.0
       KRASKUS_API_PORT: "18411"
       KRASKUS_APP_NAME: Kraskus CHTA Solo
-      KRASKUS_APP_VERSION: v2-stage6-candidate5
+      KRASKUS_APP_VERSION: v2-stage6-candidate6
       KRASKUS_CHTA_RPC_URL: http://cheetahcoin:8536/
       KRASKUS_CHTA_RPC_USER_FILE: /run/secrets/rpc-user
       KRASKUS_CHTA_RPC_PASSWORD_FILE: /run/secrets/rpc-password
