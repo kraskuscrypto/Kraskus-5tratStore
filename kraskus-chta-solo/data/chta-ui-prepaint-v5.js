@@ -5,9 +5,12 @@
     const PREPAINT_ATTR = "data-kr-connect-prepaint-hidden";
     const TAB_NAMES = new Set(["overview", "fleet", "payouts", "connect", "settings"]);
     const STABILITY_DELAYS_MS = [0, 40, 100, 180, 320, 550];
+    const CONNECT_RETRY_DELAYS_MS = [0, 40, 100, 180, 320, 550, 900, 1400];
     const currentSrc = document.currentScript?.src || window.location.href;
     const baseUrl = new URL("./", currentSrc);
     let connectKickQueued = false;
+    let connectRetryTimer = null;
+    let connectRetryAttempt = 0;
     let lastObservedTab = null;
 
     function directText(el) {
@@ -89,9 +92,10 @@
     }
 
     function compatReady() {
+        const version = String(window.__KRASKUS_CHTA_COMPAT_VERSION__ || "");
         return (
             window.__KRASKUS_CHTA_PREFIXED_OVERVIEW_BOOTSTRAP__ === "PASS" &&
-            window.__KRASKUS_CHTA_COMPAT_VERSION__ === "v6"
+            (version === "v6" || version === "v7")
         );
     }
 
@@ -121,38 +125,148 @@
         }
     }
 
+    function resetConnectRetry() {
+        if (connectRetryTimer !== null) {
+            window.clearTimeout(connectRetryTimer);
+            connectRetryTimer = null;
+        }
+        connectRetryAttempt = 0;
+    }
+
     function scheduleConnectCompatKick() {
+        if (document.getElementById(NOTES_ID)) {
+            resetConnectRetry();
+            return;
+        }
+
+        /*
+         * The initial Connect race happens before Connection Builder
+         * exists. Do not require findBuilder() before scheduling the
+         * compatibility kick; the kick itself is what can cause the
+         * missing Connect content to render.
+         */
+        if (detectActiveTab() !== "connect") return;
         if (connectKickQueued) return;
-        if (!compatReady()) return;
-        if (document.getElementById(NOTES_ID)) return;
-        if (!findBuilder()) return;
-        connectKickQueued = true;
-        window.requestAnimationFrame(() => {
-            connectKickQueued = false;
-            if (document.getElementById(NOTES_ID)) return;
-            kickCompat("connect", "dom-race");
-            window.__KRASKUS_CHTA_DOM_RACE_KICK__ = (window.__KRASKUS_CHTA_DOM_RACE_KICK__ || 0) + 1;
-        });
+        if (connectRetryTimer !== null) return;
+        if (connectRetryAttempt >= CONNECT_RETRY_DELAYS_MS.length) return;
+
+        const attempt = connectRetryAttempt;
+        const delay = CONNECT_RETRY_DELAYS_MS[attempt];
+        connectRetryAttempt += 1;
+
+        connectRetryTimer = window.setTimeout(() => {
+            connectRetryTimer = null;
+
+            if (document.getElementById(NOTES_ID)) {
+                resetConnectRetry();
+                return;
+            }
+
+            if (detectActiveTab() !== "connect") {
+                resetConnectRetry();
+                return;
+            }
+
+            if (!compatReady()) {
+                scheduleConnectCompatKick();
+                return;
+            }
+
+            connectKickQueued = true;
+
+            window.requestAnimationFrame(() => {
+                connectKickQueued = false;
+
+                if (document.getElementById(NOTES_ID)) {
+                    resetConnectRetry();
+                    return;
+                }
+
+                kickCompat(
+                    "connect",
+                    `dom-race:${attempt}`
+                );
+
+                window.__KRASKUS_CHTA_DOM_RACE_KICK__ =
+                    (window.__KRASKUS_CHTA_DOM_RACE_KICK__ || 0) + 1;
+
+                reconcileConnectPaint();
+                scheduleConnectCompatKick();
+            });
+        }, delay);
+    }
+
+    function installConnectVisualFix() {
+        const id = "krConnectVisualFix";
+        if (document.getElementById(id)) return;
+
+        const style = document.createElement("style");
+        style.id = id;
+        style.textContent = `
+            .kr-connect-builder {
+                display: grid !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                position: relative !important;
+                z-index: 100 !important;
+                background: #0b1011 !important;
+                border: 1px solid #263437 !important;
+                border-radius: 14px !important;
+                color: #f2f5f6 !important;
+            }
+
+            .kr-connect-builder * {
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+
+            .kr-connect-builder input {
+                background: #070a0b !important;
+                border-color: #263437 !important;
+                color: #f2f5f6 !important;
+            }
+        `;
+        document.head.appendChild(style);
+        window.__KRASKUS_CHTA_CONNECT_VISUAL_FIX__ = "PASS";
     }
 
     function reconcileConnectPaint() {
         hideQuickSetup();
+
         const builder = findBuilder();
         if (!builder) return;
-        const adaptedReady = Boolean(document.getElementById(NOTES_ID));
-        if (!adaptedReady) {
-            if (builder.getAttribute(PREPAINT_ATTR) !== "1") {
-                builder.setAttribute(PREPAINT_ATTR, "1");
-                builder.style.setProperty("visibility", "hidden", "important");
-                builder.style.setProperty("pointer-events", "none", "important");
-            }
-            scheduleConnectCompatKick();
-            return;
-        }
+
+        installConnectVisualFix();
+
+        /*
+         * The base Candidate9 UI owns Connection Builder rendering.
+         * Never hide an already-rendered builder while waiting for
+         * compatibility decorations such as Operational Notes.
+         */
         if (builder.getAttribute(PREPAINT_ATTR) === "1") {
             builder.removeAttribute(PREPAINT_ATTR);
-            builder.style.removeProperty("visibility");
-            builder.style.removeProperty("pointer-events");
+        }
+
+        builder.style.removeProperty("visibility");
+        builder.style.removeProperty("pointer-events");
+
+        /*
+         * Candidate9 Connect content is present and hit-testable but can
+         * inherit stale hidden/transparent styling from prior UI layers.
+         * Normalize visibility only inside the Connection Builder.
+         */
+        builder.style.setProperty("visibility", "visible", "important");
+        builder.style.setProperty("opacity", "1", "important");
+        builder.style.setProperty("position", "relative", "important");
+        builder.style.setProperty("z-index", "1", "important");
+
+        for (const node of builder.querySelectorAll("*")) {
+            node.style.setProperty("visibility", "visible", "important");
+            node.style.setProperty("opacity", "1", "important");
+        }
+
+        if (!document.getElementById(NOTES_ID)) {
+            scheduleConnectCompatKick();
         }
     }
 
@@ -160,6 +274,11 @@
         const tab = detectActiveTab();
         if (!tab || tab === lastObservedTab) return;
         lastObservedTab = tab;
+
+        if (tab === "connect") {
+            resetConnectRetry();
+        }
+
         scheduleTabStability(tab, "active-tab-change");
     }
 
@@ -167,6 +286,11 @@
         if (!document.body) return;
         document.addEventListener("click", event => {
             const tab = tabFromNode(event.target);
+
+            if (tab === "connect") {
+                resetConnectRetry();
+            }
+
             if (tab) scheduleTabStability(tab, "tab-click");
         }, true);
 
