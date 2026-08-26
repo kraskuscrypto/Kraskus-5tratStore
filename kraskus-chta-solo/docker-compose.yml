@@ -61,7 +61,7 @@ services:
     volumes:
       - ${APP_DATA_DIR}/config:/kraskus-config:ro
       - ${APP_DATA_DIR}/pool:/www
-      - ${APP_DATA_DIR}/data/ckpool-entrypoint-v2.sh:/kraskus-entrypoint.sh:ro
+      - ${APP_DATA_DIR}/data/ckpool-entrypoint-v3.sh:/kraskus-entrypoint.sh:ro
     entrypoint:
       - /bin/sh
       - /kraskus-entrypoint.sh
@@ -71,7 +71,7 @@ services:
       - no-new-privileges:true
 
   kraskus:
-    image: ghcr.io/kraskuscrypto/kraskus-chta-solo@sha256:e0cdd6eaddedb9fc620ae07f6e75dea5722a2490779dae33218b050a7ab6a133
+    image: ghcr.io/kraskuscrypto/kraskus-chta-solo@sha256:cae38cbd217d3ebdf357f3a740ea120363487a1fa8f67dada7f8d5238d287def
     restart: unless-stopped
     depends_on:
       init:
@@ -85,12 +85,13 @@ services:
       KRASKUS_API_HOST: 0.0.0.0
       KRASKUS_API_PORT: "18411"
       KRASKUS_APP_NAME: Kraskus CHTA Solo
-      KRASKUS_APP_VERSION: v2-stage6-candidate3
+      KRASKUS_APP_VERSION: v2-stage6-candidate8
       KRASKUS_CHTA_RPC_URL: http://cheetahcoin:8536/
       KRASKUS_CHTA_RPC_USER_FILE: /run/secrets/rpc-user
       KRASKUS_CHTA_RPC_PASSWORD_FILE: /run/secrets/rpc-password
       KRASKUS_CHTA_SHARELOG_DIR: /ckpool-data
       KRASKUS_CHTA_USERS_DIR: /ckpool-data/users
+      KRASKUS_CHTA_CKPOOL_STATUS_FILE: /ckpool-data/pool/pool.status
       KRASKUS_CHTA_SETTINGS_FILE: /kraskus-config/settings.json
       KRASKUS_CHTA_CKPOOL_CONFIG: /kraskus-config/ckpool.conf
       KRASKUS_CHTA_RELOAD_REQUEST_FILE: /kraskus-config/reload-request.json
@@ -114,7 +115,7 @@ services:
 
 
   ui:
-    image: ghcr.io/kraskuscrypto/kraskus-chta-solo@sha256:e0cdd6eaddedb9fc620ae07f6e75dea5722a2490779dae33218b050a7ab6a133
+    image: ghcr.io/kraskuscrypto/kraskus-chta-solo@sha256:cae38cbd217d3ebdf357f3a740ea120363487a1fa8f67dada7f8d5238d287def
     restart: unless-stopped
     depends_on:
       kraskus:
@@ -131,7 +132,7 @@ services:
       - ${APP_DATA_DIR}/data/chta-ui-prepaint-v7.js:/app/ui/static/chta-ui-prepaint-v7.js:ro
       - ${APP_DATA_DIR}/data/chta-ui-prepaint-v6.js:/app/ui/static/chta-ui-prepaint-v6.js:ro
       - ${APP_DATA_DIR}/data/chta-ui-prepaint-v5.js:/app/ui/static/chta-ui-prepaint-v5.js:ro
-      - ${APP_DATA_DIR}/data/chta-ui-compat-v6.js:/app/ui/static/chta-ui-compat-v6.js:ro
+      - ${APP_DATA_DIR}/data/chta-ui-compat-v7.js:/app/ui/static/chta-ui-compat-v6.js:ro
 
     entrypoint:
       - python3

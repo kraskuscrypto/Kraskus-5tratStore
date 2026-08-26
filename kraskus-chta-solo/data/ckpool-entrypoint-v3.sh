@@ -23,6 +23,23 @@ stop_child() {
     CHILD=""
 }
 
+normalize_telemetry_permissions() {
+    # CKPool creates /www/pool as root:root 0750. The Kraskus
+    # telemetry backend runs as uid/gid 1000 and mounts /www
+    # read-only at /ckpool-data, so it requires traverse permission
+    # on this directory to read pool/pool.status.
+    #
+    # Keep telemetry readable/traversable without granting write
+    # permission to the backend.
+    mkdir -p /www/pool
+
+    chmod 0755 /www/pool 2>/dev/null || true
+
+    if [ -f /www/pool/pool.status ]; then
+        chmod 0644 /www/pool/pool.status 2>/dev/null || true
+    fi
+}
+
 payout_configured() {
     VALUE="$(
         sed -n \
@@ -40,12 +57,18 @@ start_child() {
         return 2
     fi
 
+    normalize_telemetry_permissions
+
     echo "[chta-v2] Starting CKPool"
 
     "$CKPOOL_BIN" -c "$CONFIG" &
     CHILD=$!
 
     sleep 1
+
+    # CKPool may create/recreate its telemetry directory during
+    # startup, so normalize again after initialization.
+    normalize_telemetry_permissions
 
     if ! kill -0 "$CHILD" 2>/dev/null; then
         echo "[chta-v2] CKPool failed to start"
@@ -122,6 +145,10 @@ done
 start_child || true
 
 while :; do
+    # Preserve the cross-container telemetry read contract if CKPool
+    # recreates pool/ or pool.status while running.
+    normalize_telemetry_permissions
+
     if [ -n "$CHILD" ] && ! kill -0 "$CHILD" 2>/dev/null; then
         wait "$CHILD" 2>/dev/null || true
         CHILD=""
