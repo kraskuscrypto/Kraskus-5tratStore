@@ -1,7 +1,7 @@
 schemaVersion: 1
 status: proposed
 appId: kraskus-chta-solo
-appVersion: 0.2.27-beta
+appVersion: 0.2.28-beta
 reviewedAt: ""
 reviewedBy: ""
 
@@ -51,11 +51,11 @@ notes: >-
   artifact and is referenced directly rather than mirrored. Runtime
   RPC credentials are generated locally at first installation. TCP
   3336 is exposed for Stratum miners. The application HTTP interface
-  is accessed through native 5tratumOS app_proxy. Store-specific
-  lifecycle qualification has been exercised on the 0.2.9-beta
-  baseline. Version 0.2.27-beta keeps the qualified Candidate8
-  immutable runtime images and adds a Store-side UI telemetry hotfix:
-  current-round Last Share may fall back to a worker timestamp only
-  when that timestamp belongs to the active round, and an empty
-  submission-history table is replaced by a truthful worker best-
-  difficulty leaderboard derived from authoritative worker telemetry.
+  is accessed through native 5tratumOS app_proxy. Version 0.2.28-beta
+  restores the complete qualified v7 compatibility chain at the
+  chta-ui-compat-v6.js path expected by the existing prepaint stack,
+  then loads the Last Share and worker best-difficulty polish as a
+  separate hotfix. This corrects the 0.2.27 packaging regression that
+  caused legacy Overview content and stale Connect/Settings behavior
+  to reappear while preserving the immutable Candidate8 runtime
+  images and all persistent node, pool, wallet, and settings data.
