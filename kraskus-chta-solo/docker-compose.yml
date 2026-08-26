@@ -12,9 +12,9 @@ services:
     user: "0:0"
     command:
       - python3
-      - /qualification/init_config_v2.py
+      - /qualification/init_config_v3.py
     volumes:
-      - ${APP_DATA_DIR}/data/init_config_v2.py:/qualification/init_config_v2.py:ro
+      - ${APP_DATA_DIR}/data/init_config_v3.py:/qualification/init_config_v3.py:ro
       - ${APP_DATA_DIR}/config:/kraskus-config
       - ${APP_DATA_DIR}/secrets:/run/secrets
       - ${APP_DATA_DIR}/pool:/ckpool-data
