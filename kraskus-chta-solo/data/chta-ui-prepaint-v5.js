@@ -198,22 +198,24 @@
 
     function reconcileConnectPaint() {
         hideQuickSetup();
+
         const builder = findBuilder();
         if (!builder) return;
-        const adaptedReady = Boolean(document.getElementById(NOTES_ID));
-        if (!adaptedReady) {
-            if (builder.getAttribute(PREPAINT_ATTR) !== "1") {
-                builder.setAttribute(PREPAINT_ATTR, "1");
-                builder.style.setProperty("visibility", "hidden", "important");
-                builder.style.setProperty("pointer-events", "none", "important");
-            }
-            scheduleConnectCompatKick();
-            return;
-        }
+
+        /*
+         * The base Candidate9 UI owns Connection Builder rendering.
+         * Never hide an already-rendered builder while waiting for
+         * compatibility decorations such as Operational Notes.
+         */
         if (builder.getAttribute(PREPAINT_ATTR) === "1") {
             builder.removeAttribute(PREPAINT_ATTR);
-            builder.style.removeProperty("visibility");
-            builder.style.removeProperty("pointer-events");
+        }
+
+        builder.style.removeProperty("visibility");
+        builder.style.removeProperty("pointer-events");
+
+        if (!document.getElementById(NOTES_ID)) {
+            scheduleConnectCompatKick();
         }
     }
 
