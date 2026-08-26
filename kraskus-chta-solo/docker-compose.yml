@@ -132,7 +132,8 @@ services:
       - ${APP_DATA_DIR}/data/chta-ui-prepaint-v7.js:/app/ui/static/chta-ui-prepaint-v7.js:ro
       - ${APP_DATA_DIR}/data/chta-ui-prepaint-v6.js:/app/ui/static/chta-ui-prepaint-v6.js:ro
       - ${APP_DATA_DIR}/data/chta-ui-prepaint-v5.js:/app/ui/static/chta-ui-prepaint-v5.js:ro
-      - ${APP_DATA_DIR}/data/chta-ui-compat-v7.js:/app/ui/static/chta-ui-compat-v6.js:ro
+      - ${APP_DATA_DIR}/data/chta-ui-compat-v7.js:/app/ui/static/chta-ui-compat-v7.js:ro
+      - ${APP_DATA_DIR}/data/chta-ui-hotfix-v1.js:/app/ui/static/chta-ui-compat-v6.js:ro
 
     entrypoint:
       - python3
