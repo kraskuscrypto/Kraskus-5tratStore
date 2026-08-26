@@ -214,6 +214,21 @@
         builder.style.removeProperty("visibility");
         builder.style.removeProperty("pointer-events");
 
+        /*
+         * Candidate9 Connect content is present and hit-testable but can
+         * inherit stale hidden/transparent styling from prior UI layers.
+         * Normalize visibility only inside the Connection Builder.
+         */
+        builder.style.setProperty("visibility", "visible", "important");
+        builder.style.setProperty("opacity", "1", "important");
+        builder.style.setProperty("position", "relative", "important");
+        builder.style.setProperty("z-index", "1", "important");
+
+        for (const node of builder.querySelectorAll("*")) {
+            node.style.setProperty("visibility", "visible", "important");
+            node.style.setProperty("opacity", "1", "important");
+        }
+
         if (!document.getElementById(NOTES_ID)) {
             scheduleConnectCompatKick();
         }
