@@ -11,7 +11,7 @@ description: >-
   locally during installation and remain in persistent app
   storage. CKPool does not start mining until a payout address
   has been configured and validated.
-version: 0.2.26-beta
+version: 0.2.27-beta
 category: Mining
 developer: Kraskus Crypto
 website: https://kraskuscrypto.com/
