@@ -89,9 +89,10 @@
     }
 
     function compatReady() {
+        const version = String(window.__KRASKUS_CHTA_COMPAT_VERSION__ || "");
         return (
             window.__KRASKUS_CHTA_PREFIXED_OVERVIEW_BOOTSTRAP__ === "PASS" &&
-            window.__KRASKUS_CHTA_COMPAT_VERSION__ === "v6"
+            (version === "v6" || version === "v7")
         );
     }
 
