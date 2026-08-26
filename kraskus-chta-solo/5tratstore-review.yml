@@ -1,7 +1,7 @@
 schemaVersion: 1
 status: proposed
 appId: kraskus-chta-solo
-appVersion: 0.2.26-beta
+appVersion: 0.2.27-beta
 reviewedAt: ""
 reviewedBy: ""
 
@@ -53,9 +53,9 @@ notes: >-
   3336 is exposed for Stratum miners. The application HTTP interface
   is accessed through native 5tratumOS app_proxy. Store-specific
   lifecycle qualification has been exercised on the 0.2.9-beta
-  baseline. Version 0.2.21-beta preserves the qualified notification
-  degradation behavior while fixing the 0.2.20 DOM observer feedback
-  loop: notification UI mutation is now idempotent and the observer
-  watches structural insertion only rather than character-data writes.
-  Review remains proposed pending targeted Settings recovery and
-  notification UX verification plus remaining final UI qualification.
+  baseline. Version 0.2.27-beta keeps the qualified Candidate8
+  immutable runtime images and adds a Store-side UI telemetry hotfix:
+  current-round Last Share may fall back to a worker timestamp only
+  when that timestamp belongs to the active round, and an empty
+  submission-history table is replaced by a truthful worker best-
+  difficulty leaderboard derived from authoritative worker telemetry.
