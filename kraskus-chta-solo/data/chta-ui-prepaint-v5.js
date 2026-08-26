@@ -139,7 +139,13 @@
             return;
         }
 
-        if (!findBuilder()) return;
+        /*
+         * The initial Connect race happens before Connection Builder
+         * exists. Do not require findBuilder() before scheduling the
+         * compatibility kick; the kick itself is what can cause the
+         * missing Connect content to render.
+         */
+        if (detectActiveTab() !== "connect") return;
         if (connectKickQueued) return;
         if (connectRetryTimer !== null) return;
         if (connectRetryAttempt >= CONNECT_RETRY_DELAYS_MS.length) return;
@@ -156,7 +162,10 @@
                 return;
             }
 
-            if (!findBuilder()) return;
+            if (detectActiveTab() !== "connect") {
+                resetConnectRetry();
+                return;
+            }
 
             if (!compatReady()) {
                 scheduleConnectCompatKick();
@@ -181,10 +190,7 @@
                 window.__KRASKUS_CHTA_DOM_RACE_KICK__ =
                     (window.__KRASKUS_CHTA_DOM_RACE_KICK__ || 0) + 1;
 
-                /*
-                 * Compatibility may render its notes asynchronously.
-                 * Retry the same bounded cycle until notes exist.
-                 */
+                reconcileConnectPaint();
                 scheduleConnectCompatKick();
             });
         }, delay);
