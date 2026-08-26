@@ -196,11 +196,47 @@
         }, delay);
     }
 
+    function installConnectVisualFix() {
+        const id = "krConnectVisualFix";
+        if (document.getElementById(id)) return;
+
+        const style = document.createElement("style");
+        style.id = id;
+        style.textContent = `
+            .kr-connect-builder {
+                display: grid !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                position: relative !important;
+                z-index: 100 !important;
+                background: #0b1011 !important;
+                border: 1px solid #263437 !important;
+                border-radius: 14px !important;
+                color: #f2f5f6 !important;
+            }
+
+            .kr-connect-builder * {
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+
+            .kr-connect-builder input {
+                background: #070a0b !important;
+                border-color: #263437 !important;
+                color: #f2f5f6 !important;
+            }
+        `;
+        document.head.appendChild(style);
+        window.__KRASKUS_CHTA_CONNECT_VISUAL_FIX__ = "PASS";
+    }
+
     function reconcileConnectPaint() {
         hideQuickSetup();
 
         const builder = findBuilder();
         if (!builder) return;
+
+        installConnectVisualFix();
 
         /*
          * The base Candidate9 UI owns Connection Builder rendering.
