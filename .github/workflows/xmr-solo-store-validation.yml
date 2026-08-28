@@ -1,0 +1,36 @@
+name: Validate XMR Solo Store Package
+
+on:
+  push:
+    branches:
+      - codex/xmr-solo-store-v0.1
+    paths:
+      - "kraskus-xmr-solo/**"
+      - "scripts/**"
+      - ".github/workflows/xmr-solo-store-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PyYAML
+        run: python3 -m pip install --user pyyaml==6.0.2
+
+      - name: Validate store
+        run: python3 scripts/validate_store.py
+
+      - name: Validate compose
+        run: scripts/validate-compose.sh kraskus-xmr-solo
+
+      - name: Verify app icon
+        run: |
+          test -s kraskus-xmr-solo/assets/icon.png
+          file kraskus-xmr-solo/assets/icon.png
+          sha256sum kraskus-xmr-solo/assets/icon.png
