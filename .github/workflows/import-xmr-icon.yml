@@ -1,0 +1,47 @@
+name: Import XMR App Icon
+
+on:
+  push:
+    branches:
+      - codex/xmr-solo-store-v0.1
+    paths:
+      - ".github/workflows/import-xmr-icon.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/xmr-solo-store-v0.1
+
+      - name: Download canonical icon artifact
+        env:
+          ICON_ARTIFACT_URL: "https://sdmntpreastus2.oaiusercontent.com/files/00000000-6060-81f6-9dc1-e26f0a9408af/raw?se=2026-08-28T23%3A39%3A51Z&sp=r&sv=2026-02-06&sr=b&scid=1094598a-d148-5a7f-8e5a-87082824728b&skoid=dd316919-ffbf-4550-9c54-dfc99f412009&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-28T19%3A33%3A38Z&ske=2026-08-29T19%3A33%3A38Z&sks=b&skv=2026-02-06&sig=c2GcgSEY1FkKKlghJnOZ1r5feAJFT3UWLUZPuXe%2BWn0%3D"
+        run: |
+          curl -fL --retry 3 "$ICON_ARTIFACT_URL" -o /tmp/xmr-icon.zip
+          unzip -o /tmp/xmr-icon.zip -d /tmp/xmr-icon
+          test -s /tmp/xmr-icon/divinity-xmr-icon-v1.png
+          test "$(sha256sum /tmp/xmr-icon/divinity-xmr-icon-v1.png | awk '{print $1}')" = "ba9d0be31f3148dd5f103ff8fe70aeee20dbc5609b06d0cb3a59732864ccc06f"
+
+      - name: Install approved store icon
+        run: |
+          mkdir -p kraskus-xmr-solo/assets
+          cp /tmp/xmr-icon/divinity-xmr-icon-v1.png kraskus-xmr-solo/assets/icon.png
+          test "$(sha256sum kraskus-xmr-solo/assets/icon.png | awk '{print $1}')" = "ba9d0be31f3148dd5f103ff8fe70aeee20dbc5609b06d0cb3a59732864ccc06f"
+
+      - name: Commit canonical icon
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add kraskus-xmr-solo/assets/icon.png
+          if git diff --cached --quiet; then
+            echo "Icon already current"
+            exit 0
+          fi
+          git commit -m "xmr: install canonical Divinity XMR app icon"
+          git push origin HEAD:codex/xmr-solo-store-v0.1
