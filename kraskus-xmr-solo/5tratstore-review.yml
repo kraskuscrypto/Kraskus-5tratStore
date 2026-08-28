@@ -49,5 +49,9 @@ notes: >-
   wallet, and runtime state use APP_DATA_DIR. A one-shot initializer creates
   the internal view-wallet password on first install without committing or
   exposing it. The app tile uses the approved Divinity XMR icon from the
-  Kraskus brand asset vault. Immutable GHCR digests must be inserted before
-  this review may advance beyond proposed.
+  Kraskus brand asset vault. All production runtime images are now published
+  from the public Kraskus-5tratStore repository and pinned by immutable GHCR
+  digests. Anonymous pulls for all five application images passed in CI, as
+  did package metadata, compose, and approved-icon checksum validation.
+  Fresh 5tratumOS install/start/update/uninstall qualification is the
+  remaining reason this review stays proposed.
