@@ -1,5 +1,7 @@
 name: Validate XMR Solo Store Package
 
+# canonical icon imported
+
 on:
   push:
     branches:
