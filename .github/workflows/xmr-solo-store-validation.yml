@@ -68,6 +68,15 @@ jobs:
       - name: Validate compose
         run: scripts/validate-compose.sh kraskus-xmr-solo
 
+      - name: Verify anonymous GHCR pulls
+        run: |
+          docker logout ghcr.io >/dev/null 2>&1 || true
+          docker pull ghcr.io/kraskuscrypto/kraskus-xmr-solo-monerod:0.18.5.1@sha256:d94315b1cce617a0282f0377108e07cc4a7132a253dc5753862297f8cca5a150
+          docker pull ghcr.io/kraskuscrypto/kraskus-xmr-solo-adapter:0.1.0-beta@sha256:b22c3e6ee0577707ef76d95d1b043da7a821bbc8a04394c018169097c463f64b
+          docker pull ghcr.io/kraskuscrypto/kraskus-xmr-solo-miner-gateway:0.1.0-beta@sha256:ced3c4562cb9ba3bc2dd3df175d6b0dd55aeb1d071a0cec016b32469f8fdc800
+          docker pull ghcr.io/kraskuscrypto/kraskus-xmr-solo-wallet-api:0.1.0-beta@sha256:09321550b78be8a40a588e2c58484d28638183b8b49b52d319d0de232cfbf1aa
+          docker pull ghcr.io/kraskuscrypto/kraskus-xmr-solo-ui:0.1.0-beta@sha256:4e55165fb3b67126b9f197a9b92be032ed6c1ea4675dcff9e07a532fbdb37cfd
+
       - name: Verify approved app icon
         run: |
           test -s kraskus-xmr-solo/assets/icon.png
