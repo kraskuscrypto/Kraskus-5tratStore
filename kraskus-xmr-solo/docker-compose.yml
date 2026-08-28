@@ -1,0 +1,254 @@
+services:
+  app_proxy:
+    environment:
+      APP_HOST: ui
+      APP_PORT: 8080
+
+  wallet-init:
+    image: alpine:3.22.1@sha256:4bcff63911fcb4448bd4fdacec207030997caf25e9bea4045fa6c8c44de311d1
+    restart: "no"
+    user: "0:0"
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        mkdir -p /blockchain /wallets /runtime
+        chown 1000:1000 /blockchain /wallets /runtime
+        if [ ! -s /wallets/.view-password ]; then
+          umask 077
+          tr -dc 'A-Za-z0-9' </dev/urandom | head -c 48 > /wallets/.view-password
+          printf '\n' >> /wallets/.view-password
+          chown 1000:1000 /wallets/.view-password
+          chmod 600 /wallets/.view-password
+        fi
+    volumes:
+      - ${APP_DATA_DIR}/blockchain:/blockchain
+      - ${APP_DATA_DIR}/wallets:/wallets
+      - ${APP_DATA_DIR}/runtime:/runtime
+    security_opt:
+      - no-new-privileges:true
+
+  monerod:
+    image: ghcr.io/kraskuscrypto/kraskus-5trat-xmr-monerod:0.18.5.1@sha256:1c88dce0ffcdaf06c1914a78445ba9121fbc7d4b310b42f963281715350ba518
+    restart: unless-stopped
+    stop_grace_period: 2m
+    depends_on:
+      wallet-init:
+        condition: service_completed_successfully
+    command:
+      - --data-dir=/data
+      - --non-interactive
+      - --prune-blockchain
+      - --p2p-bind-ip=0.0.0.0
+      - --p2p-bind-port=18080
+      - --rpc-bind-ip=0.0.0.0
+      - --rpc-bind-port=18081
+      - --confirm-external-bind
+      - --no-igd
+      - --log-level=0
+    ports:
+      - "18080:18080/tcp"
+    volumes:
+      - ${APP_DATA_DIR}/blockchain:/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          curl -fsS -H 'Content-Type: application/json'
+          -d '{"jsonrpc":"2.0","id":"0","method":"get_info"}'
+          http://127.0.0.1:18081/json_rpc >/dev/null
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 2m
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - xmr_public
+      - xmr_private
+      - xmr_wallet
+
+  wallet-view-rpc:
+    image: ghcr.io/kraskuscrypto/kraskus-5trat-xmr-monerod:0.18.5.1@sha256:1c88dce0ffcdaf06c1914a78445ba9121fbc7d4b310b42f963281715350ba518
+    restart: unless-stopped
+    entrypoint: ["/usr/local/bin/monero-wallet-rpc"]
+    command:
+      - --wallet-dir=/wallets
+      - --daemon-address=http://monerod:18081
+      - --trusted-daemon
+      - --rpc-bind-ip=0.0.0.0
+      - --rpc-bind-port=18083
+      - --confirm-external-bind
+      - --disable-rpc-login
+      - --log-level=0
+    volumes:
+      - ${APP_DATA_DIR}/wallets:/wallets
+    depends_on:
+      wallet-init:
+        condition: service_completed_successfully
+      monerod:
+        condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - xmr_wallet
+
+  wallet-spend-rpc:
+    image: ghcr.io/kraskuscrypto/kraskus-5trat-xmr-monerod:0.18.5.1@sha256:1c88dce0ffcdaf06c1914a78445ba9121fbc7d4b310b42f963281715350ba518
+    restart: unless-stopped
+    entrypoint: ["/usr/local/bin/monero-wallet-rpc"]
+    command:
+      - --wallet-dir=/wallets
+      - --daemon-address=http://monerod:18081
+      - --trusted-daemon
+      - --rpc-bind-ip=0.0.0.0
+      - --rpc-bind-port=18084
+      - --confirm-external-bind
+      - --disable-rpc-login
+      - --log-level=0
+    volumes:
+      - ${APP_DATA_DIR}/wallets:/wallets
+    depends_on:
+      wallet-init:
+        condition: service_completed_successfully
+      monerod:
+        condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - xmr_wallet
+
+  adapter:
+    image: ghcr.io/kraskuscrypto/kraskus-5trat-xmr-adapter:0.1.0-beta@sha256:2d3558cfbdd04c62b2bd276bedc24e54b61f8b31cafc28bb2978ccb27b0e5435
+    restart: unless-stopped
+    depends_on:
+      monerod:
+        condition: service_healthy
+    environment:
+      KRASKUS_XMR_ADAPTER_HOST: "0.0.0.0"
+      KRASKUS_XMR_ADAPTER_PORT: "18410"
+      KRASKUS_XMR_RPC_URL: "http://monerod:18081/json_rpc"
+      KRASKUS_XMR_DIFFICULTY_LOG: "/runtime/network-difficulty.jsonl"
+      KRASKUS_XMR_DIFFICULTY_SAMPLE_SECONDS: "60"
+      KRASKUS_XMR_DIFFICULTY_MAX_ROWS: "1440"
+    volumes:
+      - ${APP_DATA_DIR}/runtime:/runtime
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - python3 -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:18410/health', timeout=5).read()"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - xmr_private
+      - xmr_api
+
+  gateway:
+    image: ghcr.io/kraskuscrypto/kraskus-5trat-xmr-miner-gateway:0.1.0-beta@sha256:292af7e3e06e4ce304ffd7a3f256ca06600ccc04c45f915a723e5b77087036e8
+    restart: unless-stopped
+    depends_on:
+      monerod:
+        condition: service_healthy
+    environment:
+      KRASKUS_XMR_GATEWAY_HOST: "0.0.0.0"
+      KRASKUS_XMR_GATEWAY_PORT: "1921"
+      KRASKUS_XMR_MONEROD_BASE: "http://monerod:18081"
+      KRASKUS_XMR_SUBMISSION_LOG: "/runtime/block-submissions.jsonl"
+      KRASKUS_XMR_EVENT_LOG: "/runtime/events.jsonl"
+    volumes:
+      - ${APP_DATA_DIR}/runtime:/runtime
+    ports:
+      - "1921:1921/tcp"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - python3 -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:1921/health', timeout=5).read()"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - xmr_private
+      - xmr_api
+
+  wallet-api:
+    image: ghcr.io/kraskuscrypto/kraskus-5trat-xmr-wallet-api:0.1.0-beta@sha256:76aa908e3b6c9ea52a0a419502af71cc1bf5251367e56f86ef60161fda012245
+    restart: unless-stopped
+    user: "1000:1000"
+    environment:
+      KRASKUS_XMR_WALLET_API_HOST: "0.0.0.0"
+      KRASKUS_XMR_WALLET_API_PORT: "18420"
+      KRASKUS_XMR_VIEW_RPC: "http://wallet-view-rpc:18083/json_rpc"
+      KRASKUS_XMR_SPEND_RPC: "http://wallet-spend-rpc:18084/json_rpc"
+      KRASKUS_XMR_VIEW_WALLET: "kraskus-xmr-solo-view"
+      KRASKUS_XMR_VIEW_PASSWORD_FILE: "/wallets/.view-password"
+      KRASKUS_XMR_SPEND_WALLET: "kraskus-xmr-solo"
+      KRASKUS_XMR_NODE_STATUS: "http://adapter:18410/api/status"
+      KRASKUS_XMR_MONEROD_RPC: "http://monerod:18081/json_rpc"
+      KRASKUS_XMR_WALLET_SEND_LOG: "/runtime/wallet-sends.jsonl"
+      KRASKUS_XMR_EVENT_LOG: "/runtime/events.jsonl"
+      KRASKUS_XMR_WALLET_CONFIG: "/runtime/wallet-config.json"
+    volumes:
+      - ${APP_DATA_DIR}/wallets:/wallets
+      - ${APP_DATA_DIR}/runtime:/runtime
+    depends_on:
+      wallet-init:
+        condition: service_completed_successfully
+      wallet-view-rpc:
+        condition: service_started
+      wallet-spend-rpc:
+        condition: service_started
+      adapter:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - python3 -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:18420/health', timeout=5).read()"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - xmr_wallet
+      - xmr_api
+
+  ui:
+    image: ghcr.io/kraskuscrypto/kraskus-5trat-xmr-ui:0.1.0-beta@sha256:2a383098d380dcaf144704e2e5e8963c6cdc3e0ce6e59c29c2eb2685a59c0cc2
+    restart: unless-stopped
+    depends_on:
+      adapter:
+        condition: service_healthy
+      wallet-api:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - wget -qO- http://127.0.0.1:8080/health >/dev/null
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - xmr_api
+
+networks:
+  xmr_public:
+    driver: bridge
+  xmr_private:
+    driver: bridge
+    internal: true
+  xmr_api:
+    driver: bridge
+  xmr_wallet:
+    driver: bridge
+    internal: true

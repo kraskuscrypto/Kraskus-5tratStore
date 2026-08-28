@@ -1,0 +1,85 @@
+name: Validate XMR Solo Store Package
+
+# canonical icon imported
+
+on:
+  push:
+    branches:
+      - codex/xmr-solo-store-v0.1
+    paths:
+      - "kraskus-xmr-solo/**"
+      - "scripts/**"
+      - ".github/workflows/xmr-solo-store-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PyYAML
+        run: python3 -m pip install --user pyyaml==6.0.2
+
+      - name: Validate XMR package metadata and image pinning
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import yaml
+
+          root = Path("kraskus-xmr-solo")
+          required = ["5tratstore-app.yml", "5tratstore-review.yml", "LICENSES.md", "docker-compose.yml"]
+          for name in required:
+              p = root / name
+              assert p.is_file(), f"missing {p}"
+
+          app = yaml.safe_load((root / "5tratstore-app.yml").read_text()) or {}
+          review = yaml.safe_load((root / "5tratstore-review.yml").read_text()) or {}
+          compose = yaml.safe_load((root / "docker-compose.yml").read_text()) or {}
+
+          assert app.get("id") == "kraskus-xmr-solo"
+          assert review.get("appId") == app.get("id")
+          assert str(review.get("appVersion")) == str(app.get("version"))
+          assert app.get("uiMode") == "proxy"
+          proxy = ((app.get("services") or {}).get("app_proxy") or {}).get("environment") or {}
+          assert proxy.get("APP_HOST") == "ui"
+          assert int(proxy.get("APP_PORT")) == 8080
+
+          services = compose.get("services") or {}
+          assert services, "compose has no services"
+          for name, svc in services.items():
+              if name == "app_proxy":
+                  continue
+              image = str((svc or {}).get("image") or "")
+              assert image, f"{name}: image missing"
+              assert "@sha256:" in image, f"{name}: image not pinned by digest"
+              assert ":latest" not in image, f"{name}: floating latest tag"
+              assert not (svc or {}).get("privileged"), f"{name}: privileged"
+              assert (svc or {}).get("network_mode") != "host", f"{name}: host network"
+
+          assert (root / "assets" / "icon.png").is_file(), "icon missing"
+          print("PASS: XMR package metadata/image pinning")
+          PY
+
+      - name: Validate compose
+        run: scripts/validate-compose.sh kraskus-xmr-solo
+
+      - name: Verify anonymous GHCR pulls
+        run: |
+          docker logout ghcr.io >/dev/null 2>&1 || true
+          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-monerod:0.18.5.1@sha256:1c88dce0ffcdaf06c1914a78445ba9121fbc7d4b310b42f963281715350ba518
+          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-adapter:0.1.0-beta@sha256:2d3558cfbdd04c62b2bd276bedc24e54b61f8b31cafc28bb2978ccb27b0e5435
+          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-miner-gateway:0.1.0-beta@sha256:292af7e3e06e4ce304ffd7a3f256ca06600ccc04c45f915a723e5b77087036e8
+          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-wallet-api:0.1.0-beta@sha256:76aa908e3b6c9ea52a0a419502af71cc1bf5251367e56f86ef60161fda012245
+          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-ui:0.1.0-beta@sha256:2a383098d380dcaf144704e2e5e8963c6cdc3e0ce6e59c29c2eb2685a59c0cc2
+
+      - name: Verify approved app icon
+        run: |
+          test -s kraskus-xmr-solo/assets/icon.png
+          file kraskus-xmr-solo/assets/icon.png
+          test "$(sha256sum kraskus-xmr-solo/assets/icon.png | awk '{print $1}')" = "ba9d0be31f3148dd5f103ff8fe70aeee20dbc5609b06d0cb3a59732864ccc06f"
+          echo "PASS: approved Divinity XMR icon checksum"
