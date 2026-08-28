@@ -23,14 +23,52 @@ jobs:
       - name: Install PyYAML
         run: python3 -m pip install --user pyyaml==6.0.2
 
-      - name: Validate store
-        run: python3 scripts/validate_store.py
+      - name: Validate XMR package metadata and image pinning
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import yaml
+
+          root = Path("kraskus-xmr-solo")
+          required = ["5tratstore-app.yml", "5tratstore-review.yml", "LICENSES.md", "docker-compose.yml"]
+          for name in required:
+              p = root / name
+              assert p.is_file(), f"missing {p}"
+
+          app = yaml.safe_load((root / "5tratstore-app.yml").read_text()) or {}
+          review = yaml.safe_load((root / "5tratstore-review.yml").read_text()) or {}
+          compose = yaml.safe_load((root / "docker-compose.yml").read_text()) or {}
+
+          assert app.get("id") == "kraskus-xmr-solo"
+          assert review.get("appId") == app.get("id")
+          assert str(review.get("appVersion")) == str(app.get("version"))
+          assert app.get("uiMode") == "proxy"
+          proxy = ((app.get("services") or {}).get("app_proxy") or {}).get("environment") or {}
+          assert proxy.get("APP_HOST") == "ui"
+          assert int(proxy.get("APP_PORT")) == 8080
+
+          services = compose.get("services") or {}
+          assert services, "compose has no services"
+          for name, svc in services.items():
+              if name == "app_proxy":
+                  continue
+              image = str((svc or {}).get("image") or "")
+              assert image, f"{name}: image missing"
+              assert "@sha256:" in image, f"{name}: image not pinned by digest"
+              assert ":latest" not in image, f"{name}: floating latest tag"
+              assert not (svc or {}).get("privileged"), f"{name}: privileged"
+              assert (svc or {}).get("network_mode") != "host", f"{name}: host network"
+
+          assert (root / "assets" / "icon.png").is_file(), "icon missing"
+          print("PASS: XMR package metadata/image pinning")
+          PY
 
       - name: Validate compose
         run: scripts/validate-compose.sh kraskus-xmr-solo
 
-      - name: Verify app icon
+      - name: Verify approved app icon
         run: |
           test -s kraskus-xmr-solo/assets/icon.png
           file kraskus-xmr-solo/assets/icon.png
-          sha256sum kraskus-xmr-solo/assets/icon.png
+          test "$(sha256sum kraskus-xmr-solo/assets/icon.png | awk '{print $1}')" = "ba9d0be31f3148dd5f103ff8fe70aeee20dbc5609b06d0cb3a59732864ccc06f"
+          echo "PASS: approved Divinity XMR icon checksum"
