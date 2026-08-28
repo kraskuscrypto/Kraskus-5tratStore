@@ -46,6 +46,10 @@ One-time compatibility utility for affected 5tratumOS hosts. It backs up the kno
 
 Runs a Zebra-backed Zcash full node and local solo-mining service with a Kraskus-branded interface. Normal users configure their payout address and miner connection without managing Zebra, RPC, Docker, Linux, JSON, or Stratum internals.
 
+### Kraskus XMR Solo
+
+Runs a Monero full node, local wallet, and restricted direct-daemon true solo-mining appliance with the Kraskus Solo interface. Blockchain, wallet, and runtime state persist in native 5tratumOS app storage. The app uses the approved Divinity XMR emblem and exposes only Monero P2P plus the dedicated miner endpoint required for solo mining.
+
 ### MystNodes by Kraskus
 
 Runs the official Mysterium node container with a MystNodes-style 5tratumOS launcher.
@@ -65,6 +69,7 @@ Kraskus-5tratStore/
 ├── README.md
 ├── kraskus-compatibility/
 ├── kraskus-zec-solo/
+├── kraskus-xmr-solo/
 ├── mysterium-node/
 └── scripts/
     ├── install-kraskus-compat.sh
