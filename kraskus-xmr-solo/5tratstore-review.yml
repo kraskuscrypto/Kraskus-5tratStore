@@ -1,0 +1,53 @@
+schemaVersion: 1
+status: proposed
+appId: kraskus-xmr-solo
+appVersion: 0.1.0-beta
+reviewedAt: ""
+reviewedBy: ""
+
+upstream:
+  sourceUrl: https://github.com/kraskuscrypto/Kraskus-Mining-Platform-V2
+  license: mixed
+  licenseEvidence: LICENSES.md
+
+rights:
+  packageOriginal: true
+  softwareDistributionCleared: true
+  containerUseCleared: true
+  listingTextCleared: true
+  artworkCleared: true
+  noticesIncluded: true
+
+delivery:
+  mode: immutable-container-appliance
+  storePayload: recipe-only
+  mirrorsThirdPartyPayload: false
+
+compatibility:
+  osVersions:
+    - Debian-13-5tratumOS-clean-room
+  architectures:
+    - amd64
+  installTested: false
+  startTested: false
+  updateTested: false
+  uninstallTested: false
+
+security:
+  privileged: false
+  hostNetwork: false
+  dockerSocket: false
+  hostMountsReviewed: true
+  devicesReviewed: true
+  networkEndpointsReviewed: true
+
+notes: >-
+  Proposed 0.1.0-beta package for the Kraskus XMR true-solo appliance.
+  Monero P2P TCP 18080 and the restricted miner-facing endpoint TCP 1921
+  are intentionally published. monerod RPC, adapter, wallet RPC, and wallet
+  API remain on internal application networks. Persistent blockchain,
+  wallet, and runtime state use APP_DATA_DIR. A one-shot initializer creates
+  the internal view-wallet password on first install without committing or
+  exposing it. The app tile uses the approved Divinity XMR icon from the
+  Kraskus brand asset vault. Immutable GHCR digests must be inserted before
+  this review may advance beyond proposed.
