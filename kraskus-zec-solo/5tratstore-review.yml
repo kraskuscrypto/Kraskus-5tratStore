@@ -9,11 +9,12 @@ notes:
   - Payout configuration is applied through the Kraskus UI and shared safely with Zebra.
   - Testnet is the default network for beta qualification.
   - Mainnet activation remains subject to storage safety requirements.
-appVersion: 0.3.2-beta
+appVersion: 0.3.3-beta
 
 releaseNotes:
-  - Makes Zebra startup liveness use lightweight getblockcount instead of getblockchaininfo.
-  - Keeps the controller responsive during heavy initial Zebra synchronization.
-  - Prevents missing rich chain telemetry from falsely reporting the chain as synchronized.
-  - Keeps Stratum node liveness separate from getblocktemplate mining-readiness failures.
-  - Uses bounded controller RPC latency for status and health-critical paths.
+  - Adds the ZEC v9 command-center interface while preserving the approved v8b multi-miner Mining layout.
+  - Routes Store traffic through the dedicated v9 UI service while keeping the 0.3.2-beta controller and Zebra runtime unchanged.
+  - Uses live controller status for node, RPC, Stratum, worker, block, and payout state.
+  - Shows unavailable sync, difficulty, hashrate, and share telemetry as unavailable instead of fabricating zero or completion values.
+  - Removes stale demo mining values and labels the Events timeline accurately as a browser-session journal.
+  - Keeps the streamlined Command, Mining, Blocks, Events, and Settings navigation.
