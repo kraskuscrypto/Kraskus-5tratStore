@@ -59,3 +59,12 @@ Kraskus brand asset vault.
 - Adds the permanent XMR runtime qualification workflow for miner allowlists, blocked-request accounting, event auditing, mainnet identity, monerod availability, and wallet sync gating.
 - Keeps monerod and adapter images unchanged.
 - Full-sync mining and wallet-send qualification remain required before GA.
+
+
+## 0.1.5-beta
+
+- Updates the UI to 0.1.3-beta with a full responsive/mobile compatibility pass.
+- Adds compact horizontal mobile navigation and phone/tablet-safe card stacking across all six tabs.
+- Converts the Blocks submission history into a mobile-friendly record-card layout at phone widths.
+- Makes wallet receive/send, settings controls, metrics, and long values responsive and touch-friendly.
+- Preserves the 0.1.4-beta miner-gateway and wallet-API hardening unchanged.
