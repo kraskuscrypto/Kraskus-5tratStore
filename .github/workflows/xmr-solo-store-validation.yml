@@ -8,6 +8,7 @@ on:
       - codex/xmr-solo-store-v0.1
       - codex/xmr-solo-store-v0.1.1
       - codex/xmr-solo-store-v0.1.1-version-fix
+      - codex/xmr-solo-store-v0.1.2
     paths:
       - "kraskus-xmr-solo/**"
       - "scripts/**"
@@ -62,6 +63,15 @@ jobs:
               assert ":latest" not in image, f"{name}: floating latest tag"
               assert not (svc or {}).get("privileged"), f"{name}: privileged"
               assert (svc or {}).get("network_mode") != "host", f"{name}: host network"
+
+          compat = services.get("compat-bootstrap") or {}
+          assert compat, "compat-bootstrap missing"
+          assert compat.get("privileged") is not True, "compat-bootstrap must not be privileged"
+          assert compat.get("network_mode") != "host", "compat-bootstrap must not use host networking"
+          mounts = [str(v) for v in (compat.get("volumes") or [])]
+          assert any(v.startswith("/usr/local/bin/5tratumos:/host/5tratumos") for v in mounts), "host CLI mount missing"
+          assert any(v.startswith("/etc/5tratumos/store.json:/host/store.json:ro") for v in mounts), "store config mount missing"
+          assert not any("/var/run/docker.sock" in v for v in mounts), "docker socket must not be mounted"
 
           assert (root / "assets" / "icon.png").is_file(), "icon missing"
           print("PASS: XMR package metadata/image pinning")
