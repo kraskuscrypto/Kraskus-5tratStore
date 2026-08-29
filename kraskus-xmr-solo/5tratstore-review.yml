@@ -1,7 +1,7 @@
 schemaVersion: 1
 status: proposed
 appId: kraskus-xmr-solo
-appVersion: 0.1.1-beta
+appVersion: 0.1.2-beta
 reviewedAt: ""
 reviewedBy: ""
 
@@ -42,7 +42,7 @@ security:
   networkEndpointsReviewed: true
 
 notes: >-
-  Proposed 0.1.1-beta package for the Kraskus XMR true-solo appliance.
+  Proposed 0.1.2-beta package for the Kraskus XMR true-solo appliance.
   Monero P2P TCP 18080 and the restricted miner-facing endpoint TCP 1921
   are intentionally published. monerod RPC, adapter, wallet RPC, and wallet
   API remain on internal application networks. Persistent blockchain,
@@ -58,5 +58,11 @@ notes: >-
   wallet dashboard transition, node synchronization, miner endpoint health,
   and restart recovery. Version 0.1.1-beta removes UI startup gating on
   wallet/backend health and runs the miner gateway as UID/GID 1000:1000 so
-  shared runtime event logs are writable. Update persistence and uninstall
-  qualification remain outstanding, so this review stays proposed.
+  shared runtime event logs are writable. Version 0.1.2-beta also bundles a compatibility bootstrap for the known older
+  stock 5tratumOS CLI layout that rejects dynamically named custom-store channels.
+  The bootstrap is exact-match and conservative: it only patches the known stale
+  lifecycle validation lines, only when the Kraskus custom store is configured,
+  creates a backup under APP_DATA_DIR, validates the repaired CLI with bash -n,
+  restores automatically on failure, and no-ops on already compatible or unknown
+  layouts. Update persistence and uninstall qualification remain outstanding, so
+  this review stays proposed.
