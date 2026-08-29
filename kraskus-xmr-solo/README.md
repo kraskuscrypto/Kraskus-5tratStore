@@ -33,3 +33,11 @@ Kraskus brand asset vault.
 - Starts the UI independently so the 5tratumOS app shell opens while backend services initialize.
 - Runs the miner gateway as UID/GID 1000:1000 to match persistent runtime storage ownership.
 - Preserves blockchain, wallet, and runtime state in `${APP_DATA_DIR}`.
+
+
+## 0.1.2-beta
+
+- Bundles the Kraskus dynamic custom-channel compatibility bootstrap.
+- On the known affected older 5tratumOS CLI, the bootstrap safely enables updates from dynamically named custom stores such as `custom-kraskus-5tratstore`.
+- The bootstrap is conservative: it verifies the Kraskus store is configured, patches only the exact known stale channel-validation layout, creates a backup, runs `bash -n`, restores automatically on failure, and no-ops on compatible or unknown layouts.
+- No Docker socket or privileged mode is used.

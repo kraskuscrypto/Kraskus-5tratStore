@@ -8,6 +8,7 @@ on:
       - codex/xmr-solo-store-v0.1
       - codex/xmr-solo-store-v0.1.1
       - codex/xmr-solo-store-v0.1.1-version-fix
+      - codex/xmr-solo-store-v0.1.2
     paths:
       - "kraskus-xmr-solo/**"
       - "scripts/**"
@@ -63,6 +64,15 @@ jobs:
               assert not (svc or {}).get("privileged"), f"{name}: privileged"
               assert (svc or {}).get("network_mode") != "host", f"{name}: host network"
 
+          compat = services.get("compat-bootstrap") or {}
+          assert compat, "compat-bootstrap missing"
+          assert compat.get("privileged") is not True, "compat-bootstrap must not be privileged"
+          assert compat.get("network_mode") != "host", "compat-bootstrap must not use host networking"
+          mounts = [str(v) for v in (compat.get("volumes") or [])]
+          assert any(v.startswith("/usr/local/bin/5tratumos:/host/5tratumos") for v in mounts), "host CLI mount missing"
+          assert any(v.startswith("/etc/5tratumos/store.json:/host/store.json:ro") for v in mounts), "store config mount missing"
+          assert not any("/var/run/docker.sock" in v for v in mounts), "docker socket must not be mounted"
+
           assert (root / "assets" / "icon.png").is_file(), "icon missing"
           print("PASS: XMR package metadata/image pinning")
           PY
@@ -78,6 +88,8 @@ jobs:
           docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-miner-gateway:0.1.0-beta@sha256:292af7e3e06e4ce304ffd7a3f256ca06600ccc04c45f915a723e5b77087036e8
           docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-wallet-api:0.1.0-beta@sha256:76aa908e3b6c9ea52a0a419502af71cc1bf5251367e56f86ef60161fda012245
           docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-ui:0.1.1-beta@sha256:06a66496eff08631bd80534049ec89975c857405cd268dbf16c6e74f91c16451
+
+          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-compat-bootstrap:0.1.0@sha256:9ac6eabf4ebed6b0474b9d37d3cc241a6a0259a26b3b3c88df37d00607976db4
 
       - name: Verify approved app icon
         run: |
