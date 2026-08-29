@@ -1,7 +1,7 @@
 schemaVersion: 1
 status: proposed
 appId: kraskus-xmr-solo
-appVersion: 0.1.3-beta
+appVersion: 0.1.4-beta
 reviewedAt: ""
 reviewedBy: ""
 
@@ -42,32 +42,29 @@ security:
   networkEndpointsReviewed: true
 
 notes: >-
-  Proposed 0.1.3-beta package for the Kraskus XMR true-solo appliance.
+  Proposed 0.1.4-beta package for the Kraskus XMR true-solo appliance.
   Monero P2P TCP 18080 and the restricted miner-facing endpoint TCP 1921
   are intentionally published. monerod RPC, adapter, wallet RPC, and wallet
   API remain on internal application networks. Persistent blockchain,
   wallet, and runtime state use APP_DATA_DIR. A one-shot initializer creates
   the internal view-wallet password on first install without committing or
   exposing it. The app tile uses the approved Divinity XMR icon from the
-  Kraskus brand asset vault. All production runtime images are now published
-  from the public Kraskus-5tratStore repository and pinned by immutable GHCR
-  digests. Anonymous pulls for all five application images passed in CI, as
-  did package metadata, compose, and approved-icon checksum validation.
-  Fresh 5tratumOS install and first startup were qualified on VM120 on
-  2026-08-28, including first-run wallet creation, recovery confirmation,
-  wallet dashboard transition, node synchronization, miner endpoint health,
-  and restart recovery. Version 0.1.1-beta removes UI startup gating on
-  wallet/backend health and runs the miner gateway as UID/GID 1000:1000 so
-  shared runtime event logs are writable. Version 0.1.2-beta also bundles a compatibility bootstrap for the known older
-  stock 5tratumOS CLI layout that rejects dynamically named custom-store channels.
-  The bootstrap is exact-match and conservative: it only patches the known stale
-  lifecycle validation lines, only when the Kraskus custom store is configured,
-  creates a backup under APP_DATA_DIR, validates the repaired CLI with bash -n,
-  restores automatically on failure, and no-ops on already compatible or unknown
-  layouts. VM120 update qualification on 2026-08-29 confirmed the 0.1.2 package
-  structure was installed, the compatibility bootstrap completed successfully
-  (ALREADY_SUPPORTED), the UI was healthy on the pinned 0.1.1 backend-independent
-  image, the miner gateway ran as UID/GID 1000:1000 with no runtime event-log
-  permission errors, and the existing wallet remained present and responsive
-  after update. Uninstall qualification remains outstanding, so this review
-  stays proposed.
+  Kraskus brand asset vault. Production runtime images are published to GHCR
+  and pinned by immutable digests in the store recipe. Fresh install, startup,
+  update persistence, and uninstall behavior were previously qualified on
+  clean 5tratumOS VM120 hosts. Version 0.1.4-beta updates the miner gateway to
+  0.1.1-beta, wallet API to 0.1.1-beta, and UI to 0.1.2-beta. The gateway now
+  audits blocked POST endpoints in addition to enforcing the restricted miner
+  allowlist. The wallet API keeps setup/health independent from slow sync RPC,
+  preserves safe restore-height semantics, migrates legacy wallet discovery
+  into durable config, gates legacy view-wallet refresh while the local node
+  is behind, and exposes an explicit waiting state instead of surfacing
+  hashchain errors during partial sync. The UI receives the finalized Divinity
+  XMR hero branding, branded sidebar icon, wallet receive waiting treatment,
+  and explicit sync-locked send presentation. The permanent XMR runtime
+  qualifier passed for gateway allowlists, blocked-request accounting, event
+  auditing, mainnet identity, monerod availability, wallet setup/status, and
+  wallet sync gating. Full-sync getblocktemplate/XMRig qualification and the
+  live wallet send path remain release-gate items before GA. Native custom-store
+  update behavior is still dependent on the upstream 5tratumOS dynamic-channel
+  fix and is not patched from inside the application.
