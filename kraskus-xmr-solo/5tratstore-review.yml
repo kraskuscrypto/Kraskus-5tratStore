@@ -1,7 +1,7 @@
 schemaVersion: 1
 status: proposed
 appId: kraskus-xmr-solo
-appVersion: 0.1.2-beta
+appVersion: 0.1.3-beta
 reviewedAt: ""
 reviewedBy: ""
 
@@ -42,7 +42,7 @@ security:
   networkEndpointsReviewed: true
 
 notes: >-
-  Proposed 0.1.2-beta package for the Kraskus XMR true-solo appliance.
+  Proposed 0.1.3-beta package for the Kraskus XMR true-solo appliance.
   Monero P2P TCP 18080 and the restricted miner-facing endpoint TCP 1921
   are intentionally published. monerod RPC, adapter, wallet RPC, and wallet
   API remain on internal application networks. Persistent blockchain,
