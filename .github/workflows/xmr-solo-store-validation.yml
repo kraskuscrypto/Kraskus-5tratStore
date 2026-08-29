@@ -89,6 +89,8 @@ jobs:
           docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-wallet-api:0.1.0-beta@sha256:76aa908e3b6c9ea52a0a419502af71cc1bf5251367e56f86ef60161fda012245
           docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-ui:0.1.1-beta@sha256:06a66496eff08631bd80534049ec89975c857405cd268dbf16c6e74f91c16451
 
+          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-compat-bootstrap:0.1.0@sha256:9ac6eabf4ebed6b0474b9d37d3cc241a6a0259a26b3b3c88df37d00607976db4
+
       - name: Verify approved app icon
         run: |
           test -s kraskus-xmr-solo/assets/icon.png
