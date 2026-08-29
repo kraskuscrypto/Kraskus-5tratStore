@@ -1,8 +1,18 @@
 services:
   app_proxy:
     environment:
-      APP_HOST: kraskus
-      APP_PORT: 18401
+      APP_HOST: ui
+      APP_PORT: 8080
+
+  ui:
+    image: ghcr.io/kraskuscrypto/kraskus-5trat-zec-v9-xmr-shell@sha256:0cd8a9c1bee2452b200a95a80b2866d4a59c776fb1bce7eb38a98c4ec10c3c5d
+    restart: unless-stopped
+
+    depends_on:
+      - kraskus
+
+    security_opt:
+      - no-new-privileges:true
 
   kraskus:
     image: ghcr.io/kraskuscrypto/kraskus-zec-solo-v2@sha256:2f967c1dd1d2df61cc95c746884c52fff6c6a68369d1870358dab24935250d66
