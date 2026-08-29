@@ -7,6 +7,7 @@ on:
     branches:
       - codex/xmr-solo-store-v0.1
       - codex/xmr-solo-store-v0.1.1
+      - codex/xmr-solo-store-v0.1.1-version-fix
     paths:
       - "kraskus-xmr-solo/**"
       - "scripts/**"
@@ -76,7 +77,7 @@ jobs:
           docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-adapter:0.1.0-beta@sha256:2d3558cfbdd04c62b2bd276bedc24e54b61f8b31cafc28bb2978ccb27b0e5435
           docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-miner-gateway:0.1.0-beta@sha256:292af7e3e06e4ce304ffd7a3f256ca06600ccc04c45f915a723e5b77087036e8
           docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-wallet-api:0.1.0-beta@sha256:76aa908e3b6c9ea52a0a419502af71cc1bf5251367e56f86ef60161fda012245
-          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-ui:0.1.1-beta@sha256:dc6078dca7355a2e69f52ed91e185f272cb03da90817b6fa8286664d62be093c
+          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-ui:0.1.1-beta@sha256:06a66496eff08631bd80534049ec89975c857405cd268dbf16c6e74f91c16451
 
       - name: Verify approved app icon
         run: |

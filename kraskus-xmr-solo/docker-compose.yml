@@ -222,7 +222,7 @@ services:
       - xmr_api
 
   ui:
-    image: ghcr.io/kraskuscrypto/kraskus-5trat-xmr-ui:0.1.1-beta@sha256:dc6078dca7355a2e69f52ed91e185f272cb03da90817b6fa8286664d62be093c
+    image: ghcr.io/kraskuscrypto/kraskus-5trat-xmr-ui:0.1.1-beta@sha256:06a66496eff08631bd80534049ec89975c857405cd268dbf16c6e74f91c16451
     restart: unless-stopped
     healthcheck:
       test:
