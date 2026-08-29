@@ -1,0 +1,63 @@
+services:
+  app_proxy:
+    environment:
+      APP_HOST: controller
+      APP_PORT: 8080
+
+  kaspad:
+    build:
+      context: ./runtime
+    restart: unless-stopped
+    command: ["/opt/kraskus/run-node.sh"]
+    volumes:
+      - ${APP_DATA_DIR}/node:/data
+    ports:
+      - "16111:16111/tcp"
+    expose:
+      - "16110"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - kaspa-private
+
+  bridge:
+    build:
+      context: ./runtime
+    restart: unless-stopped
+    command: ["/opt/kraskus/run-bridge.sh"]
+    depends_on:
+      - kaspad
+    ports:
+      - "5555:5555/tcp"
+    expose:
+      - "3030"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - kaspa-private
+
+  controller:
+    build:
+      context: ./controller
+    restart: unless-stopped
+    depends_on:
+      - kaspad
+      - bridge
+    environment:
+      BRIDGE_BASE: http://bridge:3030
+      NODE_HOST: kaspad
+      NODE_RPC_PORT: "16110"
+      STRATUM_PORT: "5555"
+      APP_VERSION: "0.1.0"
+    volumes:
+      - ${APP_DATA_DIR}/controller:/data
+    ports:
+      - "127.0.0.1:33070:8080/tcp"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - kaspa-private
+
+networks:
+  kaspa-private:
+    driver: bridge
