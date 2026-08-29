@@ -1,0 +1,56 @@
+name: Build Public XMR UI 0.1.1
+
+on:
+  push:
+    branches:
+      - codex/xmr-solo-store-v0.1.1
+    paths:
+      - ".github/workflows/xmr-solo-public-ui-v011.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download XMR build source
+        env:
+          SOURCE_ARTIFACT_URL: "https://sdmntprnorthcentralus.oaiusercontent.com/files/00000000-5db0-822f-ac84-337731f9ae1b/raw?se=2026-08-29T00%3A07%3A22Z&sp=r&sv=2026-02-06&sr=b&scid=79651aa6-d888-54f6-ab4c-64ad69b7d4f3&skoid=bbd22fc4-f881-4ea4-b2f3-c12033cf6a8b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-28T19%3A21%3A46Z&ske=2026-08-29T19%3A21%3A46Z&sks=b&skv=2026-02-06&sig=4MjpA8U2prugH01o9wk3elCk0/Jt21nfaiKN9IWqdnk%3D"
+        run: |
+          mkdir -p /tmp/xmr-source
+          curl -fL --retry 3 "$SOURCE_ARTIFACT_URL" -o /tmp/xmr-source.zip
+          unzip -q /tmp/xmr-source.zip -d /tmp/xmr-source
+          test -f /tmp/xmr-source/runtime/Dockerfile.ui
+          test -f /tmp/xmr-source/runtime/nginx-ui.conf
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push UI
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: /tmp/xmr-source
+          file: /tmp/xmr-source/runtime/Dockerfile.ui
+          push: true
+          platforms: linux/amd64
+          tags: ghcr.io/kraskuscrypto/kraskus-5trat-xmr-ui:0.1.1-beta
+          labels: |
+            org.opencontainers.image.source=https://github.com/kraskuscrypto/Kraskus-5tratStore
+            org.opencontainers.image.description=Kraskus XMR Solo 5tratumOS UI
+          provenance: false
+
+      - name: Record digest
+        run: echo "ghcr.io/kraskuscrypto/kraskus-5trat-xmr-ui:0.1.1-beta@${{ steps.build.outputs.digest }}"
