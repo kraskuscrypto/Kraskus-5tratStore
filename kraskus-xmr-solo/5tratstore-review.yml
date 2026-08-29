@@ -30,7 +30,7 @@ compatibility:
     - amd64
   installTested: true
   startTested: true
-  updateTested: false
+  updateTested: true
   uninstallTested: false
 
 security:
@@ -64,5 +64,10 @@ notes: >-
   lifecycle validation lines, only when the Kraskus custom store is configured,
   creates a backup under APP_DATA_DIR, validates the repaired CLI with bash -n,
   restores automatically on failure, and no-ops on already compatible or unknown
-  layouts. Update persistence and uninstall qualification remain outstanding, so
-  this review stays proposed.
+  layouts. VM120 update qualification on 2026-08-29 confirmed the 0.1.2 package
+  structure was installed, the compatibility bootstrap completed successfully
+  (ALREADY_SUPPORTED), the UI was healthy on the pinned 0.1.1 backend-independent
+  image, the miner gateway ran as UID/GID 1000:1000 with no runtime event-log
+  permission errors, and the existing wallet remained present and responsive
+  after update. Uninstall qualification remains outstanding, so this review
+  stays proposed.
