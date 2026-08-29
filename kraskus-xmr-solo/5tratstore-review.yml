@@ -31,7 +31,7 @@ compatibility:
   installTested: true
   startTested: true
   updateTested: true
-  uninstallTested: false
+  uninstallTested: true
 
 security:
   privileged: false
