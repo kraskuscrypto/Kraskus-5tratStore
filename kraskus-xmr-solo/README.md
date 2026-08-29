@@ -49,3 +49,13 @@ Kraskus brand asset vault.
 - Restores a stock 5tratumOS-compatible install recipe with no host CLI or store-config bind mounts.
 - Retains the fast-start UI, gateway UID/GID 1000:1000, persistent APP_DATA_DIR storage, immutable image pinning, and approved Divinity app icon.
 - Dynamic custom-store channel compatibility is being fixed at the 5tratumOS platform layer instead of by patching the host from inside the app.
+
+
+## 0.1.4-beta
+
+- Updates the restricted miner gateway to 0.1.1-beta with blocked POST endpoint audit events.
+- Updates the wallet API to 0.1.1-beta with safe restore-height handling, legacy wallet migration, sync-wait gating, and autonomous refresh suppression while the local node is behind.
+- Updates the UI to 0.1.2-beta with the finalized Divinity XMR hero, branded sidebar application icon, branded wallet receive waiting state, and explicit sync-locked send presentation.
+- Adds the permanent XMR runtime qualification workflow for miner allowlists, blocked-request accounting, event auditing, mainnet identity, monerod availability, and wallet sync gating.
+- Keeps monerod and adapter images unchanged.
+- Full-sync mining and wallet-send qualification remain required before GA.
