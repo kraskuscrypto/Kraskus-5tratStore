@@ -41,3 +41,11 @@ Kraskus brand asset vault.
 - On the known affected older 5tratumOS CLI, the bootstrap safely enables updates from dynamically named custom stores such as `custom-kraskus-5tratstore`.
 - The bootstrap is conservative: it verifies the Kraskus store is configured, patches only the exact known stale channel-validation layout, creates a backup, runs `bash -n`, restores automatically on failure, and no-ops on compatible or unknown layouts.
 - No Docker socket or privileged mode is used.
+
+
+## 0.1.3-beta
+
+- Removes the host-modifying compatibility bootstrap from the XMR package.
+- Restores a stock 5tratumOS-compatible install recipe with no host CLI or store-config bind mounts.
+- Retains the fast-start UI, gateway UID/GID 1000:1000, persistent APP_DATA_DIR storage, immutable image pinning, and approved Divinity app icon.
+- Dynamic custom-store channel compatibility is being fixed at the 5tratumOS platform layer instead of by patching the host from inside the app.
