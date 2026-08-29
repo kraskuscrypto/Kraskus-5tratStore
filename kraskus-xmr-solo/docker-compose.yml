@@ -1,4 +1,147 @@
 services:
+  compat-bootstrap:
+    image: ghcr.io/kraskuscrypto/kraskus-5trat-xmr-compat-bootstrap:0.1.0@sha256:9ac6eabf4ebed6b0474b9d37d3cc241a6a0259a26b3b3c88df37d00607976db4
+    restart: "no"
+    user: "0:0"
+    entrypoint:
+      - python3
+      - -c
+      - "import os; exec(os.environ['COMPAT_SCRIPT'])"
+    environment:
+      COMPAT_SCRIPT: |
+        import json, shutil, subprocess, time
+        from pathlib import Path
+
+        CLI = Path('/host/5tratumos')
+        STORE = Path('/host/store.json')
+        DATA = Path('/compat-data')
+        D = chr(36)
+        MARK_UPDATE = '# KRASKUS_DYNAMIC_CUSTOM_UPDATE_V2'
+        MARK_META = '# KRASKUS_DYNAMIC_CUSTOM_META_V2'
+
+        def out(msg):
+            print(msg, flush=True)
+
+        def kraskus_store_present():
+            if not STORE.is_file():
+                return False
+            try:
+                cfg = json.loads(STORE.read_text(encoding='utf-8'))
+                custom = cfg.get('custom', {}) if isinstance(cfg, dict) else {}
+                for value in custom.values() if isinstance(custom, dict) else []:
+                    if not isinstance(value, dict):
+                        continue
+                    url = str(value.get('url') or '').lower()
+                    if 'kraskuscrypto/kraskus-5tratstore' in url:
+                        return True
+            except Exception:
+                return False
+            return False
+
+        def dynamic_supported(text):
+            return (
+                (MARK_UPDATE in text and MARK_META in text)
+                or (
+                    'custom*)' in text
+                    and 'custom channel is not synced:' in text
+                    and '^custom[-_a-z0-9]' in text
+                )
+            )
+
+        def repair_text(text):
+            lines = text.splitlines(keepends=True)
+            stale_update = 'main|dev|global|custom1|custom2) ;;'
+            stale_meta = 'main|dev|global|custom1|custom2) meta_ch="' + D + '{meta_channel}" ;;'
+
+            update_hits = [i for i, line in enumerate(lines) if line.strip() == stale_update]
+            meta_hits = [i for i, line in enumerate(lines) if line.strip() == stale_meta]
+
+            if len(update_hits) != 1 or len(meta_hits) != 1:
+                return None
+
+            ui = update_hits[0]
+            mi = meta_hits[0]
+            if ui >= mi:
+                return None
+
+            uindent = lines[ui][:len(lines[ui]) - len(lines[ui].lstrip())]
+            mindent = lines[mi][:len(lines[mi]) - len(lines[mi].lstrip())]
+
+            update_replacement = [
+                uindent + MARK_UPDATE + '\n',
+                uindent + 'main|dev|global|custom1|custom2)\n',
+                uindent + '  ;;\n',
+                uindent + 'custom*)\n',
+                uindent + '  [[ "' + D + '{ch}" =~ ^custom[-_a-z0-9]{0,48}$ ]] ||\n',
+                uindent + '    die "invalid channel: ' + D + '{ch}"\n',
+                uindent + '  [ -d "' + D + '{ROOT_DIR}/store/' + D + '{ch}" ] ||\n',
+                uindent + '    die "custom channel is not synced: ' + D + '{ch}"\n',
+                uindent + '  ;;\n',
+            ]
+
+            meta_replacement = [
+                mindent + MARK_META + '\n',
+                mindent + 'main|dev|global|custom1|custom2)\n',
+                mindent + '  meta_ch="' + D + '{meta_channel}"\n',
+                mindent + '  ;;\n',
+                mindent + 'custom*)\n',
+                mindent + '  if [[ "' + D + '{meta_channel}" =~ ^custom[-_a-z0-9]{0,48}$ ]] &&\n',
+                mindent + '     [ -d "' + D + '{ROOT_DIR}/store/' + D + '{meta_channel}" ]; then\n',
+                mindent + '    meta_ch="' + D + '{meta_channel}"\n',
+                mindent + '  fi\n',
+                mindent + '  ;;\n',
+            ]
+
+            lines[ui:ui+1] = update_replacement
+            mi += len(update_replacement) - 1
+            lines[mi:mi+1] = meta_replacement
+            return ''.join(lines)
+
+        if not CLI.is_file():
+            out('KRASKUS_CUSTOM_CHANNEL_BOOTSTRAP=SKIP_NO_HOST_CLI')
+            raise SystemExit(0)
+
+        text = CLI.read_text(encoding='utf-8')
+        if dynamic_supported(text):
+            out('KRASKUS_CUSTOM_CHANNEL_BOOTSTRAP=ALREADY_SUPPORTED')
+            raise SystemExit(0)
+
+        if not kraskus_store_present():
+            out('KRASKUS_CUSTOM_CHANNEL_BOOTSTRAP=SKIP_STORE_NOT_CONFIRMED')
+            raise SystemExit(0)
+
+        repaired = repair_text(text)
+        if repaired is None:
+            out('KRASKUS_CUSTOM_CHANNEL_BOOTSTRAP=SKIP_UNKNOWN_CLI_LAYOUT')
+            raise SystemExit(0)
+
+        DATA.mkdir(parents=True, exist_ok=True)
+        stamp = time.strftime('%Y%m%d-%H%M%S', time.gmtime())
+        backup = DATA / ('5tratumos.pre-xmr-compat-' + stamp)
+        shutil.copy2(CLI, backup)
+        CLI.write_text(repaired, encoding='utf-8')
+
+        check = subprocess.run(['/bin/bash','-n',str(CLI)], capture_output=True, text=True)
+        if check.returncode != 0:
+            shutil.copy2(backup, CLI)
+            out('KRASKUS_CUSTOM_CHANNEL_BOOTSTRAP=FAIL_SYNTAX_RESTORED')
+            raise SystemExit(1)
+
+        final = CLI.read_text(encoding='utf-8')
+        if not dynamic_supported(final):
+            shutil.copy2(backup, CLI)
+            out('KRASKUS_CUSTOM_CHANNEL_BOOTSTRAP=FAIL_VERIFY_RESTORED')
+            raise SystemExit(1)
+
+        out('KRASKUS_CUSTOM_CHANNEL_BOOTSTRAP=PASS')
+        out('BACKUP=' + str(backup))
+    volumes:
+      - /usr/local/bin/5tratumos:/host/5tratumos
+      - /etc/5tratumos/store.json:/host/store.json:ro
+      - ${APP_DATA_DIR}/compat:/compat-data
+    security_opt:
+      - no-new-privileges:true
+
   app_proxy:
     environment:
       APP_HOST: ui
