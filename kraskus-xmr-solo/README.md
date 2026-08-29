@@ -68,3 +68,15 @@ Kraskus brand asset vault.
 - Converts the Blocks submission history into a mobile-friendly record-card layout at phone widths.
 - Makes wallet receive/send, settings controls, metrics, and long values responsive and touch-friendly.
 - Preserves the 0.1.4-beta miner-gateway and wallet-API hardening unchanged.
+
+
+## 0.1.6-beta
+
+- Promotes the qualified immutable XMR runtime image set.
+- Pins monerod, adapter, miner gateway, wallet API, and UI by exact GHCR digests.
+- Adds persistent last-known-good node telemetry during temporary daemon RPC failures.
+- Adds protected appliance-local spend credential storage for automatic developer-fee settlement.
+- Full-wallet create and restore flows save the wallet password into a mode-0600 local credential used only for automatic fee settlement.
+- Watch-only wallets remain monitoring-only.
+- Kraskus XMR Solo charges a 0.25% developer fee only on successfully mined block rewards.
+- Developer-fee settlement is automatic after reward maturity and does not divert miner hashrate.

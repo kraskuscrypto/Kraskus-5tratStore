@@ -10,6 +10,7 @@ on:
       - codex/xmr-solo-store-v0.1.1-version-fix
       - codex/xmr-solo-store-v0.1.2
       - codex/xmr-solo-store-v0.1.3-clean-custom
+      - codex/xmr-solo-store-v0.1.6
     paths:
       - "kraskus-xmr-solo/**"
       - "scripts/**"
@@ -81,11 +82,11 @@ jobs:
       - name: Verify anonymous GHCR pulls
         run: |
           docker logout ghcr.io >/dev/null 2>&1 || true
-          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-monerod:0.18.5.1@sha256:1c88dce0ffcdaf06c1914a78445ba9121fbc7d4b310b42f963281715350ba518
-          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-adapter:0.1.0-beta@sha256:2d3558cfbdd04c62b2bd276bedc24e54b61f8b31cafc28bb2978ccb27b0e5435
-          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-miner-gateway:0.1.0-beta@sha256:292af7e3e06e4ce304ffd7a3f256ca06600ccc04c45f915a723e5b77087036e8
-          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-wallet-api:0.1.0-beta@sha256:76aa908e3b6c9ea52a0a419502af71cc1bf5251367e56f86ef60161fda012245
-          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-ui:0.1.1-beta@sha256:06a66496eff08631bd80534049ec89975c857405cd268dbf16c6e74f91c16451
+          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-monerod@sha256:7675475ecaeeda11a70822aaa5f988236d10e02ba0d4bf809f6ab7c8ce136ec1
+          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-adapter@sha256:9cf276c3db9ac64b9ad950f2180bc0b74f74a4625eb3de8e8ccb6d205a30fb2f
+          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-miner-gateway@sha256:619ee2a0c7a56da8091ece0da067688390299dbb028e54d1e30cce2c3905de40
+          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-wallet-api@sha256:76b2c73556b2a3f5f302956aa2443ceff9895e819d542ba0a456ba4141f4f407
+          docker pull ghcr.io/kraskuscrypto/kraskus-5trat-xmr-ui@sha256:947e80d6f6a5d40231028587b9cdc480aeccbe8f3b6fbfabcbc687f71c19cac9
 
       - name: Verify approved app icon
         run: |

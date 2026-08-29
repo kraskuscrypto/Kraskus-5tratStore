@@ -1,7 +1,7 @@
 schemaVersion: 1
 status: proposed
 appId: kraskus-xmr-solo
-appVersion: 0.1.5-beta
+appVersion: 0.1.6-beta
 reviewedAt: ""
 reviewedBy: ""
 
@@ -66,3 +66,21 @@ notes: >-
   the live wallet send path remain release-gate items before GA. Native custom-
   store update behavior is still dependent on the upstream 5tratumOS dynamic-
   channel fix and is not patched from inside the application.
+
+# 0.1.6-beta release qualification
+#
+# Promotes the qualified XMR runtime image set from
+# Kraskus-Mining-Platform-V2 source commit:
+# ca8d5a6c9ced9e1fe8504fa53a44eb50fd1b08c0
+#
+# Runtime services are pinned to immutable GHCR digests.
+# Full-wallet create/restore stores the local wallet password in an
+# appliance-local mode-0600 credential used by the automatic developer-fee
+# settlement worker. Watch-only wallets remain monitoring-only.
+#
+# Kraskus XMR Solo charges a 0.25% developer fee only on successfully mined
+# block rewards. Settlement occurs automatically after maturity. Miner
+# hashrate is never diverted.
+#
+# The adapter also persists last-known-good node telemetry so the UI can
+# remain useful during temporary monerod RPC timeouts.
