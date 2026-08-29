@@ -26,3 +26,10 @@ first-run initialization if one does not already exist.
 
 `assets/icon.png` is the approved Divinity XMR application icon from the
 Kraskus brand asset vault.
+
+
+## 0.1.1-beta
+
+- Starts the UI independently so the 5tratumOS app shell opens while backend services initialize.
+- Runs the miner gateway as UID/GID 1000:1000 to match persistent runtime storage ownership.
+- Preserves blockchain, wallet, and runtime state in `${APP_DATA_DIR}`.
