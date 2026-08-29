@@ -1,7 +1,7 @@
 schemaVersion: 1
 status: proposed
 appId: kraskus-xmr-solo
-appVersion: 0.1.6-beta
+appVersion: 0.1.7-beta
 reviewedAt: ""
 reviewedBy: ""
 
@@ -84,3 +84,19 @@ notes: >-
 #
 # The adapter also persists last-known-good node telemetry so the UI can
 # remain useful during temporary monerod RPC timeouts.
+
+
+# 0.1.7-beta release qualification
+#
+# Updates only the XMR UI image to source commit:
+# f69435d4898cfabab4d6e3948f78eef524715fda
+#
+# The wallet setup method controls are now explicitly presented as tabs.
+# Selecting Create New Wallet, Restore Existing Wallet, or Watch-Only switches
+# to the corresponding setup panel, updates accessibility state, and focuses
+# the first relevant field. The lower action button remains the operation that
+# actually creates/restores/configures the wallet.
+#
+# Monerod, adapter, miner gateway, and wallet API remain pinned to the same
+# 0.1.6-beta qualified digests. No wallet, fee-settlement, miner-gateway, or
+# daemon behavior changes are introduced by this package revision.

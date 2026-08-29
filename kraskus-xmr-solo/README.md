@@ -80,3 +80,12 @@ Kraskus brand asset vault.
 - Watch-only wallets remain monitoring-only.
 - Kraskus XMR Solo charges a 0.25% developer fee only on successfully mined block rewards.
 - Developer-fee settlement is automatic after reward maturity and does not divert miner hashrate.
+
+
+## 0.1.7-beta
+
+- Updates the XMR UI to the wallet-setup control fix from source commit `f69435d4898cfabab4d6e3948f78eef524715fda`.
+- Clarifies Create New Wallet, Restore Existing Wallet, and Watch-Only as setup-method tabs rather than duplicate action buttons.
+- Selecting a setup method now switches to the corresponding panel, updates accessibility state, and focuses the first relevant field.
+- The lower form action remains the control that actually creates, restores, or configures the wallet.
+- Keeps monerod, adapter, miner gateway, wallet API, automatic developer-fee settlement, and persistent storage behavior unchanged from 0.1.6-beta.
