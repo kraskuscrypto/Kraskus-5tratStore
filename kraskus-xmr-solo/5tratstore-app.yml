@@ -9,7 +9,7 @@ description: >-
   settings through one local interface. The miner endpoint exposes
   only the Monero daemon methods required for solo mining. Wallet
   state and blockchain data remain in persistent 5tratumOS app storage.
-version: 0.1.7-beta
+version: 0.1.8-beta
 category: Mining
 developer: Kraskus Crypto
 website: https://kraskuscrypto.com/

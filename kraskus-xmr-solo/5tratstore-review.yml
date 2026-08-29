@@ -1,7 +1,7 @@
 schemaVersion: 1
 status: proposed
 appId: kraskus-xmr-solo
-appVersion: 0.1.7-beta
+appVersion: 0.1.8-beta
 reviewedAt: ""
 reviewedBy: ""
 
@@ -100,3 +100,14 @@ notes: >-
 # Monerod, adapter, miner gateway, and wallet API remain pinned to the same
 # 0.1.6-beta qualified digests. No wallet, fee-settlement, miner-gateway, or
 # daemon behavior changes are introduced by this package revision.
+
+
+# 0.1.8-beta release qualification
+#
+# Updates only the XMR UI image to source commit:
+# 709e92f478ff1981053bd29e4b478e58562b68f0
+#
+# Corrects the stale hard-coded release labels in the sidebar footer and
+# version service card from v0.1.1-beta to v0.1.8-beta. All wallet setup,
+# wallet/API, daemon, miner-gateway, fee-settlement, storage, and networking
+# behavior remains unchanged from the already-qualified 0.1.7-beta release.

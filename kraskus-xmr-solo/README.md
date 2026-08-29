@@ -89,3 +89,10 @@ Kraskus brand asset vault.
 - Selecting a setup method now switches to the corresponding panel, updates accessibility state, and focuses the first relevant field.
 - The lower form action remains the control that actually creates, restores, or configures the wallet.
 - Keeps monerod, adapter, miner gateway, wallet API, automatic developer-fee settlement, and persistent storage behavior unchanged from 0.1.6-beta.
+
+
+## 0.1.8-beta
+
+- Updates only the XMR UI image from source commit `709e92f478ff1981053bd29e4b478e58562b68f0`.
+- Corrects the sidebar footer and version service card so they display `v0.1.8-beta` instead of the stale `v0.1.1-beta` label.
+- Keeps wallet setup, wallet/API, daemon, miner gateway, automatic developer-fee settlement, storage, and networking behavior unchanged from 0.1.7-beta.
