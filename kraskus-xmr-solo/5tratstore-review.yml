@@ -1,7 +1,7 @@
 schemaVersion: 1
 status: proposed
 appId: kraskus-xmr-solo
-appVersion: 0.1.4-beta
+appVersion: 0.1.5-beta
 reviewedAt: ""
 reviewedBy: ""
 
@@ -42,7 +42,7 @@ security:
   networkEndpointsReviewed: true
 
 notes: >-
-  Proposed 0.1.4-beta package for the Kraskus XMR true-solo appliance.
+  Proposed 0.1.5-beta package for the Kraskus XMR true-solo appliance.
   Monero P2P TCP 18080 and the restricted miner-facing endpoint TCP 1921
   are intentionally published. monerod RPC, adapter, wallet RPC, and wallet
   API remain on internal application networks. Persistent blockchain,
@@ -52,19 +52,17 @@ notes: >-
   Kraskus brand asset vault. Production runtime images are published to GHCR
   and pinned by immutable digests in the store recipe. Fresh install, startup,
   update persistence, and uninstall behavior were previously qualified on
-  clean 5tratumOS VM120 hosts. Version 0.1.4-beta updates the miner gateway to
-  0.1.1-beta, wallet API to 0.1.1-beta, and UI to 0.1.2-beta. The gateway now
-  audits blocked POST endpoints in addition to enforcing the restricted miner
-  allowlist. The wallet API keeps setup/health independent from slow sync RPC,
-  preserves safe restore-height semantics, migrates legacy wallet discovery
-  into durable config, gates legacy view-wallet refresh while the local node
-  is behind, and exposes an explicit waiting state instead of surfacing
-  hashchain errors during partial sync. The UI receives the finalized Divinity
-  XMR hero branding, branded sidebar icon, wallet receive waiting treatment,
-  and explicit sync-locked send presentation. The permanent XMR runtime
-  qualifier passed for gateway allowlists, blocked-request accounting, event
-  auditing, mainnet identity, monerod availability, wallet setup/status, and
-  wallet sync gating. Full-sync getblocktemplate/XMRig qualification and the
-  live wallet send path remain release-gate items before GA. Native custom-store
-  update behavior is still dependent on the upstream 5tratumOS dynamic-channel
-  fix and is not patched from inside the application.
+  clean 5tratumOS VM120 hosts. Version 0.1.5-beta keeps the 0.1.4-beta gateway
+  and wallet hardening and updates the UI to 0.1.3-beta. The UI adds a full
+  mobile compatibility pass across Command, Mining, Blocks, Events, Wallet,
+  and Settings, including compact mobile navigation, stacked responsive cards,
+  touch-friendly controls, phone-safe wallet receive/send layouts, and a
+  dedicated mobile block-ledger card presentation. Command, Mining, Blocks,
+  Events, Wallet, and Settings were visually checked at approximately 400px
+  width, with no intended horizontal page overflow. The permanent XMR runtime
+  qualifier remains passing for gateway allowlists, blocked-request accounting,
+  event auditing, mainnet identity, monerod availability, wallet setup/status,
+  and wallet sync gating. Full-sync getblocktemplate/XMRig qualification and
+  the live wallet send path remain release-gate items before GA. Native custom-
+  store update behavior is still dependent on the upstream 5tratumOS dynamic-
+  channel fix and is not patched from inside the application.
