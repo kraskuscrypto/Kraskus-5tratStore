@@ -15,7 +15,7 @@ services:
       - no-new-privileges:true
 
   kraskus:
-    image: ghcr.io/kraskuscrypto/kraskus-zec-solo-v2@sha256:2f967c1dd1d2df61cc95c746884c52fff6c6a68369d1870358dab24935250d66
+    image: ghcr.io/kraskuscrypto/kraskus-zec-solo-wallet-controller@sha256:fd5affd5db57a3b272a5c74d2cc223070773b5be351313b7760fd20c3968a6a2
     restart: unless-stopped
 
     depends_on:
@@ -27,6 +27,8 @@ services:
 
       KRASKUS_ZEBRA_RPC_URL: http://zebra:18232
       KRASKUS_ZEBRA_COOKIE_FILE: /zebra/.cookie
+
+      KRASKUS_ZALLET_RPC_URL: http://127.0.0.1:28232
 
       KRASKUS_MINER_ADDRESS_FILE: /kraskus-config/miner-address
       KRASKUS_NETWORK_FILE: /kraskus-config/network
@@ -45,6 +47,36 @@ services:
 
     ports:
       - "3335:3335"
+
+    security_opt:
+      - no-new-privileges:true
+
+  zallet:
+    image: zodlinc/zallet@sha256:54d1a774317371b1e88c8a54712cdfa4aa7d8f20ae2a0205f9a190e502aef0f6
+    restart: unless-stopped
+
+    user: "10001:10001"
+
+    network_mode: "service:kraskus"
+
+    depends_on:
+      - zebra
+
+    environment:
+      SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+
+    volumes:
+      - ${APP_DATA_DIR}/kraskus/zallet:/var/lib/zallet
+      - ${APP_DATA_DIR}/zebra:/zebra:ro
+      - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
+
+    entrypoint:
+      - /usr/local/bin/zallet-zaino
+
+    command:
+      - --datadir
+      - /var/lib/zallet
+      - start
 
     security_opt:
       - no-new-privileges:true
