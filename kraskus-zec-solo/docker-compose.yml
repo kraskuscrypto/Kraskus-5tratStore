@@ -5,7 +5,7 @@ services:
       APP_PORT: 8080
 
   ui:
-    image: ghcr.io/kraskuscrypto/kraskus-5trat-zec-v9-xmr-shell@sha256:dffe567c8196c45e237ed8aa087dbfc32a7b2f3574c35544a8596fe56a872ac8
+    image: ghcr.io/kraskuscrypto/kraskus-5trat-zec-v9-xmr-shell@sha256:d040f334b6ab4760003e49099563af38afe192784891d513c18920da1d332c8d7
     restart: unless-stopped
 
     depends_on:
@@ -13,9 +13,11 @@ services:
 
     security_opt:
       - no-new-privileges:true
+    cap_drop:
+      - ALL
 
   kraskus:
-    image: ghcr.io/kraskuscrypto/kraskus-zec-solo-wallet-controller@sha256:7582bea6d428000315c8735e97641a67fec1a41bf9633bcae769fb88362e5b30
+    image: ghcr.io/kraskuscrypto/kraskus-zec-solo-wallet-controller@sha256:a5e19a822cffcf8a79b7f7b30e015912bf083a4abe85554952c1ae6d90e24ec8
     restart: unless-stopped
 
     depends_on:
@@ -51,9 +53,11 @@ services:
 
     security_opt:
       - no-new-privileges:true
+    cap_drop:
+      - ALL
 
   zallet:
-    image: ghcr.io/kraskuscrypto/kraskus-zec-zallet-supervisor@sha256:a6a17bcbfcc4965b7880e5a43f3fda876da68fe5bd15e67cbddde0604a1fd800
+    image: ghcr.io/kraskuscrypto/kraskus-zec-zallet-supervisor@sha256:b79a53bb7cc52f16a96d0bac54287b28897b2d73d5d12f31db54d06390596d1c
     restart: unless-stopped
 
     user: "10001:10001"
@@ -73,6 +77,8 @@ services:
 
     security_opt:
       - no-new-privileges:true
+    cap_drop:
+      - ALL
 
   zebra:
     image: ghcr.io/kraskuscrypto/kraskus-zebra@sha256:abbbddd84563023df621f1eecceeb816da5c2951d9b60718133f131e1341c6d0
