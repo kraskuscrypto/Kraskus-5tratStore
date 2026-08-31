@@ -55,6 +55,8 @@ services:
       - no-new-privileges:true
     cap_drop:
       - ALL
+    cap_add:
+      - DAC_OVERRIDE
 
   zallet:
     image: ghcr.io/kraskuscrypto/kraskus-zec-zallet-supervisor@sha256:b79a53bb7cc52f16a96d0bac54287b28897b2d73d5d12f31db54d06390596d1c
