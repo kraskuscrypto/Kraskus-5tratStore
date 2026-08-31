@@ -15,6 +15,10 @@ services:
       - no-new-privileges:true
     cap_drop:
       - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
 
   kraskus:
     image: ghcr.io/kraskuscrypto/kraskus-zec-solo-wallet-controller@sha256:a5e19a822cffcf8a79b7f7b30e015912bf083a4abe85554952c1ae6d90e24ec8
