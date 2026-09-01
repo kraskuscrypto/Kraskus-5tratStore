@@ -1,0 +1,96 @@
+services:
+  init:
+    image: ghcr.io/kraskuscrypto/kraskus-bsv-solo@sha256:e1c363ee95771404756712ea473efb5ef783c0f04b523e33be3122a6681ecc31c
+    restart: "no"
+    user: "0:0"
+    command: ["python3", "/app/init_config.py"]
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+    security_opt:
+      - no-new-privileges:true
+
+  svnode:
+    image: bitcoinsv/bitcoin-sv@sha256:5aa32112ba1fd5a08df227118487d26d327493e1fff1f36979e3485ef6017e16
+    restart: unless-stopped
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    command: ["bitcoind", "-datadir=/data", "-conf=/data/bitcoin.conf"]
+    volumes:
+      - ${APP_DATA_DIR}/data/node:/data
+    ports:
+      - "8333:8333"
+    networks:
+      - bsv
+    stop_grace_period: 120s
+    healthcheck:
+      test: ["CMD-SHELL", "bitcoin-cli -datadir=/data -conf=/data/bitcoin.conf getblockchaininfo >/dev/null 2>&1"]
+      interval: 30s
+      timeout: 15s
+      retries: 20
+      start_period: 180s
+    security_opt:
+      - no-new-privileges:true
+
+  controller:
+    image: ghcr.io/kraskuscrypto/kraskus-bsv-solo@sha256:e1c363ee95771404756712ea473efb5ef783c0f04b523e33be3122a6681ecc31c
+    restart: unless-stopped
+    depends_on:
+      init:
+        condition: service_completed_successfully
+      svnode:
+        condition: service_healthy
+    environment:
+      KRASKUS_BSV_RPC_URL: http://svnode:8332/
+      KRASKUS_BSV_RPC_USER_FILE: /data/secrets/rpc-user
+      KRASKUS_BSV_RPC_PASSWORD_FILE: /data/secrets/rpc-password
+      KRASKUS_BSV_SETTINGS_FILE: /data/config/settings.json
+      KRASKUS_BSV_STATUS_FILE: /data/config/status.json
+      KRASKUS_BSV_DEV_SCRIPT_PUB_KEY: 76a914ca26cadd2606b6b0c0ce7cdc7f02c10a27f954b688ac
+      KRASKUS_BSV_STRATUM_PORT: "1922"
+      KRASKUS_BSV_SHARE_DIFFICULTY: "16384"
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+    ports:
+      - "1922:1922"
+    networks:
+      - bsv
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+  ui:
+    image: ghcr.io/kraskuscrypto/kraskus-bsv-solo@sha256:e1c363ee95771404756712ea473efb5ef783c0f04b523e33be3122a6681ecc31c
+    restart: unless-stopped
+    depends_on:
+      init:
+        condition: service_completed_successfully
+      svnode:
+        condition: service_started
+    command: ["python3", "-m", "kraskus_solo.coins.bsv.gateway"]
+    environment:
+      KRASKUS_BSV_RPC_URL: http://svnode:8332/
+      KRASKUS_BSV_RPC_USER_FILE: /data/secrets/rpc-user
+      KRASKUS_BSV_RPC_PASSWORD_FILE: /data/secrets/rpc-password
+      KRASKUS_BSV_SETTINGS_FILE: /data/config/settings.json
+      KRASKUS_BSV_STATUS_FILE: /data/config/status.json
+      KRASKUS_BSV_UI_PORT: "18422"
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+    networks:
+      - bsv
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  bsv:
+    name: kraskus-bsv-solo

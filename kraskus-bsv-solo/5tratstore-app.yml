@@ -1,0 +1,25 @@
+id: kraskus-bsv-solo
+name: Kraskus BSV Solo
+tagline: Bitcoin SV node and private solo mining command center
+description: >-
+  Runs a pruned Bitcoin SV mainnet node, a native GMC-to-Stratum V1 solo
+  mining controller, and the official Kraskus App Template. Mining remains
+  disabled until a valid external BSV payout address is configured. Each
+  accepted block coinbase assigns 99 percent to the configured miner address
+  and 1 percent to Kraskus development.
+version: 0.1.0-beta
+category: Mining
+developer: Kraskus Crypto
+website: https://kraskuscrypto.com/
+repo: https://github.com/kraskuscrypto/Kraskus-CHTA-Solo
+support: https://kraskuscrypto.com/
+icon: assets/kraskus-bsv-emblem.svg
+port: 18422
+path: /
+uiMode: proxy
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: ui
+      APP_PORT: 18422

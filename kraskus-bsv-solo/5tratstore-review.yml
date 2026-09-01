@@ -1,0 +1,16 @@
+appId: kraskus-bsv-solo
+status: beta
+developer: Kraskus Crypto
+reviewed: false
+notes:
+  - Bitcoin SV mainnet only
+  - Pruned node target is approximately 100 GB
+  - Mining is blocked until a validated external payout address is saved
+  - Developer fee is fixed at 1 percent in the coinbase transaction
+appVersion: 0.1.0-beta
+
+releaseNotes:
+  - First installable Bitcoin SV appliance beta.
+  - Adds the official Kraskus App Template v1 interface.
+  - Uses SV Node GMC with native Stratum V1 on port 1922.
+  - Persists node, payout, and controller state across upgrades.
