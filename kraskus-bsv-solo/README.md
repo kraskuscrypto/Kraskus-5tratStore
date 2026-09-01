@@ -19,7 +19,15 @@ The BSV application will retain the standardized Kraskus Solo shell: Command/Das
 
 ## Storage safety
 
-SV Node requires substantially more storage than the lightweight coin nodes. Initial installation must not start blockchain synchronization until the selected storage target passes the app's capacity guard. The official BSV quick-start currently estimates approximately 500 GB for a pruned node.
+Kraskus BSV Solo defaults to a pruned SV Node suitable for mining rather than an archival node.
+
+- Default SV Node setting: `prune=100000`
+- The setting is a pruning target in MiB, not a guaranteed hard disk cap.
+- Kraskus default pre-sync storage guard: 160 GiB free.
+- Initial sync may temporarily exceed the configured pruning target while blocks are downloaded and validated.
+- Archive/unpruned operation is not the default and should only be enabled on storage explicitly sized for it.
+
+The official SV Node configuration documentation notes that the currently achievable mainnet pruning target is approximately 100 GB and shows `prune=100000` as a mining-node example. The app must continue to surface free-space telemetry during initial sync rather than assuming the prune target is an absolute maximum.
 
 ## Security
 
@@ -31,4 +39,4 @@ Target Kraskus developer fee: 1%. The fee belongs in the mining/payout framework
 
 ## Bootstrap status
 
-This directory remains `proposed` until the node image is pinned to an immutable digest, BSV-specific Divinity artwork is added, the controller/Stratum runtime is packaged, storage guards are tested, and install/start/restart/update/uninstall qualification passes.
+This directory remains `proposed` until the node image is pinned to an immutable digest, BSV-specific Divinity artwork is added, the controller/Stratum runtime is packaged, pruned storage guards are qualified, and install/start/restart/update/uninstall qualification passes.
