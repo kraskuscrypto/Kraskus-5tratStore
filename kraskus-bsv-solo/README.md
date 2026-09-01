@@ -8,7 +8,7 @@ Initial 5tratumOS application scaffold for a Bitcoin SV solo-mining appliance.
 - Initial qualification target: 1.2.2
 - RPC: internal-only mainnet JSON-RPC on 8332
 - P2P: 8333
-- Miner Stratum: 3337
+- Miner Stratum: 1922
 - Preferred mining work API: `getminingcandidate`
 - Preferred block submission API: `submitminingsolution`
 - Compatibility fallback: `getblocktemplate` / `submitblock`
