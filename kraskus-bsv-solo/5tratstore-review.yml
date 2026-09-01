@@ -1,0 +1,21 @@
+appId: kraskus-bsv-solo
+status: proposed
+developer: Kraskus Crypto
+appVersion: 0.1.0-beta
+notes:
+  - Initial Bitcoin SV solo-mining application bootstrap.
+  - Runtime will use the upstream Bitcoin SV SV Node implementation.
+  - Node RPC must remain internal to the application network and must not be exposed publicly.
+  - BSV getminingcandidate/submitminingsolution is the preferred mining path; getblocktemplate remains a compatibility fallback.
+  - Persistent node data must live under ${APP_DATA_DIR} or a user-selected storage target.
+  - Default production node mode is pruned with prune=100000.
+  - Default Kraskus pre-sync storage guard is 160 GiB free; pruning is a target and initial sync may temporarily exceed it.
+  - Installation must enforce the storage-capacity guard before initial blockchain sync.
+  - Native wallet support will be optional and controlled from the Wallet tab.
+  - Kraskus solo-mining developer fee target is 1 percent, implemented in the mining/payout layer rather than the node.
+  - Runtime image digests, BSV Divinity artwork, and end-to-end node/Stratum qualification are still pending.
+releaseNotes:
+  - Creates the BSV application definition and implementation plan.
+  - Targets SV Node 1.2.2 for initial qualification.
+  - Defines BSV-native GMC mining RPCs as the preferred work/submission interface.
+  - Defaults BSV node storage to prune=100000 with a 160 GiB Kraskus pre-sync guard.
