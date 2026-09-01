@@ -7,7 +7,7 @@ services:
       - bsv
 
   init:
-    image: ghcr.io/kraskuscrypto/kraskus-bsv-solo@sha256:410390ab65b257c9ed8ad990f4bcc4179a9b104f259da62e36e0956c9074dfd9
+    image: ghcr.io/kraskuscrypto/kraskus-bsv-solo@sha256:5530221e6d1c60e8479389c9b2df232b0987242f2c4f46077126b1114482d3cc
     restart: "no"
     user: "0:0"
     command: ["python3", "/app/init_config.py"]
@@ -40,7 +40,7 @@ services:
       - no-new-privileges:true
 
   controller:
-    image: ghcr.io/kraskuscrypto/kraskus-bsv-solo@sha256:410390ab65b257c9ed8ad990f4bcc4179a9b104f259da62e36e0956c9074dfd9
+    image: ghcr.io/kraskuscrypto/kraskus-bsv-solo@sha256:5530221e6d1c60e8479389c9b2df232b0987242f2c4f46077126b1114482d3cc
     restart: unless-stopped
     depends_on:
       init:
@@ -53,6 +53,8 @@ services:
       KRASKUS_BSV_RPC_PASSWORD_FILE: /data/secrets/rpc-password
       KRASKUS_BSV_SETTINGS_FILE: /data/config/settings.json
       KRASKUS_BSV_STATUS_FILE: /data/config/status.json
+      KRASKUS_APP_VERSION: "0.2.0-beta"
+      KRASKUS_BSV_TELEMETRY_FILE: /data/runtime/share-events.jsonl
       KRASKUS_BSV_DEV_SCRIPT_PUB_KEY: 76a914ca26cadd2606b6b0c0ce7cdc7f02c10a27f954b688ac
       KRASKUS_BSV_STRATUM_PORT: "1922"
       KRASKUS_BSV_SHARE_DIFFICULTY: "16384"
@@ -71,7 +73,7 @@ services:
       - no-new-privileges:true
 
   ui:
-    image: ghcr.io/kraskuscrypto/kraskus-bsv-solo@sha256:410390ab65b257c9ed8ad990f4bcc4179a9b104f259da62e36e0956c9074dfd9
+    image: ghcr.io/kraskuscrypto/kraskus-bsv-solo@sha256:5530221e6d1c60e8479389c9b2df232b0987242f2c4f46077126b1114482d3cc
     restart: unless-stopped
     depends_on:
       init:
@@ -85,6 +87,8 @@ services:
       KRASKUS_BSV_RPC_PASSWORD_FILE: /data/secrets/rpc-password
       KRASKUS_BSV_SETTINGS_FILE: /data/config/settings.json
       KRASKUS_BSV_STATUS_FILE: /data/config/status.json
+      KRASKUS_APP_VERSION: "0.2.0-beta"
+      KRASKUS_BSV_TELEMETRY_FILE: /data/runtime/share-events.jsonl
       KRASKUS_BSV_UI_PORT: "18422"
     volumes:
       - ${APP_DATA_DIR}/data:/data
