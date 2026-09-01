@@ -7,7 +7,7 @@ services:
       - bsv
 
   init:
-    image: ghcr.io/kraskuscrypto/kraskus-bsv-solo@sha256:225c55c4f65644bed6a8b626cdda276664a983c91a354265fc6431f25b335621
+    image: ghcr.io/kraskuscrypto/kraskus-bsv-solo@sha256:410390ab65b257c9ed8ad990f4bcc4179a9b104f259da62e36e0956c9074dfd9
     restart: "no"
     user: "0:0"
     command: ["python3", "/app/init_config.py"]
@@ -40,7 +40,7 @@ services:
       - no-new-privileges:true
 
   controller:
-    image: ghcr.io/kraskuscrypto/kraskus-bsv-solo@sha256:225c55c4f65644bed6a8b626cdda276664a983c91a354265fc6431f25b335621
+    image: ghcr.io/kraskuscrypto/kraskus-bsv-solo@sha256:410390ab65b257c9ed8ad990f4bcc4179a9b104f259da62e36e0956c9074dfd9
     restart: unless-stopped
     depends_on:
       init:
@@ -71,7 +71,7 @@ services:
       - no-new-privileges:true
 
   ui:
-    image: ghcr.io/kraskuscrypto/kraskus-bsv-solo@sha256:225c55c4f65644bed6a8b626cdda276664a983c91a354265fc6431f25b335621
+    image: ghcr.io/kraskuscrypto/kraskus-bsv-solo@sha256:410390ab65b257c9ed8ad990f4bcc4179a9b104f259da62e36e0956c9074dfd9
     restart: unless-stopped
     depends_on:
       init:
