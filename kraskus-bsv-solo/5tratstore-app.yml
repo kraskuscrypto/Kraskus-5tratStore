@@ -13,7 +13,7 @@ developer: Kraskus Crypto
 website: https://kraskuscrypto.com/
 repo: https://github.com/kraskuscrypto/Kraskus-CHTA-Solo
 support: https://kraskuscrypto.com/
-icon: assets/kraskus-bsv-emblem.svg
+icon: assets/kraskus-bsv-emblem.png
 port: 18422
 path: /
 uiMode: proxy
