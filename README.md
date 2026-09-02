@@ -21,7 +21,7 @@ The Compatibility app only patches the known affected CLI layout. Newer compatib
 If the Compatibility app cannot be installed, the qualified one-command repair remains available:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kraskuscrypto/Kraskus-5tratStore/9fd9dbac10ddd0d6fd2de22ff8adaaadd01e2658/scripts/install-kraskus-compat.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/kraskuscrypto/Kraskus-Crypto-Dev-Store/9fd9dbac10ddd0d6fd2de22ff8adaaadd01e2658/scripts/install-kraskus-compat.sh | sudo bash
 ```
 
 See `COMPATIBILITY-SETUP.md` for details and recovery behavior.
@@ -31,7 +31,7 @@ See `COMPATIBILITY-SETUP.md` for details and recovery behavior.
 Use **App Store → Add custom store** and enter:
 
 ```text
-https://github.com/kraskuscrypto/Kraskus-5tratStore
+https://github.com/kraskuscrypto/Kraskus-Crypto-Dev-Store
 ```
 
 Then install and update Kraskus apps normally from the native 5tratumOS App Store.
@@ -63,7 +63,7 @@ Existing MystNodes users can skip new-account signup and connect their own API k
 ## Repository layout
 
 ```text
-Kraskus-5tratStore/
+Kraskus-Crypto-Dev-Store/
 ├── COMPATIBILITY-SETUP.md
 ├── umbrel-app-store.yml
 ├── README.md

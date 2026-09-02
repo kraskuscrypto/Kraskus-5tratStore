@@ -2,7 +2,7 @@
 
 set -u
 
-PATCH_URL="https://raw.githubusercontent.com/kraskuscrypto/Kraskus-5tratStore/1a19195700ef8cf0246803adfb5185f45f3b5065/scripts/fix-5tratumos-dynamic-custom-channels.sh"
+PATCH_URL="https://raw.githubusercontent.com/kraskuscrypto/Kraskus-Crypto-Dev-Store/1a19195700ef8cf0246803adfb5185f45f3b5065/scripts/fix-5tratumos-dynamic-custom-channels.sh"
 TMP="$(mktemp /tmp/kraskus-5tratumos-compat.XXXXXX.sh)"
 
 cleanup() {

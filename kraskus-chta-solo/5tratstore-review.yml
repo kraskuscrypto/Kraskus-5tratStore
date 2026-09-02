@@ -6,7 +6,7 @@ reviewedAt: ""
 reviewedBy: ""
 
 upstream:
-  sourceUrl: https://github.com/kraskuscrypto/Kraskus-5tratStore
+  sourceUrl: https://github.com/kraskuscrypto/Kraskus-Crypto-Dev-Store
   license: mixed
   licenseEvidence: LICENSES.md
 
