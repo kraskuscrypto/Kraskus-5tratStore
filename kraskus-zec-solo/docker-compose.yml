@@ -3,107 +3,79 @@ services:
     environment:
       APP_HOST: ui
       APP_PORT: 8080
-
   ui:
-    image: ghcr.io/kraskuscrypto/kraskus-5trat-zec-v9-xmr-shell@sha256:11cee3d0440c0ec51bbf71172aba5e7bed7097c2b399be099b3cdb440e1f3749
+    image: ghcr.io/kraskuscrypto/kraskus-5trat-zec-v9-xmr-shell@sha256:c34fd12470efa0b18b2a471126430436827b86efcd86b1dcbbfd3d18fa80b220
     restart: unless-stopped
-
     depends_on:
-      - kraskus
-
+    - kraskus
     security_opt:
-      - no-new-privileges:true
+    - no-new-privileges:true
     cap_drop:
-      - ALL
+    - ALL
     cap_add:
-      - CHOWN
-      - SETGID
-      - SETUID
-
+    - CHOWN
+    - SETGID
+    - SETUID
   kraskus:
     image: ghcr.io/kraskuscrypto/kraskus-zec-solo-wallet-controller@sha256:a5e19a822cffcf8a79b7f7b30e015912bf083a4abe85554952c1ae6d90e24ec8
     restart: unless-stopped
-
     depends_on:
-      - zebra
-
+    - zebra
     environment:
       KRASKUS_BASE: /data
-      KRASKUS_PACKAGED_MODE: "1"
-
+      KRASKUS_PACKAGED_MODE: '1'
       KRASKUS_ZEBRA_RPC_URL: http://zebra:18232
       KRASKUS_ZEBRA_COOKIE_FILE: /zebra/.cookie
-
       KRASKUS_ZALLET_RPC_URL: http://127.0.0.1:28232
       KRASKUS_ZALLET_SUPERVISOR_URL: http://127.0.0.1:28233
-
       KRASKUS_MINER_ADDRESS_FILE: /kraskus-config/miner-address
       KRASKUS_NETWORK_FILE: /kraskus-config/network
-
       KRASKUS_STRATUM_HOST: 0.0.0.0
       KRASKUS_STRATUM_PORT: 3335
-
       KRASKUS_STRATUM_HEALTH_HOST: 127.0.0.1
       KRASKUS_STRATUM_HEALTH_PORT: 18402
       KRASKUS_STRATUM_STATUS_URL: http://127.0.0.1:18402/status
-
     volumes:
-      - ${APP_DATA_DIR}/kraskus:/data
-      - ${APP_DATA_DIR}/zebra:/zebra:ro
-      - ${APP_DATA_DIR}/config:/kraskus-config
-
+    - ${APP_DATA_DIR}/kraskus:/data
+    - ${APP_DATA_DIR}/zebra:/zebra:ro
+    - ${APP_DATA_DIR}/config:/kraskus-config
     ports:
-      - "3335:3335"
-
+    - 3335:3335
     security_opt:
-      - no-new-privileges:true
+    - no-new-privileges:true
     cap_drop:
-      - ALL
+    - ALL
     cap_add:
-      - DAC_OVERRIDE
-
+    - DAC_OVERRIDE
   zallet:
     image: ghcr.io/kraskuscrypto/kraskus-zec-zallet-supervisor@sha256:b79a53bb7cc52f16a96d0bac54287b28897b2d73d5d12f31db54d06390596d1c
     restart: unless-stopped
-
-    user: "10001:10001"
-
-    network_mode: "service:kraskus"
-
+    user: 10001:10001
+    network_mode: service:kraskus
     depends_on:
-      - zebra
-
+    - zebra
     environment:
       SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
-
     volumes:
-      - ${APP_DATA_DIR}/kraskus/zallet:/var/lib/zallet
-      - ${APP_DATA_DIR}/zebra:/zebra:ro
-      - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
-
+    - ${APP_DATA_DIR}/kraskus/zallet:/var/lib/zallet
+    - ${APP_DATA_DIR}/zebra:/zebra:ro
+    - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
     security_opt:
-      - no-new-privileges:true
+    - no-new-privileges:true
     cap_drop:
-      - ALL
-
+    - ALL
   zebra:
     image: ghcr.io/kraskuscrypto/kraskus-zebra@sha256:abbbddd84563023df621f1eecceeb816da5c2951d9b60718133f131e1341c6d0
     restart: unless-stopped
-
     environment:
       ZEBRA_NETWORK__LISTEN_ADDR: 0.0.0.0:18233
-
       ZEBRA_RPC__LISTEN_ADDR: 0.0.0.0:18232
       ZEBRA_RPC__COOKIE_DIR: /home/zebra/.cache/zebra
-
       ZEBRA_STATE__CACHE_DIR: /home/zebra/.cache/zebra
-
       KRASKUS_MINER_ADDRESS_FILE: /kraskus-config/miner-address
       KRASKUS_NETWORK_FILE: /kraskus-config/network
-
     volumes:
-      - ${APP_DATA_DIR}/zebra:/home/zebra/.cache/zebra
-      - ${APP_DATA_DIR}/config:/kraskus-config:ro
-
+    - ${APP_DATA_DIR}/zebra:/home/zebra/.cache/zebra
+    - ${APP_DATA_DIR}/config:/kraskus-config:ro
     security_opt:
-      - no-new-privileges:true
+    - no-new-privileges:true

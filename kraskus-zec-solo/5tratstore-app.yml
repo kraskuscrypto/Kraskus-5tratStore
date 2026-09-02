@@ -1,14 +1,11 @@
 id: kraskus-zec-solo
 name: Kraskus ZEC Solo
 tagline: Zcash full node and solo mining pool
-description: >-
-  Kraskus ZEC Solo turns 5tratumOS into an easy-to-use Zcash
-  full node and local solo mining appliance. The app manages
-  node synchronization, mining readiness, worker connections,
-  mining jobs, and block submissions from a single interface.
-  Normal users do not need to manage Zebra, RPC, Docker,
-  Linux, JSON, or Stratum configuration.
-version: 0.3.3-beta
+description: Kraskus ZEC Solo turns 5tratumOS into an easy-to-use Zcash full node
+  and local solo mining appliance. The app manages node synchronization, mining readiness,
+  worker connections, mining jobs, and block submissions from a single interface.
+  Normal users do not need to manage Zebra, RPC, Docker, Linux, JSON, or Stratum configuration.
+version: 0.3.4-beta
 category: Mining
 developer: Kraskus Crypto
 website: https://kraskuscrypto.com/
@@ -18,7 +15,6 @@ icon: assets/divinity-zec-logo.png
 port: 33062
 path: /
 uiMode: proxy
-
 services:
   app_proxy:
     environment:
