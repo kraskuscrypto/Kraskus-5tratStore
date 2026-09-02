@@ -1,0 +1,47 @@
+schema: kraskus.release-manifest.v1
+app_id: kraskus-<coin>-solo
+coin: <SYMBOL>
+version: <semver>
+channel: dev
+source:
+  repository: kraskuscrypto/Kraskus-Crypto-Apps
+  commit: <40-char-sha>
+ui:
+  template: Kraskus App Template V2
+  version: <template-version>
+images:
+  - name: ghcr.io/kraskuscrypto/<image>
+    digest: sha256:<digest>
+upstream:
+  node: <name-and-version>
+  wallet: <name-and-version-or-none>
+ports:
+  ui: <port>
+  stratum: <port>
+data:
+  schema_version: <version>
+  migration_version: <version>
+compatibility:
+  5tratumos: <supported-version-or-range>
+wallet:
+  mode: <native|external|none>
+  backup_supported: false
+  restore_qualified: false
+qualification:
+  vm_class: client-equivalent
+  date: null
+  result: pending
+  immutable_digest_verified: false
+  clean_install: false
+  restart_recovery: false
+  update_from_previous: false
+  keep_data_reinstall: false
+  purge_reinstall: false
+  miner_path: false
+  ui_smoke: false
+  mobile_smoke: false
+  wallet_restore: false
+rollback:
+  previous_known_good_version: null
+  previous_known_good_digest: null
+notes: []
