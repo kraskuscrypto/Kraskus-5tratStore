@@ -1,6 +1,6 @@
 # Publish this repository to GitHub
 
-1. Create an empty GitHub repository named `Kraskus-5tratStore`.
+1. Create an empty GitHub repository named `Kraskus-Crypto-Dev-Store`.
 2. Do not add a README/license/gitignore in GitHub; this folder already contains them.
 3. From the extracted repository directory:
 
@@ -9,7 +9,7 @@ git init
 git add .
 git commit -m "Initial Kraskus 5tratStore with Mysterium Node"
 git branch -M main
-git remote add origin https://github.com/YOUR-GITHUB-USER/Kraskus-5tratStore.git
+git remote add origin https://github.com/YOUR-GITHUB-USER/Kraskus-Crypto-Dev-Store.git
 git push -u origin main
 ```
 

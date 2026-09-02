@@ -36,7 +36,7 @@ For third-party services with optional account creation:
 ## Repository pattern
 
 ```text
-Kraskus-5tratStore/
+Kraskus-Crypto-Dev-Store/
 ├── umbrel-app-store.yml
 ├── README.md
 ├── REFERENCE-APP-STANDARD.md

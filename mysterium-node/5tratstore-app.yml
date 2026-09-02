@@ -16,7 +16,7 @@ developer: Kraskus
 website: https://www.mysterium.network/
 repo: https://github.com/mysteriumnetwork/node
 support: https://help.mystnodes.com/
-icon: https://raw.githubusercontent.com/kraskuscrypto/Kraskus-5tratStore/main/mysterium-node/assets/icon.png
+icon: https://raw.githubusercontent.com/kraskuscrypto/Kraskus-Crypto-Dev-Store/main/mysterium-node/assets/icon.png
 port: 33060
 path: /
 uiMode: proxy
