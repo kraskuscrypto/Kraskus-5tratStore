@@ -1,0 +1,525 @@
+#!/usr/bin/env python3
+"""
+Kraskus BSV Solo host-side recovery helper.
+
+Allowed scope:
+  - inspect Kraskus BSV installation registration
+  - inspect store version/package state
+  - repair BSV version registration metadata
+  - write a repair journal
+
+Forbidden scope:
+  - wallet.dat modification
+  - blockchain deletion/modification
+  - Docker socket access
+  - container restart
+  - service restart
+  - arbitrary filesystem deletion
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import shutil
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+
+APP_ID = "kraskus-bsv-solo"
+
+APP_DIR = Path(
+    "/opt/5tratumos/apps/kraskus-bsv-solo"
+)
+
+DATA_DIR = Path(
+    "/var/lib/5tratumos/apps/kraskus-bsv-solo"
+)
+
+STORE_DIR = Path(
+    "/opt/5tratumos/store/"
+    "custom-kraskus-5tratstore/"
+    "kraskus-bsv-solo"
+)
+
+META = APP_DIR / "5tratumos.json"
+STORE_MANIFEST = STORE_DIR / "5tratstore-app.yml"
+STORE_COMPOSE = STORE_DIR / "docker-compose.yml"
+
+REGISTRY = Path(
+    "/var/lib/5tratumos/apps_installed.json"
+)
+
+WALLET = DATA_DIR / "data/node/wallet.dat"
+NODE = DATA_DIR / "data/node"
+
+JOURNAL = (
+    DATA_DIR
+    / "data/runtime/repair/host-repair-journal.jsonl"
+)
+
+
+def utc_now() -> str:
+    return (
+        datetime.now(timezone.utc)
+        .isoformat()
+        .replace("+00:00", "Z")
+    )
+
+
+def load_json(path: Path) -> Any:
+    with path.open("r", encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def atomic_json(path: Path, value: Any) -> None:
+    temp = path.with_name(
+        f".{path.name}.kraskus-repair-{os.getpid()}"
+    )
+
+    with temp.open("w", encoding="utf-8") as handle:
+        json.dump(value, handle, indent=2)
+        handle.write("\n")
+
+    os.replace(temp, path)
+
+
+def backup(path: Path) -> Path:
+    stamp = (
+        datetime.now(timezone.utc)
+        .strftime("%Y%m%dT%H%M%SZ")
+    )
+
+    dest = path.with_name(
+        f"{path.name}.kraskus-repair-backup.{stamp}"
+    )
+
+    shutil.copy2(path, dest)
+    return dest
+
+
+def manifest_value(name: str) -> str | None:
+    if not STORE_MANIFEST.exists():
+        return None
+
+    pattern = re.compile(
+        rf"^\s*{re.escape(name)}\s*:\s*[\"']?([^\"'#]+)"
+    )
+
+    for line in STORE_MANIFEST.read_text(
+        encoding="utf-8",
+        errors="replace",
+    ).splitlines():
+        match = pattern.match(line)
+        if match:
+            return match.group(1).strip()
+
+    return None
+
+
+def safe_stat(path: Path) -> dict[str, Any]:
+    try:
+        st = path.stat()
+
+        return {
+            "present": True,
+            "size": st.st_size
+            if path.is_file()
+            else None,
+            "mode": oct(st.st_mode & 0o777),
+            "uid": st.st_uid,
+            "gid": st.st_gid,
+        }
+
+    except FileNotFoundError:
+        return {"present": False}
+
+
+def installed_version() -> str | None:
+    if not META.exists():
+        return None
+
+    data = load_json(META)
+
+    return (
+        data.get("installed_version")
+        or data.get("version")
+    )
+
+
+def registry_matches(
+    value: Any,
+) -> list[dict[str, Any]]:
+    found: list[dict[str, Any]] = []
+
+    def walk(
+        node: Any,
+        path: str = "$",
+    ) -> None:
+        if isinstance(node, dict):
+            if APP_ID in node:
+                found.append(
+                    {
+                        "path": f"{path}.{APP_ID}",
+                        "value": node[APP_ID],
+                    }
+                )
+
+            app_value = (
+                node.get("app_id")
+                or node.get("id")
+            )
+
+            if app_value == APP_ID:
+                found.append(
+                    {
+                        "path": path,
+                        "value": node,
+                    }
+                )
+
+            for key, child in node.items():
+                walk(
+                    child,
+                    f"{path}.{key}",
+                )
+
+        elif isinstance(node, list):
+            for index, child in enumerate(node):
+                walk(
+                    child,
+                    f"{path}[{index}]",
+                )
+
+    walk(value)
+    return found
+
+
+def preflight() -> dict[str, Any]:
+    meta = None
+
+    if META.exists():
+        try:
+            meta = load_json(META)
+        except Exception as exc:
+            meta = {
+                "error": str(exc),
+            }
+
+    registry = None
+    matches: list[dict[str, Any]] = []
+
+    if REGISTRY.exists():
+        try:
+            registry = load_json(REGISTRY)
+            matches = registry_matches(registry)
+        except Exception as exc:
+            matches = [
+                {
+                    "error": str(exc),
+                }
+            ]
+
+    return {
+        "app_id": APP_ID,
+        "time": utc_now(),
+        "installed": {
+            "app_dir": APP_DIR.exists(),
+            "metadata": META.exists(),
+            "version": installed_version(),
+        },
+        "store": {
+            "directory": STORE_DIR.exists(),
+            "manifest": STORE_MANIFEST.exists(),
+            "compose": STORE_COMPOSE.exists(),
+            "id": manifest_value("id"),
+            "version": manifest_value("version"),
+        },
+        "registry": {
+            "present": REGISTRY.exists(),
+            "matches": matches,
+        },
+        "persistent_data": {
+            "node": safe_stat(NODE),
+            "wallet": safe_stat(WALLET),
+        },
+        "protection": {
+            "wallet_contents_read": False,
+            "wallet_modification_allowed": False,
+            "blockchain_modification_allowed": False,
+            "data_deletion_allowed": False,
+            "docker_access": False,
+            "service_restart": False,
+        },
+    }
+
+
+def update_version_fields(
+    node: Any,
+    target_version: str,
+) -> int:
+    changed = 0
+
+    if isinstance(node, dict):
+        belongs = (
+            node.get("app_id") == APP_ID
+            or node.get("id") == APP_ID
+        )
+
+        if belongs:
+            for key in (
+                "installed_version",
+                "version",
+            ):
+                if key in node:
+                    if node[key] != target_version:
+                        node[key] = target_version
+                        changed += 1
+
+        if APP_ID in node:
+            child = node[APP_ID]
+
+            if isinstance(child, dict):
+                for key in (
+                    "installed_version",
+                    "version",
+                ):
+                    if key in child:
+                        if child[key] != target_version:
+                            child[key] = target_version
+                            changed += 1
+
+        for child in node.values():
+            changed += update_version_fields(
+                child,
+                target_version,
+            )
+
+    elif isinstance(node, list):
+        for child in node:
+            changed += update_version_fields(
+                child,
+                target_version,
+            )
+
+    return changed
+
+
+def journal(
+    state: str,
+    detail: dict[str, Any],
+) -> None:
+    JOURNAL.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    record = {
+        "time": utc_now(),
+        "type": "host_registration_repair",
+        "state": state,
+        **detail,
+    }
+
+    with JOURNAL.open(
+        "a",
+        encoding="utf-8",
+    ) as handle:
+        handle.write(
+            json.dumps(
+                record,
+                separators=(",", ":"),
+                sort_keys=True,
+            )
+            + "\n"
+        )
+
+
+def repair() -> dict[str, Any]:
+    if os.geteuid() != 0:
+        raise PermissionError(
+            "Host repair must be run with sudo."
+        )
+
+    before = preflight()
+
+    store_id = before["store"]["id"]
+    store_version = before["store"]["version"]
+
+    if store_id != APP_ID:
+        return {
+            "ok": False,
+            "state": "blocked",
+            "reason": "store_app_id_mismatch",
+            "preflight": before,
+        }
+
+    if not store_version:
+        return {
+            "ok": False,
+            "state": "blocked",
+            "reason": "store_version_missing",
+            "preflight": before,
+        }
+
+    if not STORE_COMPOSE.exists():
+        return {
+            "ok": False,
+            "state": "blocked",
+            "reason": "store_compose_missing",
+            "preflight": before,
+        }
+
+    if not META.exists():
+        return {
+            "ok": False,
+            "state": "blocked",
+            "reason": "installed_metadata_missing",
+            "preflight": before,
+        }
+
+    backups: list[str] = []
+    actions: list[str] = []
+
+    meta = load_json(META)
+
+    old_version = (
+        meta.get("installed_version")
+        or meta.get("version")
+    )
+
+    if old_version != store_version:
+        backups.append(
+            str(
+                backup(META)
+            )
+        )
+
+        meta["installed_version"] = store_version
+        meta["updated_at"] = utc_now()
+
+        atomic_json(
+            META,
+            meta,
+        )
+
+        actions.append(
+            "reconciled_installed_metadata_version"
+        )
+
+    registry_changed = 0
+
+    if REGISTRY.exists():
+        registry = load_json(REGISTRY)
+
+        candidate = json.loads(
+            json.dumps(registry)
+        )
+
+        registry_changed = update_version_fields(
+            candidate,
+            store_version,
+        )
+
+        if registry_changed:
+            backups.append(
+                str(
+                    backup(REGISTRY)
+                )
+            )
+
+            atomic_json(
+                REGISTRY,
+                candidate,
+            )
+
+            actions.append(
+                "reconciled_central_registration_version"
+            )
+
+    if not actions:
+        actions.append(
+            "registration_already_consistent"
+        )
+
+    detail = {
+        "old_version": old_version,
+        "store_version": store_version,
+        "registry_fields_changed": registry_changed,
+        "actions": actions,
+        "backups": backups,
+        "wallet_changed": False,
+        "blockchain_changed": False,
+        "containers_restarted": False,
+    }
+
+    journal(
+        "pass",
+        detail,
+    )
+
+    return {
+        "ok": True,
+        "state": "repaired",
+        **detail,
+        "preflight": preflight(),
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        prog="kraskus-repair",
+        description=(
+            "Safe Kraskus BSV Solo "
+            "installation recovery helper"
+        ),
+    )
+
+    parser.add_argument(
+        "command",
+        choices=[
+            "check",
+            "repair",
+        ],
+    )
+
+    args = parser.parse_args()
+
+    try:
+        if args.command == "check":
+            result = preflight()
+        else:
+            result = repair()
+
+    except Exception as exc:
+        result = {
+            "ok": False,
+            "state": "error",
+            "error": str(exc),
+        }
+
+        print(
+            json.dumps(
+                result,
+                indent=2,
+            )
+        )
+
+        return 1
+
+    print(
+        json.dumps(
+            result,
+            indent=2,
+        )
+    )
+
+    return 0 if result.get("ok", True) else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
