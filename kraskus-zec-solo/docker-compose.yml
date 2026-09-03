@@ -4,7 +4,7 @@ services:
       APP_HOST: ui
       APP_PORT: 8080
   ui:
-    image: ghcr.io/kraskuscrypto/kraskus-5trat-zec-v9-xmr-shell@sha256:c34fd12470efa0b18b2a471126430436827b86efcd86b1dcbbfd3d18fa80b220
+    image: ghcr.io/kraskuscrypto/kraskus-5trat-zec-v9-xmr-shell@sha256:139e7efec405010972519ee5dfa16047eb62b1704cb818081d2d1e1945a06ddd
     restart: unless-stopped
     depends_on:
     - kraskus
