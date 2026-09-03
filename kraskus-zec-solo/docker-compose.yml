@@ -17,7 +17,7 @@ services:
     - SETGID
     - SETUID
   kraskus:
-    image: ghcr.io/kraskuscrypto/kraskus-zec-solo-wallet-controller@sha256:5865ec5e8d4f9bf9260b07f780fc0d9dc06bfc88c11a8e8a0cce84d54c702869
+    image: ghcr.io/kraskuscrypto/kraskus-zec-solo-wallet-controller@sha256:a0046865242df47c41403f215be676bbd471b5ce1c253a00246bbcea220f09a4
     restart: unless-stopped
     depends_on:
     - zebra
@@ -48,7 +48,7 @@ services:
     cap_add:
     - DAC_OVERRIDE
   zallet-init:
-    image: ghcr.io/kraskuscrypto/kraskus-zec-solo-wallet-controller@sha256:5865ec5e8d4f9bf9260b07f780fc0d9dc06bfc88c11a8e8a0cce84d54c702869
+    image: ghcr.io/kraskuscrypto/kraskus-zec-solo-wallet-controller@sha256:a0046865242df47c41403f215be676bbd471b5ce1c253a00246bbcea220f09a4
     user: 0:0
     entrypoint:
     - /bin/sh
