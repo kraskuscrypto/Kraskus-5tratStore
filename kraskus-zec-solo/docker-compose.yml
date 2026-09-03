@@ -74,7 +74,7 @@ services:
     - DAC_OVERRIDE
     - FOWNER
   zallet:
-    image: ghcr.io/kraskuscrypto/kraskus-zec-zallet-supervisor@sha256:42e35c6c3219420d1135b057912fd0108df27695c953e85a7fec2bdc3004fe53
+    image: ghcr.io/kraskuscrypto/kraskus-zec-zallet-supervisor@sha256:6199ad37a84b8acf3dc5a388f9a6cc8d92cf48519f5a271bc4ba6bc45eb0defc
     restart: unless-stopped
     user: 10001:10001
     network_mode: service:kraskus
