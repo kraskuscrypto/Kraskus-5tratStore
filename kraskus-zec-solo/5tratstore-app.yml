@@ -5,7 +5,7 @@ description: Kraskus ZEC Solo turns 5tratumOS into an easy-to-use Zcash full nod
   and local solo mining appliance. The app manages node synchronization, mining readiness,
   worker connections, mining jobs, and block submissions from a single interface.
   Normal users do not need to manage Zebra, RPC, Docker, Linux, JSON, or Stratum configuration.
-version: 0.3.7-beta
+version: 0.3.8-beta
 category: Mining
 developer: Kraskus Crypto
 website: https://kraskuscrypto.com/
