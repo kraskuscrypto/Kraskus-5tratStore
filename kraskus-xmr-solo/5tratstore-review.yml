@@ -1,12 +1,12 @@
 schemaVersion: 1
 status: proposed
 appId: kraskus-xmr-solo
-appVersion: 0.1.8-beta
+appVersion: 0.1.9-beta
 reviewedAt: ""
 reviewedBy: ""
 
 upstream:
-  sourceUrl: https://github.com/kraskuscrypto/Kraskus-Mining-Platform-V2
+  sourceUrl: https://github.com/kraskuscrypto/Kraskus-Crypto-Apps
   license: mixed
   licenseEvidence: LICENSES.md
 
@@ -42,30 +42,21 @@ security:
   networkEndpointsReviewed: true
 
 notes: >-
-  Proposed 0.1.5-beta package for the Kraskus XMR true-solo appliance.
-  Monero P2P TCP 18080 and the restricted miner-facing endpoint TCP 1921
-  are intentionally published. monerod RPC, adapter, wallet RPC, and wallet
-  API remain on internal application networks. Persistent blockchain,
-  wallet, and runtime state use APP_DATA_DIR. A one-shot initializer creates
-  the internal view-wallet password on first install without committing or
-  exposing it. The app tile uses the approved Divinity XMR icon from the
-  Kraskus brand asset vault. Production runtime images are published to GHCR
-  and pinned by immutable digests in the store recipe. Fresh install, startup,
-  update persistence, and uninstall behavior were previously qualified on
-  clean 5tratumOS VM120 hosts. Version 0.1.5-beta keeps the 0.1.4-beta gateway
-  and wallet hardening and updates the UI to 0.1.3-beta. The UI adds a full
-  mobile compatibility pass across Command, Mining, Blocks, Events, Wallet,
-  and Settings, including compact mobile navigation, stacked responsive cards,
-  touch-friendly controls, phone-safe wallet receive/send layouts, and a
-  dedicated mobile block-ledger card presentation. Command, Mining, Blocks,
-  Events, Wallet, and Settings were visually checked at approximately 400px
-  width, with no intended horizontal page overflow. The permanent XMR runtime
-  qualifier remains passing for gateway allowlists, blocked-request accounting,
-  event auditing, mainnet identity, monerod availability, wallet setup/status,
-  and wallet sync gating. Full-sync getblocktemplate/XMRig qualification and
-  the live wallet send path remain release-gate items before GA. Native custom-
-  store update behavior is still dependent on the upstream 5tratumOS dynamic-
-  channel fix and is not patched from inside the application.
+  Proposed 0.1.9-beta Dev Store package for the Kraskus XMR true-solo
+  appliance. Monero P2P TCP 18080 and the restricted miner endpoint TCP
+  1921 are intentionally published. monerod RPC, adapter, wallet RPC, and
+  wallet API remain on application networks. Blockchain, wallet, runtime,
+  and protected credential state remain below APP_DATA_DIR. Runtime images
+  were built from the canonical Kraskus-Crypto-Apps repository and are
+  pinned by immutable GHCR digests. The automatic developer fee remains
+  exactly 0.25% of successfully mined block rewards after 60-block maturity.
+  Pending or temporarily failed fee settlement does not lock mining or user
+  wallet sends. Ledger integrity, orphan resolution, retry, prepared-
+  transaction recovery, and double-payment prevention remain enforced.
+  GitHub Actions build run 33819453243 passed all source validation and five
+  linux/amd64 image jobs. This package remains proposed in the Dev Store
+  pending client-style VM100 qualification; it has not been promoted to the
+  Official Store.
 
 # 0.1.6-beta release qualification
 #
@@ -111,3 +102,22 @@ notes: >-
 # version service card from v0.1.1-beta to v0.1.8-beta. All wallet setup,
 # wallet/API, daemon, miner-gateway, fee-settlement, storage, and networking
 # behavior remains unchanged from the already-qualified 0.1.7-beta release.
+
+# 0.1.9-beta release qualification
+#
+# Canonical source repository:
+# https://github.com/kraskuscrypto/Kraskus-Crypto-Apps
+#
+# Final immutable image build source:
+# 26383f0ebb025017d9c09f6e26388a2d49a3c787
+#
+# Canonical release metadata commit:
+# 41f1a4bd55ec289786897e025d5836216a24d8ca
+#
+# GitHub Actions build run:
+# 33819453243
+#
+# All five linux/amd64 runtime images are pinned by immutable GHCR digest.
+# Automatic 0.25% developer-fee settlement remains maturity-gated,
+# retryable, orphan-aware, and double-payment-safe. Pending settlement does
+# not block mining or user wallet sends.
