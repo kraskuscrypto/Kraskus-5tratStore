@@ -78,7 +78,7 @@ Kraskus brand asset vault.
 - Adds protected appliance-local spend credential storage for automatic developer-fee settlement.
 - Full-wallet create and restore flows save the wallet password into a mode-0600 local credential used only for automatic fee settlement.
 - Watch-only wallets remain monitoring-only.
-- Kraskus XMR Solo charges a 1% developer fee only on successfully mined block rewards.
+- Kraskus XMR Solo charges a 0.25% developer fee only on successfully mined block rewards.
 - Developer-fee settlement is automatic after reward maturity and does not divert miner hashrate.
 
 
