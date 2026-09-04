@@ -6,9 +6,9 @@ A custom 5tratStore repository maintained by Kraskus.
 
 Some current 5tratumOS installations expose dynamically named custom stores in the WebUI but still use an older CLI for app lifecycle commands. On affected hosts, native custom-store app updates can fail before Docker is touched.
 
-The easiest customer path is now entirely inside 5tratumOS:
+The easiest customer path is entirely inside 5tratumOS. The Compatibility app accepts both the legacy `custom-kraskus-5tratstore` channel and the current `custom-kraskus-crypto-store` channel, so existing installs and new installs use the same update path:
 
-1. Add the Kraskus 5tratStore.
+1. Add the Kraskus Crypto Store.
 2. Install **Kraskus Compatibility**.
 3. Open it once and wait for the completion screen.
 4. When it says **Thank you for updating. You may now uninstall this app.**, remove the Compatibility app if desired.
@@ -21,7 +21,7 @@ The Compatibility app only patches the known affected CLI layout. Newer compatib
 If the Compatibility app cannot be installed, the qualified one-command repair remains available:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kraskuscrypto/Kraskus-5tratStore/9fd9dbac10ddd0d6fd2de22ff8adaaadd01e2658/scripts/install-kraskus-compat.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/kraskuscrypto/Kraskus-Crypto-Store/main/scripts/install-kraskus-compat.sh | sudo bash
 ```
 
 See `COMPATIBILITY-SETUP.md` for details and recovery behavior.
@@ -31,7 +31,7 @@ See `COMPATIBILITY-SETUP.md` for details and recovery behavior.
 Use **App Store → Add custom store** and enter:
 
 ```text
-https://github.com/kraskuscrypto/Kraskus-5tratStore
+https://github.com/kraskuscrypto/Kraskus-Crypto-Store
 ```
 
 Then install and update Kraskus apps normally from the native 5tratumOS App Store.
@@ -63,7 +63,7 @@ Existing MystNodes users can skip new-account signup and connect their own API k
 ## Repository layout
 
 ```text
-Kraskus-5tratStore/
+Kraskus-Crypto-Store/
 ├── COMPATIBILITY-SETUP.md
 ├── umbrel-app-store.yml
 ├── README.md

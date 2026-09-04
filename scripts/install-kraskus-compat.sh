@@ -2,7 +2,7 @@
 
 set -u
 
-PATCH_URL="https://raw.githubusercontent.com/kraskuscrypto/Kraskus-5tratStore/1a19195700ef8cf0246803adfb5185f45f3b5065/scripts/fix-5tratumos-dynamic-custom-channels.sh"
+PATCH_URL="https://raw.githubusercontent.com/kraskuscrypto/Kraskus-Crypto-Store/f883d7d3c66fafc999a5e72fd2c687ec02ff1c05/scripts/fix-5tratumos-dynamic-custom-channels.sh"
 TMP="$(mktemp /tmp/kraskus-5tratumos-compat.XXXXXX.sh)"
 
 cleanup() {
@@ -42,4 +42,4 @@ if [ "$rc" -ne 0 ]; then
 fi
 
 printf '\nCompatibility setup complete.\n'
-printf 'You can now add the Kraskus 5tratStore and install or update Kraskus apps normally.\n'
+printf 'You can now use the Kraskus Crypto Store and install or update Kraskus apps normally.\n'
