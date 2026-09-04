@@ -71,7 +71,7 @@ services:
       - no-new-privileges:true
 
   kraskus:
-    image: ghcr.io/kraskuscrypto/kraskus-chta-solo@sha256:b20b59a51e190ef6e75361992d94278bfb27e951e58b008a49320bc4c9c2a309
+    image: ghcr.io/kraskuscrypto/kraskus-chta-solo@sha256:ca7b93a4c57f8a1f20cc39beacc1af009cc8a6e1c0669540b0f08bdd7285d139
     restart: unless-stopped
     depends_on:
       init:
@@ -85,7 +85,7 @@ services:
       KRASKUS_API_HOST: 0.0.0.0
       KRASKUS_API_PORT: "18411"
       KRASKUS_APP_NAME: Kraskus CHTA Solo
-      KRASKUS_APP_VERSION: v2-stage6-candidate10
+      KRASKUS_APP_VERSION: 0.2.32-dev1
       KRASKUS_CHTA_RPC_URL: http://cheetahcoin:8536/
       KRASKUS_CHTA_RPC_USER_FILE: /run/secrets/rpc-user
       KRASKUS_CHTA_RPC_PASSWORD_FILE: /run/secrets/rpc-password
@@ -115,32 +115,11 @@ services:
 
 
   ui:
-    image: ghcr.io/kraskuscrypto/kraskus-chta-solo@sha256:b20b59a51e190ef6e75361992d94278bfb27e951e58b008a49320bc4c9c2a309
+    image: ghcr.io/kraskuscrypto/kraskus-chta-ui@sha256:3cac7c329f63cd3262d393bef82093bf187ca98d28037d092e95496769d9de97
     restart: unless-stopped
     depends_on:
       kraskus:
         condition: service_started
-
-    environment:
-      CHTA_BACKEND_HOST: kraskus
-      CHTA_BACKEND_PORT: "18411"
-      CHTA_UI_PORT: "18412"
-
-    volumes:
-      - ${APP_DATA_DIR}/data/chta-ui-gateway-v5.py:/qualification/chta-ui-gateway.py:ro
-      - ${APP_DATA_DIR}/data/chta-ui-prepaint-v11.js:/qualification/chta-ui-compat-v1.js:ro
-      - ${APP_DATA_DIR}/data/chta-ui-prepaint-v9.js:/app/ui/static/chta-ui-prepaint-v9.js:ro
-      - ${APP_DATA_DIR}/data/chta-ui-prepaint-v7.js:/app/ui/static/chta-ui-prepaint-v7.js:ro
-      - ${APP_DATA_DIR}/data/chta-ui-prepaint-v6.js:/app/ui/static/chta-ui-prepaint-v6.js:ro
-      - ${APP_DATA_DIR}/data/chta-ui-prepaint-v5.js:/app/ui/static/chta-ui-prepaint-v5.js:ro
-      - ${APP_DATA_DIR}/data/chta-ui-compat-v7.js:/app/ui/static/chta-ui-compat-v6.js:ro
-      - ${APP_DATA_DIR}/data/chta-ui-hotfix-v2.js:/app/ui/static/chta-ui-hotfix-v2.js:ro
-      - ${APP_DATA_DIR}/data/chta-ui-hotfix-v3.js:/app/ui/static/chta-ui-hotfix-v3.js:ro
-
-    entrypoint:
-      - python3
-    command:
-      - /qualification/chta-ui-gateway.py
     networks:
       - chta
     read_only: true
