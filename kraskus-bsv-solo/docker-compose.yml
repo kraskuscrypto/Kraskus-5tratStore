@@ -22,7 +22,16 @@ services:
     depends_on:
       init:
         condition: service_completed_successfully
-    command: ["bitcoind", "-datadir=/data", "-conf=/data/bitcoin.conf"]
+    command:
+      - bitcoind
+      - -datadir=/data
+      - -conf=/data/bitcoin.conf
+      - -excessiveblocksize=10000000000
+      - -addnode=57.128.233.172:8333
+      - -addnode=195.144.22.198:8333
+      - -addnode=135.125.170.182:8333
+      - -addnode=15.235.232.121:8333
+      - -addnode=99.127.49.102:8333
     volumes:
       - ${APP_DATA_DIR}/data/node:/data
     ports:
@@ -53,7 +62,7 @@ services:
       KRASKUS_BSV_RPC_PASSWORD_FILE: /data/secrets/rpc-password
       KRASKUS_BSV_SETTINGS_FILE: /data/config/settings.json
       KRASKUS_BSV_STATUS_FILE: /data/config/status.json
-      KRASKUS_APP_VERSION: "0.2.0-beta"
+      KRASKUS_APP_VERSION: "0.2.2-beta"
       KRASKUS_BSV_TELEMETRY_FILE: /data/runtime/share-events.jsonl
       KRASKUS_BSV_DEV_SCRIPT_PUB_KEY: 76a914ca26cadd2606b6b0c0ce7cdc7f02c10a27f954b688ac
       KRASKUS_BSV_STRATUM_PORT: "1922"
@@ -87,7 +96,7 @@ services:
       KRASKUS_BSV_RPC_PASSWORD_FILE: /data/secrets/rpc-password
       KRASKUS_BSV_SETTINGS_FILE: /data/config/settings.json
       KRASKUS_BSV_STATUS_FILE: /data/config/status.json
-      KRASKUS_APP_VERSION: "0.2.0-beta"
+      KRASKUS_APP_VERSION: "0.2.2-beta"
       KRASKUS_BSV_TELEMETRY_FILE: /data/runtime/share-events.jsonl
       KRASKUS_BSV_UI_PORT: "18422"
     volumes:

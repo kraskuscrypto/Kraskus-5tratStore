@@ -7,7 +7,7 @@ description: >-
   disabled until a valid external BSV payout address is configured. Each
   accepted block coinbase assigns 99 percent to the configured miner address
   and 1 percent to Kraskus development.
-version: 0.2.1-beta
+version: 0.2.2-beta
 category: Mining
 developer: Kraskus Crypto
 website: https://kraskuscrypto.com/

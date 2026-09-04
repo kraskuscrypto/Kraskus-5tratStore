@@ -7,9 +7,11 @@ notes:
   - Pruned node target is approximately 100 GB
   - Mining is blocked until a validated external payout address is saved
   - Developer fee is fixed at 1 percent in the coinbase transaction
-appVersion: 0.1.0-beta
+appVersion: 0.2.2-beta
 
 releaseNotes:
+  - Raises SV Node excessive block size to 10 GB for historical large-block IBD.
+  - Adds current BSV 1.2.x bootstrap peers to recover historical block download stalls.
   - First installable Bitcoin SV appliance beta.
   - Adds the official Kraskus App Template v1 interface.
   - Uses SV Node GMC with native Stratum V1 on port 1922.
