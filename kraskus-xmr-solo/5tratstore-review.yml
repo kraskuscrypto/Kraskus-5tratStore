@@ -49,11 +49,11 @@ notes: >-
   and protected credential state remain below APP_DATA_DIR. Runtime images
   were built from the canonical Kraskus-Crypto-Apps repository and are
   pinned by immutable GHCR digests. The automatic developer fee remains
-  exactly 0.25% of successfully mined block rewards after 60-block maturity.
+  exactly 1% of successfully mined block rewards after 60-block maturity.
   Pending or temporarily failed fee settlement does not lock mining or user
   wallet sends. Ledger integrity, orphan resolution, retry, prepared-
   transaction recovery, and double-payment prevention remain enforced.
-  GitHub Actions build run 33819453243 passed all source validation and five
+  GitHub Actions build run 33825587530 passed all source validation and five
   linux/amd64 image jobs. This package remains proposed in the Dev Store
   pending client-style VM100 qualification; it has not been promoted to the
   Official Store.
@@ -69,7 +69,7 @@ notes: >-
 # appliance-local mode-0600 credential used by the automatic developer-fee
 # settlement worker. Watch-only wallets remain monitoring-only.
 #
-# Kraskus XMR Solo charges a 0.25% developer fee only on successfully mined
+# Kraskus XMR Solo charges a 1% developer fee only on successfully mined
 # block rewards. Settlement occurs automatically after maturity. Miner
 # hashrate is never diverted.
 #
@@ -109,15 +109,15 @@ notes: >-
 # https://github.com/kraskuscrypto/Kraskus-Crypto-Apps
 #
 # Final immutable image build source:
-# 26383f0ebb025017d9c09f6e26388a2d49a3c787
+# 9b371e3ba75f758098d9b1d63445ba37e8577eb7
 #
 # Canonical release metadata commit:
-# 41f1a4bd55ec289786897e025d5836216a24d8ca
+# 46076d46195ed346c990d0fa336e8227e97f7b95
 #
 # GitHub Actions build run:
-# 33819453243
+# 33825587530
 #
 # All five linux/amd64 runtime images are pinned by immutable GHCR digest.
-# Automatic 0.25% developer-fee settlement remains maturity-gated,
+# Automatic 1% developer-fee settlement remains maturity-gated,
 # retryable, orphan-aware, and double-payment-safe. Pending settlement does
 # not block mining or user wallet sends.

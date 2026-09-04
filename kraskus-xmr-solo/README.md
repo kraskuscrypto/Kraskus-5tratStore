@@ -78,7 +78,7 @@ Kraskus brand asset vault.
 - Adds protected appliance-local spend credential storage for automatic developer-fee settlement.
 - Full-wallet create and restore flows save the wallet password into a mode-0600 local credential used only for automatic fee settlement.
 - Watch-only wallets remain monitoring-only.
-- Kraskus XMR Solo charges a 0.25% developer fee only on successfully mined block rewards.
+- Kraskus XMR Solo charges a 1% developer fee only on successfully mined block rewards.
 - Developer-fee settlement is automatic after reward maturity and does not divert miner hashrate.
 
 
@@ -100,9 +100,9 @@ Kraskus brand asset vault.
 
 ## 0.1.9-beta
 
-- Promotes the five images produced by canonical GitHub Actions build run `33819453243`, pinned by exact GHCR digests.
-- Records canonical build source `26383f0ebb025017d9c09f6e26388a2d49a3c787` and release metadata commit `41f1a4bd55ec289786897e025d5836216a24d8ca`.
-- Keeps the automatic developer fee at exactly 0.25% of successfully mined block rewards after 60-block maturity.
+- Promotes the five images produced by canonical GitHub Actions build run `33825587530`, pinned by exact GHCR digests.
+- Records canonical build source `9b371e3ba75f758098d9b1d63445ba37e8577eb7` and release metadata commit `46076d46195ed346c990d0fa336e8227e97f7b95`.
+- Keeps the automatic developer fee at exactly 1% of successfully mined block rewards after 60-block maturity.
 - Removes mining and wallet-send lockouts while automatic fee settlement is pending or temporarily failing.
 - Preserves ledger integrity, orphan handling, retry, prepared-transaction recovery, fixed fee destination/rate/amount validation, and double-payment prevention.
 - Remains a Dev Store candidate pending client-style VM100 qualification before any Official Store promotion.
