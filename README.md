@@ -21,7 +21,7 @@ The Compatibility app only patches the known affected CLI layout. Newer compatib
 If the Compatibility app cannot be installed, the qualified one-command repair remains available:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kraskuscrypto/Kraskus-Crypto-Store/9fd9dbac10ddd0d6fd2de22ff8adaaadd01e2658/scripts/install-kraskus-compat.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/kraskuscrypto/Kraskus-Crypto-Store/main/scripts/install-kraskus-compat.sh | sudo bash
 ```
 
 See `COMPATIBILITY-SETUP.md` for details and recovery behavior.
