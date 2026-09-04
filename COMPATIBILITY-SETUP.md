@@ -16,7 +16,7 @@ No store directory rename is required.
 Open the 5tratumOS terminal and run:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kraskuscrypto/Kraskus-5tratStore/9fd9dbac10ddd0d6fd2de22ff8adaaadd01e2658/scripts/install-kraskus-compat.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/kraskuscrypto/Kraskus-Crypto-Store/main/scripts/install-kraskus-compat.sh | sudo bash
 ```
 
 The customer command is pinned to a tested installer revision. That installer is also pinned to the clean-host-qualified compatibility patcher revision, so future changes to `main` cannot silently alter the repair being executed.
