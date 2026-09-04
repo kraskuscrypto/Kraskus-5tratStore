@@ -11,11 +11,11 @@ description: >-
   locally during installation and remain in persistent app
   storage. CKPool does not start mining until a payout address
   has been configured and validated.
-version: 0.2.31-beta
+version: 0.2.32-dev1
 category: Mining
 developer: Kraskus Crypto
 website: https://kraskuscrypto.com/
-repo: https://github.com/kraskuscrypto/Kraskus-5tratStore
+repo: https://github.com/kraskuscrypto/Kraskus-Crypto-Dev-Store
 support: https://kraskuscrypto.com/
 icon: assets/divinity-chta-logo.png
 port: 33064
