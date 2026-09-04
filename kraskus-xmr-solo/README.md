@@ -96,3 +96,13 @@ Kraskus brand asset vault.
 - Updates only the XMR UI image from source commit `709e92f478ff1981053bd29e4b478e58562b68f0`.
 - Corrects the sidebar footer and version service card so they display `v0.1.8-beta` instead of the stale `v0.1.1-beta` label.
 - Keeps wallet setup, wallet/API, daemon, miner gateway, automatic developer-fee settlement, storage, and networking behavior unchanged from 0.1.7-beta.
+
+
+## 0.1.9-beta
+
+- Promotes the five images produced by canonical GitHub Actions build run `33819453243`, pinned by exact GHCR digests.
+- Records canonical build source `26383f0ebb025017d9c09f6e26388a2d49a3c787` and release metadata commit `41f1a4bd55ec289786897e025d5836216a24d8ca`.
+- Keeps the automatic developer fee at exactly 0.25% of successfully mined block rewards after 60-block maturity.
+- Removes mining and wallet-send lockouts while automatic fee settlement is pending or temporarily failing.
+- Preserves ledger integrity, orphan handling, retry, prepared-transaction recovery, fixed fee destination/rate/amount validation, and double-payment prevention.
+- Remains a Dev Store candidate pending client-style VM100 qualification before any Official Store promotion.
