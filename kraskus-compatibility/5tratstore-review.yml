@@ -1,7 +1,7 @@
 appId: kraskus-compatibility
 status: beta
 developer: Kraskus Crypto
-appVersion: 0.1.6-beta
+appVersion: 0.1.7-beta
 notes:
   - One-time compatibility helper for Kraskus custom-store app lifecycle support.
   - Mounts only /usr/local/bin/5tratumos as writable host state required for the repair.
@@ -12,6 +12,8 @@ notes:
   - Unknown CLI layouts are refused without modifying the host.
   - If shell syntax or post-repair validation fails, the original CLI is restored automatically.
 releaseNotes:
+  - Standardizes the public store identity on Kraskus-Crypto-Store.
+  - Explicitly supports both legacy custom-kraskus-5tratstore and current custom-kraskus-crypto-store channel names.
   - Replaces the fragile multiline lifecycle matcher with exact line-based structural matching.
   - Fixes the clean 5tratumOS v0.7.9 failure caused by YAML block-scalar indentation changing the embedded Python multiline pattern.
   - Requires exactly one stale app-update channel line and one stale metadata-channel line before modifying the CLI.
