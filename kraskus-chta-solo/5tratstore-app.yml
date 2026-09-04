@@ -3,15 +3,16 @@ name: Kraskus CHTA Solo
 tagline: CheetahCoin full node and solo mining pool
 description: >-
   Kraskus CHTA Solo turns 5tratumOS into a self-contained
-  CheetahCoin full node and local solo mining appliance. The
-  application manages first-run RPC credentials, node
-  synchronization, payout configuration, mining readiness,
-  worker connections, CKPool solo mining, and confirmed block
-  tracking from one interface. RPC credentials are generated
-  locally during installation and remain in persistent app
-  storage. CKPool does not start mining until a payout address
-  has been configured and validated.
-version: 0.2.32-dev2
+  CheetahCoin full node, native wallet, and local solo mining
+  appliance. The application manages node synchronization,
+  CKPool solo mining, worker connections, native or external
+  mining payout selection, confirmed block tracking, wallet
+  balances, receive addresses, local QR codes, transaction
+  history, and password-gated sending from one interface. RPC
+  credentials and wallet authorization state are created and
+  retained locally in persistent app storage. CKPool does not
+  start mining until a valid payout destination is configured.
+version: 0.2.32-dev3
 category: Mining
 developer: Kraskus Crypto
 website: https://kraskuscrypto.com/
