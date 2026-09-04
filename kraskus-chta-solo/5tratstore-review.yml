@@ -1,7 +1,7 @@
 schemaVersion: 1
 status: proposed
 appId: kraskus-chta-solo
-appVersion: 0.2.28-beta
+appVersion: 0.2.32-dev1
 reviewedAt: ""
 reviewedBy: ""
 
@@ -42,20 +42,11 @@ security:
   networkEndpointsReviewed: true
 
 notes: >-
-  Backend V2 passed deterministic startup recovery, full-stack
-  container restart, and full guest-VM reboot qualification on
-  2026-08-24. The exact qualified application images were published
-  to GHCR without rebuilding them. The qualified CheetahCoin Core
-  image reuses its existing immutable Kraskus GHCR digest. The
-  qualified CKPool image is exactly the existing immutable WillItMod
-  artifact and is referenced directly rather than mirrored. Runtime
-  RPC credentials are generated locally at first installation. TCP
-  3336 is exposed for Stratum miners. The application HTTP interface
-  is accessed through native 5tratumOS app_proxy. Version 0.2.28-beta
-  restores the complete qualified v7 compatibility chain at the
-  chta-ui-compat-v6.js path expected by the existing prepaint stack,
-  then loads the Last Share and worker best-difficulty polish as a
-  separate hotfix. This corrects the 0.2.27 packaging regression that
-  caused legacy Overview content and stale Connect/Settings behavior
-  to reappear while preserving the immutable Candidate8 runtime
-  images and all persistent node, pool, wallet, and settings data.
+  Dev candidate 0.2.32-dev1 wires the qualified Candidate12 CHTA backend
+  and the Formal V3 standalone Nginx UI by immutable GHCR digest. The
+  CheetahCoin Core and qualified CKPool images remain unchanged. Legacy
+  Python UI gateway, prepaint, compatibility, and hotfix mounts were
+  removed from the ui service. This candidate is intentionally unqualified
+  until a fresh VM120 installation verifies install, start, UI proxy,
+  node/RPC readiness, Stratum port 3336, settings persistence, confirmed
+  block telemetry, and reboot recovery.
