@@ -4,6 +4,13 @@ Some 5tratumOS installations expose dynamically named custom stores in the WebUI
 
 Kraskus provides a conservative compatibility check and repair for that specific mismatch.
 
+The repair treats both Kraskus channel generations as valid dynamic custom stores:
+
+- `custom-kraskus-5tratstore` (legacy)
+- `custom-kraskus-crypto-store` (current)
+
+No store directory rename is required.
+
 ## One-command setup
 
 Open the 5tratumOS terminal and run:
@@ -24,7 +31,7 @@ The setup is designed to be safe across known 5tratumOS variants:
 After success, add the store normally from **App Store → Add custom store** using:
 
 ```text
-https://github.com/kraskuscrypto/Kraskus-5tratStore
+https://github.com/kraskuscrypto/Kraskus-Crypto-Store
 ```
 
 Then install and update Kraskus apps through the normal 5tratumOS App Store.
