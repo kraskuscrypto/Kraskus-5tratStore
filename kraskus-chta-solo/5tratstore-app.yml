@@ -12,7 +12,7 @@ description: >-
   credentials and wallet authorization state are created and
   retained locally in persistent app storage. CKPool does not
   start mining until a valid payout destination is configured.
-version: 0.2.32-dev3
+version: 0.2.32-dev4
 category: Mining
 developer: Kraskus Crypto
 website: https://kraskuscrypto.com/
